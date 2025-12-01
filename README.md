@@ -17,7 +17,7 @@ It serves as:
 ----
 
 
-###### For Developers #######
+## For Developers
 ## 🎨 Design Notes
 - **Style:** Minimalist, dark-mode, geometric grids.
 - **Tone:** Professional but visionary — blueprint diagrams, idea maps.
