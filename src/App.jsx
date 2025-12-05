@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import { Footer, Navbar } from "./components";
+import { Footer, Navbar, Chatbot } from "./components";
 import { About, Contact, Home, Projects } from "./pages";
 
 const App = () => {
@@ -24,6 +24,7 @@ const App = () => {
             }
           />
         </Routes>
+        <Chatbot />
       </Router>
     </main>
   );

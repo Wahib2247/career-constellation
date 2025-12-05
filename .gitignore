@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+.env
+ML_SETUP_GUIDE.md
+EMAILJS_SETUP_GUIDE.md
+
 node_modules
 dist
 dist-ssr

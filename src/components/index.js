@@ -4,6 +4,9 @@ import Loader from "./Loader";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeInfo from "./HomeInfo";
+import Chatbot from "./Chatbot";
+import AnimatedCard from "./AnimatedCard";
+import AnimatedTitle from "./AnimatedTitle";
 
 export {
     CTA,
@@ -11,5 +14,8 @@ export {
     Loader,
     Navbar,
     Footer,
-    HomeInfo
+    HomeInfo,
+    Chatbot,
+    AnimatedCard,
+    AnimatedTitle
 }

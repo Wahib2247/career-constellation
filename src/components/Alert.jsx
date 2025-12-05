@@ -1,10 +1,10 @@
 const Alert = ({ type, text }) => {
   return (
-    <div className='absolute top-10 left-0 right-0 flex justify-center items-center'>
+    <div className='fixed top-20 left-1/2 transform -translate-x-1/2 z-[100] flex justify-center items-center animate-fadeIn'>
       <div
-        className={`p-2 ${
+        className={`p-3 shadow-2xl ${
           type === "danger" ? "bg-red-800" : "bg-blue-800"
-        } items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex`}
+        } items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex max-w-md`}
         role='alert'
       >
         <p
