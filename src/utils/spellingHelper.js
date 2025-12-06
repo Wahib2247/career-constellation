@@ -167,9 +167,6 @@ export const correctSpelling = (query) => {
     'how can i contactn': 'how can i contact',
     'how can i contac': 'how can i contact',
     'how can i contat': 'how can i contact',
-    'is he a good perosn': 'is he a good person',
-    'is he a god person': 'is he a good person',
-    'is he madd': 'is he mad',
     'academc achievements': 'academic achievements',
     'acadmic achievements': 'academic achievements',
   };
@@ -214,26 +211,58 @@ export const fuzzyMatchProject = (query, projectNames) => {
   return null;
 };
 
-// Extract intent from query
+// Extract intent from query with comprehensive keyword matching
 export const extractIntent = (query) => {
   const corrected = correctSpelling(query.toLowerCase());
   
+  // Import keyword map (will be available after wahibKnowledge is loaded)
+  // For now, use comprehensive patterns
   const intents = {
-    contact: /\b(contact|email|reach|connect|get in touch|how to reach|how can i contact|where can i contact)\b/i,
-    project: /\b(project|work|build|create|developed|portfolio|floodcoin|fund my life|magictask)\b/i,
-    academic: /\b(academic|education|scholarship|achievement|grades|o-level|a-level|qualification|deserves.*scholarship|why.*scholarship)\b/i,
-    research: /\b(research|interest|study|focus|what.*study|what.*research)\b/i,
-    about: /\b(about|who|tell me.*wahib|describe.*wahib|what.*wahib)\b/i,
-    personality: /\b(funny|humor|humorous|personality|character|what.*like|how.*like|good person|mad|angry)\b/i,
-    mission: /\b(mission|philosophy|vision|values|believe|approach)\b/i,
-    goal: /\b(goal|future|plan|aspiration|dream|want|aim)\b/i,
-    work: /\b(work|experience|job|employment|career|what.*does|what.*work)\b/i,
-    venture: /\b(venture|blueprint|idea|concept|exploration)\b/i,
-    interest: /\b(interest|exploration|hobby|what.*interested|what.*like|passion)\b/i,
+    // Decision/commitment queries - check FIRST (highest priority)
+    decision: /\b(arrange|arranges|arranged|arranging|schedule|schedules|scheduled|scheduling|meeting|meetings|meet|meets|call|calls|calling|interview|interviews|appointment|appointments|available|availability|free|time|when|where|commit|commits|committed|commitment|promise|promises|promised|guarantee|guarantees|can you|will you|do you want|would you|join|joins|joined|collaborate|collaborates|hire|hires|employ|employs|partnership|team up|location|in person|where are you|where can i|book|books|booking|set up|setup|plan|plans|planned)\b/i,
+    
+    // Contact queries
+    contact: /\b(contact|contacts|email|emails|reach|reaches|connect|connects|get in touch|how to reach|how can i contact|where can i contact|how to connect|communication|message|messages|send|sends|write|writes|talk|talks|call|calls|phone|telephone)\b/i,
+    
+    // Academic queries
+    academic: /\b(academic|education|scholarship|o-level|a-level|olevel|alevel|grades|qualification|achievement|achievements|certificate|school|student|studies|studying|learn|learning|university|college|degree|diploma|exam|exams|test|tests|result|results|merit|excellence|outstanding|performance|deserves.*scholarship|why.*scholarship|scholarship.*deserve|deserving)\b/i,
+    
+    // Project queries
+    project: /\b(project|projects|work|works|build|built|building|create|created|creating|develop|developed|developing|development|portfolio|application|applications|app|apps|software|program|programs|code|coding|programming|floodcoin|fund my life|fundmylife|magictask|magic task|research paper|summarization|behavioral economics|dashboard|academic discussion|platform|humanitarian impact|tracker|systems thinking|visualization|ux psychology|research platform)\b/i,
+    
+    // Work/Experience queries
+    work: /\b(work|works|working|job|jobs|employment|employ|career|experience|experiences|position|positions|role|roles|research assistant|independent study|full-stack|fullstack|developer|development|web development|react|node|javascript|typescript|mongodb|express|tech|technology|technical|programming|coding|software engineering|engineering)\b/i,
+    
+    // Research queries
+    research: /\b(research|researches|researching|study|studies|studying|interest|interests|interested|focus|focuses|focused|psychology|psychological|behavioral|behavior|behaviour|economics|economic|philosophy|philosophical|humanitarian|human|humanity|tech|technology|systems|system|architecture|geopolitics|geopolitical|society|social|fogg|kahneman|ariely|thaler|microservices|recommender|bot orchestration|trend seeding|cunningham|fintech)\b/i,
+    
+    // Mission/Philosophy queries
+    mission: /\b(mission|missions|philosophy|philosophies|philosophical|vision|visions|values|value|believe|believes|belief|beliefs|approach|approaches|principle|principles|core|purpose|purposes|blueprint architect|community onboarder|narrative strategist|systems thinker|human flourishing|human agency|well-being)\b/i,
+    
+    // About queries
+    about: /\b(about|who|tell me|describe|explain|information|info|background|biography|bio|story|stories|introduction|introduce|overview|summary|summarize|details|detail|what.*wahib|who.*wahib)\b/i,
+    
+    // Personality queries
+    personality: /\b(personality|personalities|character|characters|trait|traits|good person|nice|kind|friendly|funny|humor|humorous|mad|angry|upset|calm|patient|impatient|what like|how like|what kind|what type|person|people)\b/i,
+    
+    // Goal queries
+    goal: /\b(goal|goals|future|futures|plan|plans|planned|planning|aspiration|aspirations|dream|dreams|dreamed|dreaming|want|wants|wanted|wanting|aim|aims|aimed|aiming|ambition|ambitions|ambitious|hope|hopes|hoped|hoping|wish|wishes|wished|wishing|intend|intends|intended|intending|intention|intentions)\b/i,
+    
+    // Venture queries
+    venture: /\b(venture|ventures|blueprint|blueprints|idea|ideas|concept|concepts|exploration|explorations|explore|explores|explored|exploring|startup|startups|business|businesses|company|companies|initiative|initiatives)\b/i,
+    
+    // Interest queries
+    interest: /\b(interest|interests|interested|interesting|hobby|hobbies|passion|passions|passionate|like|likes|liked|liking|enjoy|enjoys|enjoyed|enjoying|favorite|favourites|favourite|prefer|prefers|preferred|preferring|preference|preferences|curious|curiosity)\b/i,
   };
   
+  // Check decision/commitment first (highest priority)
+  if (intents.decision.test(corrected)) {
+    return 'decision';
+  }
+  
+  // Check other intents
   for (const [intent, pattern] of Object.entries(intents)) {
-    if (pattern.test(corrected)) {
+    if (intent !== 'decision' && pattern.test(corrected)) {
       return intent;
     }
   }

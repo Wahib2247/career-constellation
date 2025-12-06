@@ -30,6 +30,7 @@ const Chatbot = () => {
       actionText: null,
     },
   ]);
+  const [initialMessageShown, setInitialMessageShown] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -67,8 +68,29 @@ const Chatbot = () => {
             setUserDetails(user);
             setShowUserForm(false);
             setSessionStarted(true);
+            setInitialMessageShown(true);
+            
+            // Replace initial message with clean welcome (no privacy notice)
+            const cleanWelcome = {
+              id: 1,
+              text: `Welcome! 👋 I'm Wahib's Personal AI counterpart. Think of this as a new way of interviewing — ask me anything about Wahib, his work, research interests, or why he deserves opportunities. I'm here to help you explore his journey.`,
+              sender: "bot",
+              timestamp: new Date(),
+              actionLink: null,
+              actionText: null,
+            };
+            
+            setMessages(prev => {
+              const updated = prev.map((msg, idx) => 
+                idx === 0 ? cleanWelcome : msg
+              );
+              return updated;
+            });
+            
+            addToLog("bot", cleanWelcome.text);
+            
             addToLog("system", `Session resumed. User: ${user.name} (${user.email})${user.organization ? `, Organization: ${user.organization}` : ""}`);
-            addToLog("bot", messages[0].text);
+            addToLog("bot", cleanWelcome.text);
             
             const personalizedWelcome = {
               id: messages.length + 1,
@@ -120,25 +142,7 @@ const Chatbot = () => {
         text: m.text
       }));
       
-      // Use rule-based generator (reliable and fast)
-      const response = generateIntelligentResponse(query, userDetails.name, conversationHistory);
-      
-      // Ensure response has required structure
-      if (!response || !response.text) {
-        console.error('Invalid response from generator:', response);
-        return {
-          text: "I'm having trouble processing that. Could you rephrase your question?",
-          actionLink: null,
-          actionText: null,
-          deferral: false
-        };
-      }
-      
-      return response;
-      
-      // Optional: Try ML-powered response (if API key is configured)
-      // Uncomment below to enable ML
-      /*
+      // Try ML-powered response first (if API key is configured)
       const useML = import.meta.env.VITE_APP_OPENAI_API_KEY ? true : false;
       
       if (useML) {
@@ -156,7 +160,22 @@ const Chatbot = () => {
           console.error('ML response generation failed, using fallback:', mlError);
         }
       }
-      */
+      
+      // Fallback to rule-based generator (reliable and fast)
+      const response = generateIntelligentResponse(query, userDetails.name, conversationHistory);
+      
+      // Ensure response has required structure
+      if (!response || !response.text) {
+        console.error('Invalid response from generator:', response);
+        return {
+          text: "I'm having trouble processing that. Could you rephrase your question?",
+          actionLink: null,
+          actionText: null,
+          deferral: false
+        };
+      }
+      
+      return response;
     } catch (error) {
       console.error('Error in generateResponse:', error);
       // Ultimate fallback
@@ -174,9 +193,31 @@ const Chatbot = () => {
     if (userDetails.name && userDetails.email) {
       setShowUserForm(false);
       setSessionStarted(true);
-      // Add initial welcome message to log
+      setInitialMessageShown(true);
+      
+      // Add initial welcome message to log (before replacing)
       addToLog("system", `Session started. User: ${userDetails.name} (${userDetails.email})${userDetails.organization ? `, Organization: ${userDetails.organization}` : ""}`);
-      addToLog("bot", messages[0].text);
+      
+      // Replace the initial message with a cleaner welcome (without privacy notice)
+      const cleanWelcome = {
+        id: 1,
+        text: `Welcome! 👋 I'm Wahib's Personal AI counterpart. Think of this as a new way of interviewing — ask me anything about Wahib, his work, research interests, or why he deserves opportunities. I'm here to help you explore his journey.`,
+        sender: "bot",
+        timestamp: new Date(),
+        actionLink: null,
+        actionText: null,
+      };
+      
+      // Update the first message immediately
+      setMessages(prev => {
+        const updated = prev.map((msg, idx) => 
+          idx === 0 ? cleanWelcome : msg
+        );
+        return updated;
+      });
+      
+      // Also update in log
+      addToLog("bot", cleanWelcome.text);
       
       // Add personalized welcome after login
       const personalizedWelcome = {
@@ -547,38 +588,46 @@ ${'='.repeat(50)}`;
 
         {/* Messages */}
         <div className='flex-1 overflow-y-auto p-4 space-y-4'>
-          {messages.map((message) => (
-            <div key={message.id} className='space-y-2'>
-              <div
-                className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"} animate-fadeIn`}
-              >
+          {messages.map((message) => {
+            // Hide privacy notice if user is logged in
+            let displayText = message.text;
+            if (sessionStarted && message.id === 1 && message.text.includes('Before we start')) {
+              displayText = message.text.split('\n\nBefore we start')[0];
+            }
+            
+            return (
+              <div key={message.id} className='space-y-2'>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                    message.sender === "user"
-                      ? "bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
+                  className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"} animate-fadeIn`}
                 >
-                  <p className='text-sm leading-relaxed'>{message.text}</p>
-                </div>
-              </div>
-              {/* Action Button */}
-              {message.actionLink && message.actionText && message.sender === "bot" && (
-                <div className='flex justify-start animate-fadeIn' style={{ animationDelay: '0.2s' }}>
-                  <Link
-                    to={message.actionLink}
-                    onClick={() => setIsOpen(false)}
-                    className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105'
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                      message.sender === "user"
+                        ? "bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
                   >
-                    {message.actionText}
-                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                    </svg>
-                  </Link>
+                    <p className='text-sm leading-relaxed whitespace-pre-line'>{displayText}</p>
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+                {/* Action Button */}
+                {message.actionLink && message.actionText && message.sender === "bot" && (
+                  <div className='flex justify-start animate-fadeIn' style={{ animationDelay: '0.2s' }}>
+                    <Link
+                      to={message.actionLink}
+                      onClick={() => setIsOpen(false)}
+                      className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105'
+                    >
+                      {message.actionText}
+                      <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                      </svg>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            );
+          })}
           {isTyping && (
             <div className='flex justify-start'>
               <div className='bg-gray-100 rounded-2xl px-4 py-2'>

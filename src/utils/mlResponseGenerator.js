@@ -170,14 +170,18 @@ const generateMLResponse = async (query, context, knowledgeBase) => {
 KNOWLEDGE BASE:
 ${JSON.stringify(knowledgeBase, null, 2)}
 
-INSTRUCTIONS:
-- Answer questions using ONLY the knowledge base provided
-- If information isn't in the knowledge base, acknowledge this limitation
-- Maintain Wahib's tone: humble, reflective, student-oriented, growth-focused
-- Frame responses as explorations, not final authority
-- For personal decisions/meetings, defer to Wahib via Contact page
-- Be concise but thoughtful
-- Use the user's name if provided in context
+CRITICAL RULES:
+1. For questions about arranging calls, meetings, scheduling, availability, personal commitments, hiring, collaboration, partnerships, or any decision-making queries → ALWAYS respond: "Noted — Wahib will deliver his response directly. You can also reach him via the Contact page."
+
+2. For "what is he doing" or "what does he do" → Explain his current work: Research Assistant (2023-Present), Independent Study & Projects, A-Levels studies, and various projects.
+
+3. Answer questions using ONLY the knowledge base provided
+4. If information isn't in the knowledge base, acknowledge this limitation and suggest related topics you CAN discuss
+5. Maintain Wahib's tone: humble, reflective, student-oriented, growth-focused
+6. Frame responses as explorations, not final authority
+7. Be concise but thoughtful
+8. Use the user's name if provided in context
+9. For generic queries (like "jd", "dksa", "ssda", "vafv", "lol", "qwe", etc.), provide helpful context about what you CAN discuss rather than just asking for clarification
 
 CONTEXT: ${JSON.stringify(context)}`;
 
@@ -188,7 +192,7 @@ CONTEXT: ${JSON.stringify(context)}`;
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // or 'gpt-3.5-turbo' for cost efficiency
+        model: 'gpt-4o-mini', // Free tier friendly - cost-efficient model
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: query }
@@ -297,17 +301,42 @@ const adaptResponse = (learnedResponse, userName, currentQuery) => {
 const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName, conversationHistory) => {
   const greeting = userName ? `Hi ${userName.split(' ')[0]}! ` : '';
   
-  // Decision deferral
+  // Decision/Commitment deferral - comprehensive pattern matching
+  // Check intent first (most reliable)
+  if (intent === 'decision') {
+    const decisionResponses = [
+      `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
+      `${greeting}For personal arrangements like meetings or collaborations, Wahib prefers to respond directly. You can reach him through the Contact page, and he'll get back to you soon!`,
+      `${greeting}I appreciate your interest! For scheduling, meetings, or commitments, Wahib handles these personally. Please reach out through the Contact page, and he'll respond directly.`
+    ];
+    return {
+      text: decisionResponses[Math.floor(Math.random() * decisionResponses.length)],
+      actionLink: "/contact",
+      actionText: "Go to Contact",
+      deferral: true
+    };
+  }
+  
+  // Also check for decision patterns as fallback
   const decisionPatterns = [
-    /\b(join|collaborate|work with|hire|employ|partnership|team up)\b/i,
-    /\b(available|free|time|schedule|meeting|call|interview|when|where)\b/i,
-    /\b(commit|promise|guarantee|can you|will you|do you want)\b/i,
-    /\b(meet|meeting|in person|location|where are you|where can i)\b/i
+    /\b(arrange|arranges|arranged|arranging|schedule|schedules|scheduled|scheduling)\b/i,
+    /\b(meeting|meetings|meet|meets|call|calls|calling|interview|interviews|appointment|appointments)\b/i,
+    /\b(available|availability|free|time|when|where)\b/i,
+    /\b(commit|commits|committed|commitment|promise|promises|promised|guarantee|guarantees)\b/i,
+    /\b(can you|will you|do you want|would you)\b/i,
+    /\b(join|joins|joined|collaborate|collaborates|hire|hires|employ|employs|partnership|team up)\b/i,
+    /\b(location|locations|in person|where are you|where can i|book|books|booking|set up|setup)\b/i
   ];
 
   if (decisionPatterns.some(pattern => pattern.test(correctedQuery))) {
+    const decisionResponses = [
+      `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
+      `${greeting}For personal arrangements like meetings or collaborations, Wahib prefers to respond directly. You can reach him through the Contact page, and he'll get back to you soon!`
+    ];
     return {
-      text: `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      text: decisionResponses[Math.floor(Math.random() * decisionResponses.length)],
       actionLink: "/contact",
       actionText: "Go to Contact",
       deferral: true
@@ -357,16 +386,25 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
     }
     
     return {
-      text: `${greeting}Wahib has several research-driven projects exploring technology, behavioral science, and social impact. These include projects like Research Paper Summarization Tool, Behavioral Economics Dashboard, and blueprint-stage ideas like FloodCoin and Fund My Life.`,
+      text: `${greeting}Wahib has several research-driven projects exploring technology, behavioral science, and social impact.`,
       actionLink: "/projects",
       actionText: "View Projects",
       deferral: false
     };
   }
 
-  // Generic fallback
+  // Enhanced generic fallback with context-aware suggestions
+  const genericResponses = [
+    `${greeting}That's an interesting question. I have access to Wahib's portfolio content covering: his projects (Research Paper Summarization Tool, Behavioral Economics Dashboard, Academic Discussion Platform, Humanitarian Impact Tracker, Systems Thinking Visualization Tool, UX Psychology Research Platform, MagicTask, FloodCoin, Fund My Life), academic journey (O-Levels completed 2024, Academic Excellence Scholarship 2024, A-Levels in Maths/Physics/Computer Science), work experience (Research Assistant 2023-Present, Independent Study & Projects 2022-Present), research interests (Psychology & Philosophy, Tech & Systems Architecture, Society & Geopolitics, Humanitarian Platforms), mission & philosophy, ventures, interests, and goals. Could you help me understand what specifically you're curious about?`,
+    `${greeting}I'd love to help! My knowledge comes from Wahib's portfolio, so I can discuss: projects (including MagicTask, FloodCoin, Fund My Life, and research-driven applications), academic achievements (O-Levels, A-Levels, 2024 scholarship), work experience (Research Assistant, Independent Study & Projects), research interests (Psychology, Tech Architecture, Society & Geopolitics), mission & philosophy, ventures, interests, leadership programs (CGDL 2025), or how to contact him. What aspect interests you most?`,
+    `${greeting}That's a thoughtful question. I'm working with information from Wahib's portfolio covering: projects (research-driven applications and blueprint ideas), academic journey (O-Levels 2024, A-Levels, Academic Excellence Scholarship 2024), work (Research Assistant, full-stack development), research (Psychology, Tech, Society, Humanitarian focus), mission, ventures, interests, and goals. Could you be more specific about what you'd like to know?`,
+    `${greeting}I can help with questions about Wahib's projects, academic journey (including scholarship details), work experience, research interests, mission & philosophy, ventures, interests, leadership programs, or how to contact him. What would you like to explore?`
+  ];
+  
+  const randomIndex = Math.floor(Math.random() * genericResponses.length);
+  
   return {
-    text: `${greeting}That's an interesting question. I have access to Wahib's portfolio content covering his projects, academic journey, research interests, and philosophy. Could you be more specific about what you'd like to know?`,
+    text: genericResponses[randomIndex],
     actionLink: null,
     actionText: null,
     deferral: false

@@ -1,58 +1,43 @@
 // Knowledge Base for Wahib's AI Counterpart
-// This contains all the information about Wahib from the portfolio
+// Mapped directly from website constants to reduce redundancy and ensure consistency
 
 import { aboutContent, projects, pageTexts, experiences } from '../constants';
 
 export const wahibKnowledge = {
-  // Personal Introduction
+  // Personal Introduction - from pageTexts
   introduction: {
-    text: "I'm Wahib's Personal AI counterpart. I'm here to help you explore his journey, work, and ideas. Think of this as a new way of interviewing — ask me anything about Wahib, and I'll share what I know from his portfolio.",
+    text: pageTexts.about.introduction,
+    name: pageTexts.about.name,
+    greeting: pageTexts.about.greeting,
     tone: "humble, reflective, student-oriented"
   },
 
-  // Academic Journey
+  // Academic Journey - mapped from aboutContent.academic
   academic: {
     oLevels: {
       completed: "2024",
-      achievements: [
-        "Achieved high grades across core subjects",
-        "Received High Achievement Certificate from school",
-        "Built strong foundations in analytical thinking and interdisciplinary learning"
-      ]
+      achievements: aboutContent.academic.items[0].content
     },
     scholarship: {
       year: "2024",
-      description: "Recognized for outstanding academic performance and innovative project work. Maintained rigorous academic standards while pursuing independent research initiatives."
+      description: aboutContent.academic.items[1].content.join(" "),
+      points: aboutContent.academic.items[1].content
     },
     aLevels: {
       status: "Maintaining high standards",
       focus: "Maths, Physics, and Computer Science",
-      achievements: [
-        "Maintained high academic standards across all subjects",
-        "Earned official school certificate for strong performance",
-        "Mentored peers and helped them improve their academic performance"
-      ]
+      achievements: aboutContent.academic.items[2].content
     },
-    researchFocus: [
-      "Human-Computer Interaction and Behavioral Psychology in Digital Interfaces",
-      "Behavioral Economics and Decision-Making in Financial Technology",
-      "Systems Thinking and Geopolitical Analysis",
-      "Humanitarian Impact Assessment and Social Innovation"
-    ]
+    researchFocus: aboutContent.academic.items[3].content
   },
 
-  // Mission & Philosophy
+  // Mission & Philosophy - mapped from aboutContent.mission
   mission: {
-    core: "Building platforms that fuse automation, psychology, and humanitarian impact. Technology should serve human flourishing, not just efficiency metrics. Every system is designed with the question: 'How does this improve human agency and well-being?'",
-    roles: [
-      "Blueprint Architect: Designing system foundations that enable scalable impact",
-      "Community Onboarder: Creating pathways for meaningful engagement",
-      "Narrative Strategist: Framing projects as stories that inspire action",
-      "Systems Thinker: Connecting dots between technology, behavior, and social outcomes"
-    ]
+    core: aboutContent.mission.items[0].content,
+    roles: aboutContent.mission.items[1].content.map(role => role.replace(/<strong>|<\/strong>/g, ''))
   },
 
-  // Projects - now includes all projects from constants
+  // Projects - mapped directly from constants
   projects: {
     // All projects from the projects array
     portfolioProjects: projects.map(p => ({
@@ -61,12 +46,12 @@ export const wahibKnowledge = {
       link: p.link,
       theme: p.theme
     })),
-    // Blueprint projects (also part of projects conceptually)
+    // Blueprint projects from aboutContent
     magicTask: {
       name: "MagicTask",
       year: "2022",
-      description: "Complex UI/UX design with MCARS theme. Task management system leveraging UX psychology and habit formation models. Built platforms that transform productivity through psychological insights.",
-      link: "https://magictask.io"
+      description: aboutContent.work.items[1].content.join(" "),
+      link: aboutContent.work.items[1].link
     },
     floodCoin: {
       name: "FloodCoin",
@@ -76,34 +61,46 @@ export const wahibKnowledge = {
     fundMyLife: {
       name: "Fund My Life",
       status: "Blueprint Stage",
-      description: "Exploring transparent tokenomics and community-driven value creation. A meme-coin with humanitarian angles, where community onboarding becomes a mechanism for collective impact. Currently mapping tokenomics flows and community governance structures."
+      description: typeof aboutContent.ventures.items[0].content === 'string' 
+        ? aboutContent.ventures.items[0].content 
+        : aboutContent.ventures.items[0].content.join(" ")
     }
   },
 
-  // Research Interests
-  research: {
-    psychology: [
-      "Human Readability: Designing systems that feel natural and intuitive to human cognition",
-      "Fogg Behavior Model: Applying B=MAT (Motivation, Ability, Trigger) to product design",
-      "Behavioral Economics: Integrating insights from Kahneman, Ariely, and Thaler into UX flows",
-      "Philosophical Inquiry: Exploring ethics, human evolution, and what makes systems 'good'"
-    ],
-    tech: [
-      "Microservices Logic: Building systems that are modular, scalable, and maintainable",
-      "Recommender Systems: Creating algorithms that enhance user experience without manipulation",
-      "Bot Orchestration: Designing automated systems that augment rather than replace human agency",
-      "System Design: Thinking in flows, dependencies, and emergent behaviors"
-    ],
-    society: [
-      "Trend Seeding: Understanding how ideas spread and how to design for virality ethically",
-      "Cunningham's Law: Leveraging human psychology in community building",
-      "Fintech for Humanitarian Aid: Exploring how financial technology can serve poverty reduction",
-      "Geopolitical Analysis: Understanding how global systems affect local impact"
-    ],
-    humanitarian: "Platforms where impact greater than profit. Exploring how autonomous governance, transparent systems, and community-driven models can create sustainable humanitarian impact. The goal: systems that self-organize around human need rather than shareholder value."
+  // Work & Experience - mapped from experiences and aboutContent.work
+  work: {
+    experiences: experiences.map(exp => ({
+      title: exp.title,
+      company: exp.company_name,
+      date: exp.date,
+      points: exp.points
+    })),
+    skills: aboutContent.work.items[0].content
   },
 
-  // Future Goals
+  // Research Interests - mapped from aboutContent.ideas
+  research: {
+    psychology: aboutContent.ideas.items[0].content.map(item => item.replace(/<strong>|<\/strong>/g, '')),
+    tech: aboutContent.ideas.items[1].content.map(item => item.replace(/<strong>|<\/strong>/g, '')),
+    society: aboutContent.ideas.items[2].content.map(item => item.replace(/<strong>|<\/strong>/g, '')),
+    habitForming: aboutContent.ideas.items[3].content,
+    humanitarian: aboutContent.ideas.items[4].content
+  },
+
+  // Interests - mapped from aboutContent.interests
+  interests: {
+    philosophy: aboutContent.interests.items[0].content,
+    media: aboutContent.interests.items[1].content,
+    humanitarian: aboutContent.interests.items[2].content
+  },
+
+  // Ventures - mapped from aboutContent.ventures
+  ventures: {
+    description: aboutContent.ventures.description,
+    projects: aboutContent.ventures.items
+  },
+
+  // Future Goals - from aboutContent context
   goals: {
     shortTerm: "Position himself for university admissions and collaborations by showcasing a credible, reflective portfolio",
     longTerm: "Build platforms that fuse automation, psychology, and humanitarian impact",
@@ -125,50 +122,135 @@ export const wahibKnowledge = {
   }
 };
 
-// Helper function to search knowledge base
+// Comprehensive keyword lists for better matching
+export const keywordMap = {
+  academic: [
+    'academic', 'education', 'scholarship', 'o-level', 'a-level', 'olevel', 'alevel',
+    'grades', 'qualification', 'achievement', 'achievements', 'certificate', 'school',
+    'student', 'studies', 'studying', 'learn', 'learning', 'university', 'college',
+    'degree', 'diploma', 'exam', 'exams', 'test', 'tests', 'result', 'results',
+    'merit', 'excellence', 'outstanding', 'performance', 'academically', 'scholarly',
+    'deserves scholarship', 'why scholarship', 'scholarship deserve', 'deserving'
+  ],
+  project: [
+    'project', 'projects', 'work', 'works', 'build', 'built', 'building', 'create',
+    'created', 'creating', 'develop', 'developed', 'developing', 'development',
+    'portfolio', 'application', 'applications', 'app', 'apps', 'software', 'program',
+    'programs', 'code', 'coding', 'programming', 'floodcoin', 'fund my life',
+    'fundmylife', 'magictask', 'magic task', 'research paper', 'summarization',
+    'behavioral economics', 'dashboard', 'academic discussion', 'platform',
+    'humanitarian impact', 'tracker', 'systems thinking', 'visualization',
+    'ux psychology', 'research platform'
+  ],
+  work: [
+    'work', 'works', 'working', 'job', 'jobs', 'employment', 'employ', 'career',
+    'experience', 'experiences', 'position', 'positions', 'role', 'roles',
+    'research assistant', 'independent study', 'full-stack', 'fullstack',
+    'developer', 'development', 'web development', 'react', 'node', 'javascript',
+    'typescript', 'mongodb', 'express', 'tech', 'technology', 'technical',
+    'programming', 'coding', 'software engineering', 'engineering'
+  ],
+  research: [
+    'research', 'researches', 'researching', 'study', 'studies', 'studying',
+    'interest', 'interests', 'interested', 'focus', 'focuses', 'focused',
+    'psychology', 'psychological', 'behavioral', 'behavior', 'behaviour',
+    'economics', 'economic', 'philosophy', 'philosophical', 'humanitarian',
+    'human', 'humanity', 'tech', 'technology', 'systems', 'system',
+    'architecture', 'geopolitics', 'geopolitical', 'society', 'social',
+    'fogg', 'kahneman', 'ariely', 'thaler', 'microservices', 'recommender',
+    'bot orchestration', 'trend seeding', 'cunningham', 'fintech'
+  ],
+  mission: [
+    'mission', 'missions', 'philosophy', 'philosophies', 'philosophical',
+    'vision', 'visions', 'values', 'value', 'believe', 'believes', 'belief',
+    'beliefs', 'approach', 'approaches', 'principle', 'principles', 'core',
+    'purpose', 'purposes', 'goal', 'goals', 'objective', 'objectives',
+    'blueprint architect', 'community onboarder', 'narrative strategist',
+    'systems thinker', 'human flourishing', 'human agency', 'well-being'
+  ],
+  contact: [
+    'contact', 'contacts', 'contacted', 'email', 'emails', 'reach', 'reaches',
+    'reached', 'connect', 'connects', 'connected', 'connection', 'connections',
+    'get in touch', 'get in contact', 'how to reach', 'how can i contact',
+    'where can i contact', 'how to connect', 'communication', 'communicate',
+    'message', 'messages', 'messaging', 'send', 'sends', 'sending', 'write',
+    'writes', 'writing', 'talk', 'talks', 'talking', 'speak', 'speaks',
+    'speaking', 'call', 'calls', 'calling', 'phone', 'telephone'
+  ],
+  about: [
+    'about', 'who', 'tell me', 'describe', 'explain', 'information', 'info',
+    'background', 'biography', 'bio', 'story', 'stories', 'introduction',
+    'introduce', 'overview', 'summary', 'summarize', 'details', 'detail'
+  ],
+  decision: [
+    'arrange', 'arranges', 'arranged', 'arranging', 'arrangement', 'arrangements',
+    'schedule', 'schedules', 'scheduled', 'scheduling', 'meeting', 'meetings',
+    'meet', 'meets', 'met', 'call', 'calls', 'calling', 'interview', 'interviews',
+    'appointment', 'appointments', 'available', 'availability', 'free', 'time',
+    'when', 'where', 'commit', 'commits', 'committed', 'commitment', 'commitments',
+    'promise', 'promises', 'promised', 'guarantee', 'guarantees', 'guaranteed',
+    'can you', 'will you', 'do you want', 'would you', 'join', 'joins', 'joined',
+    'joining', 'collaborate', 'collaborates', 'collaborated', 'collaboration',
+    'collaborations', 'work with', 'hire', 'hires', 'hired', 'hiring', 'employ',
+    'employs', 'employed', 'employment', 'partnership', 'partnerships', 'partner',
+    'partners', 'team up', 'teaming up', 'location', 'locations', 'in person',
+    'where are you', 'where can i', 'book', 'books', 'booking', 'booked', 'plan',
+    'plans', 'planned', 'planning', 'set up', 'setting up', 'setup'
+  ],
+  personality: [
+    'personality', 'personalities', 'character', 'characters', 'trait', 'traits',
+    'good person', 'nice', 'kind', 'friendly', 'funny', 'humor', 'humorous',
+    'mad', 'angry', 'upset', 'calm', 'patient', 'impatient', 'what like',
+    'how like', 'what kind', 'what type', 'person', 'people'
+  ],
+  goal: [
+    'goal', 'goals', 'future', 'futures', 'plan', 'plans', 'planned', 'planning',
+    'aspiration', 'aspirations', 'dream', 'dreams', 'dreamed', 'dreaming',
+    'want', 'wants', 'wanted', 'wanting', 'aim', 'aims', 'aimed', 'aiming',
+    'ambition', 'ambitions', 'ambitious', 'hope', 'hopes', 'hoped', 'hoping',
+    'wish', 'wishes', 'wished', 'wishing', 'intend', 'intends', 'intended',
+    'intending', 'intention', 'intentions'
+  ],
+  venture: [
+    'venture', 'ventures', 'blueprint', 'blueprints', 'idea', 'ideas', 'concept',
+    'concepts', 'exploration', 'explorations', 'explore', 'explores', 'explored',
+    'exploring', 'startup', 'startups', 'business', 'businesses', 'company',
+    'companies', 'initiative', 'initiatives'
+  ],
+  interest: [
+    'interest', 'interests', 'interested', 'interesting', 'hobby', 'hobbies',
+    'passion', 'passions', 'passionate', 'like', 'likes', 'liked', 'liking',
+    'enjoy', 'enjoys', 'enjoyed', 'enjoying', 'favorite', 'favourites',
+    'favourite', 'prefer', 'prefers', 'preferred', 'preferring', 'preference',
+    'preferences', 'curious', 'curiosity', 'explore', 'explores', 'explored',
+    'exploring', 'exploration', 'explorations'
+  ]
+};
+
+// Enhanced search function with comprehensive keyword matching
 export const searchKnowledge = (query) => {
   const lowerQuery = query.toLowerCase();
   const results = [];
 
-  // Academic queries
-  if (lowerQuery.includes('academic') || lowerQuery.includes('education') || lowerQuery.includes('scholarship') || lowerQuery.includes('o-level') || lowerQuery.includes('a-level')) {
-    results.push({
-      category: 'academic',
-      data: wahibKnowledge.academic
+  // Check each category with comprehensive keyword matching
+  Object.entries(keywordMap).forEach(([category, keywords]) => {
+    const matches = keywords.some(keyword => {
+      // Handle multi-word keywords
+      if (keyword.includes(' ')) {
+        return lowerQuery.includes(keyword);
+      }
+      // Handle single-word keywords with word boundaries
+      const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+      return regex.test(lowerQuery);
     });
-  }
 
-  // Project queries
-  if (lowerQuery.includes('project') || lowerQuery.includes('work') || lowerQuery.includes('floodcoin') || lowerQuery.includes('fund my life') || lowerQuery.includes('magictask')) {
-    results.push({
-      category: 'projects',
-      data: wahibKnowledge.projects
-    });
-  }
-
-  // Mission/Philosophy queries
-  if (lowerQuery.includes('mission') || lowerQuery.includes('philosophy') || lowerQuery.includes('vision') || lowerQuery.includes('goal')) {
-    results.push({
-      category: 'mission',
-      data: wahibKnowledge.mission
-    });
-  }
-
-  // Research queries
-  if (lowerQuery.includes('research') || lowerQuery.includes('interest') || lowerQuery.includes('psychology') || lowerQuery.includes('behavioral') || lowerQuery.includes('humanitarian')) {
-    results.push({
-      category: 'research',
-      data: wahibKnowledge.research
-    });
-  }
-
-  // Contact queries
-  if (lowerQuery.includes('contact') || lowerQuery.includes('email') || lowerQuery.includes('reach') || lowerQuery.includes('connect')) {
-    results.push({
-      category: 'contact',
-      data: wahibKnowledge.contact
-    });
-  }
+    if (matches) {
+      results.push({
+        category,
+        data: wahibKnowledge[category] || null
+      });
+    }
+  });
 
   return results;
 };

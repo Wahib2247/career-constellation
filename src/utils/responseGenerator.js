@@ -60,20 +60,57 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
   const useName = Math.random() > 0.3; // 70% chance of using name
   const greeting = getGreeting(userName, useName);
   
-  // Decision deferral patterns - needs personal input
+  // Decision/Commitment deferral - check intent first (most reliable)
+  if (intent === 'decision') {
+    const decisionResponses = [
+      `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
+      `${greeting}For personal arrangements like meetings or collaborations, Wahib prefers to respond directly. You can reach him through the Contact page, and he'll get back to you soon!`,
+      `${greeting}I appreciate your interest! For scheduling, meetings, or commitments, Wahib handles these personally. Please reach out through the Contact page, and he'll respond directly.`
+    ];
+    return {
+      text: decisionResponses[Math.floor(Math.random() * decisionResponses.length)],
+      actionLink: "/contact",
+      actionText: "Go to Contact",
+      deferral: true
+    };
+  }
+  
+  // Also check for "arrange" queries specifically (before other patterns)
+  if (lowerQuery.match(/\b(arrange|set up|book|schedule|plan).*(call|meeting|interview|appointment)\b/i) ||
+      (lowerQuery.includes('arrange') && (lowerQuery.includes('call') || lowerQuery.includes('meeting') || lowerQuery.includes('interview')))) {
+    return {
+      text: `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      actionLink: "/contact",
+      actionText: "Go to Contact",
+      deferral: true
+    };
+  }
+  
+  // Check for "what is he doing" queries
+  if (lowerQuery.match(/\b(what.*doing|what.*he doing|what.*wahib doing|what.*he.*work|what.*he.*working|what.*is.*he|what.*does.*he.*do)\b/i)) {
+    return {
+      text: `${greeting}Wahib is currently working as a Research Assistant (2023-Present) researching human-computer interaction and behavioral psychology, developing React.js applications, and publishing findings. He's also pursuing Independent Study & Projects in full-stack development and behavioral economics. Beyond that, he's maintaining his A-Levels studies in Maths, Physics, and Computer Science, and working on various projects. For current activities or availability, it's best to reach out to him directly through the Contact page.`,
+      actionLink: "/contact",
+      actionText: "Contact Wahib",
+      deferral: false
+    };
+  }
+  
   const decisionPatterns = [
     /\b(join|collaborate|work with|hire|employ|partnership|team up)\b/i,
     /\b(available|free|time|schedule|meeting|call|interview|when|where)\b/i,
     /\b(commit|promise|guarantee|can you|will you|do you want)\b/i,
-    /\b(meet|meeting|in person|location|where are you|where can i)\b/i
+    /\b(meet|meeting|in person|location|where are you|where can i)\b/i,
+    /\b(arrange|set up|book|schedule|plan)\b/i
   ];
 
   const requiresDecision = decisionPatterns.some(pattern => pattern.test(correctedQuery));
 
   if (requiresDecision) {
     const responses = [
-      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
       `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
+      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
       `${greeting}For personal arrangements like meetings or collaborations, Wahib prefers to respond directly. You can reach him through the Contact page, and he'll get back to you soon!`
     ];
     return {
@@ -272,17 +309,20 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
   // Leadership/Program queries
   if (lowerQuery.match(/\b(leadership|cgdl|program|development|mentor)\b/i)) {
     const responses = [
-      `${greeting}Wahib participated in the CGDL Leadership Program (2025), a comprehensive leadership and community building program. He developed skills in project management, team collaboration, and strategic thinking, applied systems thinking to frame projects as missions with measurable impact, and mentored peers while contributing to program development initiatives.`,
-      `${greeting}He's part of the CGDL Leadership Program (2025), developing leadership skills, project management, team collaboration, and strategic thinking. He applies systems thinking to frame projects as missions and actively mentors peers.`,
-      `${greeting}Wahib is in the CGDL Leadership Program (2025), focusing on leadership development, project management, systems thinking application to missions, and peer mentoring.`
+      `${greeting}Wahib focuses on leadership for sustainable growth, emphasizing project management, strategic thinking, and community-driven impact. He applies systems thinking to approach challenges as missions with measurable outcomes and supports peers through collaboration and guidance.`,
+      
+      `${greeting}He focuses on leadership for sustainable growth, developing his skills in project management, strategic thinking, and systems thinking. He also supports peers through collaborative problem-solving and shared learning.`,
+      
+      `${greeting}Wahib is dedicated to leadership for sustainable growth, applying systems thinking, strengthening his project management abilities, and supporting peers through meaningful collaboration.`
     ];
+  
     return {
       text: responses[Math.floor(Math.random() * responses.length)],
       actionLink: "/about",
       actionText: "Learn More",
       deferral: false
     };
-  }
+  }  
 
   // Ventures/Blueprint projects
   if (lowerQuery.match(/\b(venture|blueprint|idea|concept|exploration)\b/i)) {
