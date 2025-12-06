@@ -19,6 +19,7 @@ const Chatbot = () => {
   const [showUserForm, setShowUserForm] = useState(true);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [sessionEnded, setSessionEnded] = useState(false);
+  const [sessionTimedOut, setSessionTimedOut] = useState(false);
   const [conversationLog, setConversationLog] = useState([]);
   const [messages, setMessages] = useState([
     {
@@ -35,11 +36,11 @@ const Chatbot = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const inactivityTimerRef = useRef(null);
-  const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes of inactivity
+  const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes of inactivity
 
   const quickReplies = [
     "Tell me about Wahib",
-    "What is FloodCoin?",
+    "What is FlowFund?",
     "Academic achievements",
     "Research interests",
     "Future goals"
@@ -122,7 +123,7 @@ const Chatbot = () => {
       // Set new timer
       inactivityTimerRef.current = setTimeout(() => {
         if (sessionStarted && !sessionEnded) {
-          endSession();
+          endSession(true); // Pass true to indicate timeout
         }
       }, SESSION_TIMEOUT);
 
@@ -249,10 +250,20 @@ const Chatbot = () => {
     setConversationLog(prev => [...prev, logEntry]);
   };
 
-  const endSession = () => {
+  const endSession = (isTimeout = false) => {
     if (sessionEnded) return;
+    
+    // Check if user has actually interacted before ending session
+    const userMessages = messages.filter(msg => msg.sender === 'user');
+    const hasUserInteraction = userMessages.length > 0;
+    
     setSessionEnded(true);
-    const closureMessage = wahibKnowledge.tone.closure;
+    setSessionTimedOut(isTimeout);
+    
+    const closureMessage = isTimeout 
+      ? "Session timed out due to inactivity. Your conversation transcript has been saved. Would you like to continue?"
+      : wahibKnowledge.tone.closure;
+    
     const botMessage = {
       id: messages.length + 1,
       text: closureMessage,
@@ -264,12 +275,61 @@ const Chatbot = () => {
     setMessages(prev => [...prev, botMessage]);
     addToLog("bot", closureMessage);
     
-    // Send email with transcript
-    sendSessionEmail();
+    // Only send email if user has actually interacted
+    if (hasUserInteraction) {
+      sendSessionEmail();
+    } else {
+      console.log('Session ended without user interaction. Skipping email.');
+    }
+  };
+
+  const resumeSession = () => {
+    setSessionEnded(false);
+    setSessionTimedOut(false);
+    
+    // Clear the timeout message and add continuation message
+    const continuationMessage = {
+      id: messages.length + 1,
+      text: `Great! Let's continue our conversation. What would you like to explore?`,
+      sender: "bot",
+      timestamp: new Date(),
+      actionLink: null,
+      actionText: null,
+    };
+    setMessages(prev => [...prev, continuationMessage]);
+    addToLog("bot", continuationMessage.text);
+    
+    // Reset inactivity timer
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+    inactivityTimerRef.current = setTimeout(() => {
+      if (sessionStarted && !sessionEnded) {
+        endSession(true);
+      }
+    }, SESSION_TIMEOUT);
   };
 
   const sendSessionEmail = async () => {
     try {
+      // Check if user has sent any messages (not just bot/system messages)
+      // Check both conversationLog and messages array to be thorough
+      const userMessagesInLog = conversationLog.filter(entry => entry.sender === 'user');
+      const userMessagesInChat = messages.filter(msg => msg.sender === 'user');
+      
+      // Don't send email if user hasn't sent any messages
+      if (userMessagesInLog.length === 0 && userMessagesInChat.length === 0) {
+        console.log('Skipping email: No user messages in session. Log entries:', conversationLog.length, 'Chat messages:', messages.length);
+        return;
+      }
+      
+      // Additional safety check: if only welcome/bot messages exist, don't send
+      const hasRealUserInteraction = userMessagesInLog.length > 0 || userMessagesInChat.length > 0;
+      if (!hasRealUserInteraction) {
+        console.log('Skipping email: No real user interaction detected');
+        return;
+      }
+
       const transcript = conversationLog.map(entry => 
         `[${entry.sender.toUpperCase()}] ${entry.timestamp}: ${entry.text}`
       ).join('\n\n');
@@ -324,7 +384,7 @@ ${'='.repeat(50)}`;
     conversationLog.forEach(entry => {
       const text = entry.text.toLowerCase();
       if (text.includes("academic") || text.includes("scholarship")) topics.add("Academic Journey");
-      if (text.includes("project") || text.includes("floodcoin") || text.includes("fund my life")) topics.add("Projects");
+      if (text.includes("project") || text.includes("FlowFund") || text.includes("fund my life")) topics.add("Projects");
       if (text.includes("research") || text.includes("interest")) topics.add("Research");
       if (text.includes("mission") || text.includes("philosophy")) topics.add("Mission & Philosophy");
       if (text.includes("contact") || text.includes("email")) topics.add("Contact");
@@ -486,7 +546,7 @@ ${'='.repeat(50)}`;
 
   const handleClose = () => {
     if (sessionStarted && !sessionEnded) {
-      endSession();
+      endSession(false); // User manually closed, not timeout
     }
     setIsOpen(false);
   };
@@ -718,8 +778,23 @@ ${'='.repeat(50)}`;
         )}
 
         {sessionEnded && (
-          <div className='p-4 border-t border-gray-200 bg-green-50/50'>
-            <p className='text-xs text-gray-600 text-center'>Session ended. Transcript has been sent to Wahib.</p>
+          <div className='p-4 border-t border-gray-200 bg-blue-50/50'>
+            <p className='text-xs text-gray-600 text-center mb-3'>
+              {sessionTimedOut 
+                ? "Session timed out. Transcript has been saved." 
+                : "Session ended. Transcript has been sent to Wahib."}
+            </p>
+            {sessionTimedOut && (
+              <button
+                onClick={resumeSession}
+                className='w-full px-4 py-2 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity duration-200 flex items-center justify-center gap-2 hover:shadow-md'
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.196 15.857l-1.5 1.5M4 4l1.5 1.5m13.5 13.5l-1.5-1.5M4 4H2m18 0h2m-2 0v2m0-2v-2" />
+                </svg>
+                Continue Conversation
+              </button>
+            )}
           </div>
         )}
       </div>

@@ -51,7 +51,7 @@ export const correctSpelling = (query) => {
   const dictionary = [
     'contact', 'project', 'projects', 'academic', 'achievement', 'achievements',
     'scholarship', 'education', 'research', 'about', 'good', 'person', 'mad',
-    'can', 'how', 'is', 'he', 'floodcoin', 'fund', 'my', 'life', 'magictask',
+    'can', 'how', 'is', 'he', 'FlowFund', 'fund', 'my', 'life', 'magictask',
     'work', 'experience', 'mission', 'philosophy', 'goal', 'future', 'venture',
     'interest', 'interests', 'wahib', 'tell', 'me', 'what', 'where', 'when',
     'who', 'why', 'which', 'email', 'reach', 'connect', 'get', 'in', 'touch'
@@ -228,7 +228,7 @@ export const extractIntent = (query) => {
     academic: /\b(academic|education|scholarship|o-level|a-level|olevel|alevel|grades|qualification|achievement|achievements|certificate|school|student|studies|studying|learn|learning|university|college|degree|diploma|exam|exams|test|tests|result|results|merit|excellence|outstanding|performance|deserves.*scholarship|why.*scholarship|scholarship.*deserve|deserving)\b/i,
     
     // Project queries
-    project: /\b(project|projects|work|works|build|built|building|create|created|creating|develop|developed|developing|development|portfolio|application|applications|app|apps|software|program|programs|code|coding|programming|floodcoin|fund my life|fundmylife|magictask|magic task|research paper|summarization|behavioral economics|dashboard|academic discussion|platform|humanitarian impact|tracker|systems thinking|visualization|ux psychology|research platform)\b/i,
+    project: /\b(project|projects|work|works|build|built|building|create|created|creating|develop|developed|developing|development|portfolio|application|applications|app|apps|software|program|programs|code|coding|programming|FlowFund|fund my life|fundmylife|magictask|magic task|research paper|summarization|behavioral economics|dashboard|academic discussion|platform|humanitarian impact|tracker|systems thinking|visualization|ux psychology|research platform)\b/i,
     
     // Work/Experience queries
     work: /\b(work|works|working|job|jobs|employment|employ|career|experience|experiences|position|positions|role|roles|research assistant|independent study|full-stack|fullstack|developer|development|web development|react|node|javascript|typescript|mongodb|express|tech|technology|technical|programming|coding|software engineering|engineering)\b/i,

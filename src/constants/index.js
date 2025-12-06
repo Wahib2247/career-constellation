@@ -140,7 +140,7 @@ export const projects = [
     {
         iconUrl: pricewise,
         theme: 'btn-back-red',
-        name: 'FlowFunding',
+        name: 'FlowFund',
         description: 'A blueprint‑stage financial ecosystem designed to reduce poverty by creating continuous money flow across peers. It envisions onboarding donors through incentives and hosting NGOs and individuals much like Shopify hosts stores — but instead of products, they promote causes.',
         link: '#',
     },

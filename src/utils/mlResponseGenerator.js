@@ -353,8 +353,10 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
     };
   }
 
-  // Academic/Scholarship
-  if (intent === 'academic' || lowerQuery.match(/\b(academic|education|scholarship|achievement)\b/i)) {
+  // Academic/Scholarship - check for exact quick reply match first
+  if (lowerQuery === 'academic achievements' || 
+      intent === 'academic' || 
+      lowerQuery.match(/\b(academic|education|scholarship|achievement)\b/i)) {
     const academic = wahibKnowledge.academic;
     return {
       text: `${greeting}Wahib's academic journey includes completing O-Levels in 2024 with high grades and a High Achievement Certificate. He was awarded an Academic Excellence Scholarship in 2024 for outstanding performance and innovative project work. Throughout A-Levels, he's maintained high standards in Maths, Physics, and Computer Science while mentoring peers.`,
@@ -368,7 +370,7 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
   if (intent === 'project' || lowerQuery.match(/\b(project|work|build|create)\b/i)) {
     const matchedProject = fuzzyMatchProject(correctedQuery, [
       ...projects.map(p => p.name),
-      'FloodCoin',
+      'FlowFund',
       'Fund My Life',
       'MagicTask'
     ]);
@@ -393,10 +395,23 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
     };
   }
 
+  // Research interests - check for exact quick reply match first
+  if (lowerQuery === 'research interests' || 
+      intent === 'research' || 
+      lowerQuery.match(/\b(research|interest|study|focus|what.*study|what.*research)\b/i)) {
+    const research = wahibKnowledge.research;
+    return {
+      text: `${greeting}Wahib's research spans several interconnected areas: Psychology & Philosophy (human readability, Fogg Behavior Model B=MAT, behavioral economics from Kahneman/Ariely/Thaler, philosophical inquiry into ethics and human evolution), Tech & Systems Architecture (microservices logic, recommender systems, bot orchestration, system design thinking), and Society & Geopolitics (trend seeding, Cunningham's Law, fintech for humanitarian aid, geopolitical analysis). He's particularly interested in how technology can serve humanitarian goals rather than just profit.`,
+      actionLink: "/about#ideas",
+      actionText: "Explore Research",
+      deferral: false
+    };
+  }
+
   // Enhanced generic fallback with context-aware suggestions
   const genericResponses = [
-    `${greeting}That's an interesting question. I have access to Wahib's portfolio content covering: his projects (Research Paper Summarization Tool, Behavioral Economics Dashboard, Academic Discussion Platform, Humanitarian Impact Tracker, Systems Thinking Visualization Tool, UX Psychology Research Platform, MagicTask, FloodCoin, Fund My Life), academic journey (O-Levels completed 2024, Academic Excellence Scholarship 2024, A-Levels in Maths/Physics/Computer Science), work experience (Research Assistant 2023-Present, Independent Study & Projects 2022-Present), research interests (Psychology & Philosophy, Tech & Systems Architecture, Society & Geopolitics, Humanitarian Platforms), mission & philosophy, ventures, interests, and goals. Could you help me understand what specifically you're curious about?`,
-    `${greeting}I'd love to help! My knowledge comes from Wahib's portfolio, so I can discuss: projects (including MagicTask, FloodCoin, Fund My Life, and research-driven applications), academic achievements (O-Levels, A-Levels, 2024 scholarship), work experience (Research Assistant, Independent Study & Projects), research interests (Psychology, Tech Architecture, Society & Geopolitics), mission & philosophy, ventures, interests, leadership programs (CGDL 2025), or how to contact him. What aspect interests you most?`,
+    `${greeting}That's an interesting question. I have access to Wahib's portfolio content covering: his projects (Research Paper Summarization Tool, Behavioral Economics Dashboard, Academic Discussion Platform, Humanitarian Impact Tracker, Systems Thinking Visualization Tool, UX Psychology Research Platform, MagicTask, FlowFund, Fund My Life), academic journey (O-Levels completed 2024, Academic Excellence Scholarship 2024, A-Levels in Maths/Physics/Computer Science), work experience (Research Assistant 2023-Present, Independent Study & Projects 2022-Present), research interests (Psychology & Philosophy, Tech & Systems Architecture, Society & Geopolitics, Humanitarian Platforms), mission & philosophy, ventures, interests, and goals. Could you help me understand what specifically you're curious about?`,
+    `${greeting}I'd love to help! My knowledge comes from Wahib's portfolio, so I can discuss: projects (including MagicTask, FlowFund, Fund My Life, and research-driven applications), academic achievements (O-Levels, A-Levels, 2024 scholarship), work experience (Research Assistant, Independent Study & Projects), research interests (Psychology, Tech Architecture, Society & Geopolitics), mission & philosophy, ventures, interests, leadership programs (CGDL 2025), or how to contact him. What aspect interests you most?`,
     `${greeting}That's a thoughtful question. I'm working with information from Wahib's portfolio covering: projects (research-driven applications and blueprint ideas), academic journey (O-Levels 2024, A-Levels, Academic Excellence Scholarship 2024), work (Research Assistant, full-stack development), research (Psychology, Tech, Society, Humanitarian focus), mission, ventures, interests, and goals. Could you be more specific about what you'd like to know?`,
     `${greeting}I can help with questions about Wahib's projects, academic journey (including scholarship details), work experience, research interests, mission & philosophy, ventures, interests, leadership programs, or how to contact him. What would you like to explore?`
   ];

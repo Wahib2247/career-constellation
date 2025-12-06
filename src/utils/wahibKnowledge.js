@@ -53,8 +53,8 @@ export const wahibKnowledge = {
       description: aboutContent.work.items[1].content.join(" "),
       link: aboutContent.work.items[1].link
     },
-    floodCoin: {
-      name: "FloodCoin",
+    FlowFund: {
+      name: "FlowFund",
       status: "Blueprint Stage",
       description: "A blueprint-stage idea for a financial chain that motivates money flow from rich to poor, hosted like Shopify for NGOs and individuals. Designed to reduce poverty through incentives and internal currency. Exploring transparent tokenomics and community-driven value creation."
     },
@@ -136,7 +136,7 @@ export const keywordMap = {
     'project', 'projects', 'work', 'works', 'build', 'built', 'building', 'create',
     'created', 'creating', 'develop', 'developed', 'developing', 'development',
     'portfolio', 'application', 'applications', 'app', 'apps', 'software', 'program',
-    'programs', 'code', 'coding', 'programming', 'floodcoin', 'fund my life',
+    'programs', 'code', 'coding', 'programming', 'FlowFund', 'fund my life',
     'fundmylife', 'magictask', 'magic task', 'research paper', 'summarization',
     'behavioral economics', 'dashboard', 'academic discussion', 'platform',
     'humanitarian impact', 'tracker', 'systems thinking', 'visualization',

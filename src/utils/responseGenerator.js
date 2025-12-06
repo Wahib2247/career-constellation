@@ -8,7 +8,7 @@ import { projects } from '../constants';
 // Get all project names for fuzzy matching
 const allProjectNames = [
   ...projects.map(p => p.name),
-  'FloodCoin',
+  'FlowFund',
   'Fund My Life',
   'MagicTask'
 ];
@@ -172,9 +172,9 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
       }
       
       // Check blueprint projects
-      if (matchedProject.toLowerCase().includes('floodcoin')) {
+      if (matchedProject.toLowerCase().includes('FlowFund')) {
         return {
-          text: `${greeting}FloodCoin is Wahib's blueprint-stage idea for a financial chain that motivates money flow from rich to poor, hosted like Shopify for NGOs and individuals. It's designed to reduce poverty through incentives and internal currency. Currently exploring transparent tokenomics and community-driven value creation.`,
+          text: `${greeting}FlowFund is Wahib's blueprint-stage idea for a financial chain that motivates money flow from rich to poor, hosted like Shopify for NGOs and individuals. It's designed to reduce poverty through incentives and internal currency. Currently exploring transparent tokenomics and community-driven value creation.`,
           actionLink: "/projects",
           actionText: "View Projects",
           deferral: false
@@ -203,8 +203,8 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
     // General projects response
     const projectList = projects.slice(0, 3).map(p => p.name).join(', ');
     const responses = [
-      `${greeting}Wahib has several research-driven projects exploring technology, behavioral science, and social impact. These include ${projectList}, FloodCoin, Fund My Life, and MagicTask. Each project serves as both a technical implementation and a learning experiment.`,
-      `${greeting}His portfolio includes projects like ${projectList}, plus blueprint-stage ideas like FloodCoin and Fund My Life. You can explore all of them on the Projects page.`,
+      `${greeting}Wahib has several research-driven projects exploring technology, behavioral science, and social impact. These include ${projectList}, FlowFund, Fund My Life, and MagicTask. Each project serves as both a technical implementation and a learning experiment.`,
+      `${greeting}His portfolio includes projects like ${projectList}, plus blueprint-stage ideas like FlowFund and Fund My Life. You can explore all of them on the Projects page.`,
       `${greeting}Wahib works on various projects including ${projectList}, along with humanitarian platform concepts. Check out the Projects page for details on each one!`
     ];
     return {
@@ -217,7 +217,9 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
 
   // Academic achievements - comprehensive with scholarship details
   // Check FIRST (before generic "about" queries) - more specific patterns first
-  const isAcademicQuery = intent === 'academic' || 
+  // Also check for exact quick reply match
+  const isAcademicQuery = lowerQuery === 'academic achievements' ||
+      intent === 'academic' || 
       lowerQuery.includes('academic') || 
       lowerQuery.includes('achievement') || 
       lowerQuery.includes('achievements') ||
@@ -260,8 +262,9 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
     };
   }
 
-  // About Wahib (moved after academic to avoid conflicts)
-  if (intent === 'about' || lowerQuery.match(/\b(about|who|tell me.*wahib|describe.*wahib)\b/i)) {
+  // About Wahib - check for exact quick reply matches first
+  if (lowerQuery === 'tell me about wahib' || lowerQuery === 'about wahib' || 
+      intent === 'about' || lowerQuery.match(/\b(about|who|tell me.*wahib|describe.*wahib)\b/i)) {
     const responses = [
       `${greeting}Wahib is a curious mind, lifelong learner, and systems thinker from Pakistan. He explores how automation, psychology, and humanitarian impact can fuse into platforms that matter. His journey is about learning every day, systems thinking, and maintaining authenticity. This portfolio is a living record of ideas, experiments, and reflections rather than finished products.`,
       `${greeting}Wahib is a systems thinker and lifelong learner from Pakistan, focused on building platforms that combine automation, psychology, and humanitarian impact. His work reflects a student-explorer mindset — always learning, reflecting, and framing ideas as ongoing explorations.`,
@@ -276,7 +279,10 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
   }
 
   // Research interests - comprehensive
-  if (intent === 'research' || lowerQuery.match(/\b(research|interest|study|focus|what.*study|what.*research)\b/i)) {
+  // Check for exact quick reply match first
+  if (lowerQuery === 'research interests' || 
+      intent === 'research' || 
+      lowerQuery.match(/\b(research|interest|study|focus|what.*study|what.*research)\b/i)) {
     const research = wahibKnowledge.research;
     const responses = [
       `${greeting}Wahib's research spans several interconnected areas: Psychology & Philosophy (human readability, Fogg Behavior Model B=MAT, behavioral economics from Kahneman/Ariely/Thaler, philosophical inquiry into ethics and human evolution), Tech & Systems Architecture (microservices logic, recommender systems, bot orchestration, system design thinking), and Society & Geopolitics (trend seeding, Cunningham's Law, fintech for humanitarian aid, geopolitical analysis). He's particularly interested in how technology can serve humanitarian goals rather than just profit.`,
@@ -327,9 +333,9 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
   // Ventures/Blueprint projects
   if (lowerQuery.match(/\b(venture|blueprint|idea|concept|exploration)\b/i)) {
     const responses = [
-      `${greeting}Wahib's ventures and blueprint projects include FloodCoin (a financial chain motivating money flow from rich to poor, like Shopify for NGOs) and Fund My Life (a meme-coin with humanitarian angles exploring transparent tokenomics). These are early-stage explorations where ideas meet implementation, representing his vision for platforms balancing innovation with humanitarian impact.`,
-      `${greeting}His blueprint projects include FloodCoin (financial chain for poverty reduction through incentives) and Fund My Life (humanitarian meme-coin with community-driven value creation). These ventures represent early-stage explorations of platforms that balance innovation with humanitarian impact.`,
-      `${greeting}Wahib's ventures are blueprint-stage ideas: FloodCoin (financial chain for NGOs/individuals to reduce poverty) and Fund My Life (humanitarian meme-coin with transparent tokenomics). These explore how community onboarding can become a mechanism for collective impact.`
+      `${greeting}Wahib's ventures and blueprint projects include FlowFund (a financial chain motivating money flow from rich to poor, like Shopify for NGOs) and Fund My Life (a meme-coin with humanitarian angles exploring transparent tokenomics). These are early-stage explorations where ideas meet implementation, representing his vision for platforms balancing innovation with humanitarian impact.`,
+      `${greeting}His blueprint projects include FlowFund (financial chain for poverty reduction through incentives) and Fund My Life (humanitarian meme-coin with community-driven value creation). These ventures represent early-stage explorations of platforms that balance innovation with humanitarian impact.`,
+      `${greeting}Wahib's ventures are blueprint-stage ideas: FlowFund (financial chain for NGOs/individuals to reduce poverty) and Fund My Life (humanitarian meme-coin with transparent tokenomics). These explore how community onboarding can become a mechanism for collective impact.`
     ];
     return {
       text: responses[Math.floor(Math.random() * responses.length)],
@@ -416,7 +422,7 @@ export const generateIntelligentResponse = (query, userName = '', conversationHi
 
   // Generic fallback with knowledge base acknowledgment - comprehensive list
   const genericResponses = [
-    `${greeting}That's an interesting question. I have access to Wahib's portfolio content, which covers: his projects (MagicTask, FloodCoin, Fund My Life, and research-driven applications), academic journey (O-Levels, A-Levels, Academic Excellence Scholarship 2024), work experience (Research Assistant, Independent Study), research interests (Psychology, Tech Architecture, Society & Geopolitics), mission & philosophy, ventures, interests, and goals. Could you help me understand what specifically you're curious about?`,
+    `${greeting}That's an interesting question. I have access to Wahib's portfolio content, which covers: his projects (MagicTask, FlowFund, Fund My Life, and research-driven applications), academic journey (O-Levels, A-Levels, Academic Excellence Scholarship 2024), work experience (Research Assistant, Independent Study), research interests (Psychology, Tech Architecture, Society & Geopolitics), mission & philosophy, ventures, interests, and goals. Could you help me understand what specifically you're curious about?`,
     `${greeting}I'd love to help! My knowledge comes from Wahib's portfolio, so I can discuss: projects, academic achievements (including his 2024 scholarship), work experience, research interests, mission & philosophy, ventures, interests, leadership programs, or how to contact him. What aspect interests you most?`,
     `${greeting}That's a thoughtful question. I'm working with information from Wahib's portfolio covering: projects, academic journey (O-Levels, A-Levels, scholarship), work (Research Assistant, full-stack development), research (Psychology, Tech, Society), mission, ventures, interests, and goals. Could you be more specific about what you'd like to know?`,
     `${greeting}I can help with questions about Wahib's projects, academic journey (including scholarship details), work experience, research interests, mission & philosophy, ventures, interests, or how to contact him. What would you like to explore?`
