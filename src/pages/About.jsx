@@ -105,6 +105,42 @@ const About = () => {
         </p>
       </div>
 
+      {/* Academic Journey moved to top */}
+      <div className='py-10 flex flex-col' id='academic' ref={(el) => (sectionRefs.current.academic = el)}>
+        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
+          {aboutContent.academic.title}
+        </AnimatedTitle>
+        <p className='mt-3 text-slate-500'>
+          {aboutContent.academic.description}
+        </p>
+
+        <div className='mt-8 flex flex-col gap-6'>
+          {aboutContent.academic.items.map((item, index) => (
+            <AnimatedCard
+              key={index}
+              index={index}
+              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
+              style={{
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
+              }}
+            >
+              {/* Aurora gradient animation */}
+              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
+                <div className='absolute inset-0 animate-aurora' style={{
+                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
+                  backgroundSize: '400% 400%',
+                  animation: 'aurora 8s ease infinite',
+                }}></div>
+              </div>
+
+              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
+              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
+              {renderContentItem(item)}
+            </AnimatedCard>
+          ))}
+        </div>
+      </div>
+
 
       <div className='py-10 flex flex-col' id='work' ref={(el) => (sectionRefs.current.work = el)}>
         <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
@@ -132,41 +168,109 @@ const About = () => {
                 }}></div>
               </div>
               
-              <div className='flex justify-between items-start mb-4'>
-                <div className='flex-1'>
-                  <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-                  {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-                  {item.date && <p className='text-sm text-slate-500'>{item.date}</p>}
+              {/* Header area: MagicTask gets nested look, others stay as full cards */}
+              {item.title === "MagicTask (MCARS theme)" ? (
+                <div className='mb-2 ml-6'>
+                  <h4 className='text-sm font-semibold text-slate-700 flex items-center gap-2'>
+                    <span className='w-8 h-px bg-blue-200 inline-block' />
+                    <span>{item.title}</span>
+                    {item.date && <span className='text-[11px] text-slate-400'>• {item.date}</span>}
+                  </h4>
+                  {item.subtitle && <p className='text-xs text-slate-500 ml-8'>{item.subtitle}</p>}
                 </div>
-                {index === 0 && (
-                  <div className='flex gap-3 flex-wrap'>
-                    {importantTechIcons.slice(0, 7).map((tech) => (
-                      <div key={tech.name} className='block-container w-12 h-12 hover:scale-110 transition-transform duration-300'>
-                        <div className='btn-back rounded-xl' />
-                        <div className='btn-front rounded-xl flex justify-center items-center'>
-                          <img
-                            src={tech.icon}
-                            alt={tech.name}
-                            className='w-2/3 h-2/3 object-contain'
-                            title={tech.name}
-                          />
-                        </div>
-                      </div>
-                    ))}
+              ) : (
+                <div className='flex justify-between items-start mb-4'>
+                  <div className='flex-1'>
+                    <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>
+                      {item.title}
+                    </h4>
+                    {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
+                    {item.date && <p className='text-sm text-slate-500'>{item.date}</p>}
                   </div>
-                )}
-              </div>
-              {renderContentItem(item)}
-              {item.link && (
-                <a 
-                  href={item.link} 
-                  className="relative top-2 font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 group/link transition-all duration-300"
-                >
-                  {item.linkText}
-                  <svg className='w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                  </svg>
-                </a>
+                  {index === 0 && (
+                    <div className='flex gap-3 flex-wrap'>
+                      {importantTechIcons.slice(0, 7).map((tech) => (
+                        <div key={tech.name} className='block-container w-12 h-12 hover:scale-110 transition-transform duration-300'>
+                          <div className='btn-back rounded-xl' />
+                          <div className='btn-front rounded-xl flex justify-center items-center'>
+                            <img
+                              src={tech.icon}
+                              alt={tech.name}
+                              className='w-2/3 h-2/3 object-contain'
+                              title={tech.name}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Custom rendering for MagicTask tree-style sub-card */}
+              {item.title === "MagicTask (MCARS theme)" ? (
+                <div className='mt-1 ml-6 space-y-4'>
+                  <div className='border-l-2 border-dashed border-blue-200 pl-4 space-y-3 text-sm text-slate-600'>
+                    <div>
+                      <p className='font-semibold text-slate-800'>MagicTask Platform</p>
+                      <p className='text-xs text-slate-500'>Gamified task management with MCARS theme</p>
+                    </div>
+
+                    {item.treeSections &&
+                      item.treeSections.map((section) => (
+                        <div key={section.title} className='pl-4 space-y-2'>
+                          <p className='font-semibold text-slate-700'>{section.title}</p>
+                          <ul className='list-disc ml-4 space-y-1'>
+                            {section.points.map((point) => (
+                              <li key={point}>{point}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                  </div>
+
+                  <div className='flex flex-wrap items-center gap-3'>
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 group/link transition-all duration-300"
+                      >
+                        {item.linkText || "Live Link"}
+                        <svg className='w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                        </svg>
+                      </a>
+                    )}
+
+                    <Link
+                      to="/magictask"
+                      className='group/btn relative inline-flex items-center text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden'
+                    >
+                      <div className='absolute inset-0 bg-white/30 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300'></div>
+                      <span className='relative z-10'>Dive Deep</span>
+                      <svg className='w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {renderContentItem(item)}
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      className="relative top-2 font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 group/link transition-all duration-300"
+                    >
+                      {item.linkText}
+                      <svg className='w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+                      </svg>
+                    </a>
+                  )}
+                </>
               )}
             </AnimatedCard>
           ))}
@@ -299,41 +403,6 @@ const About = () => {
         </p>
         <div className='mt-8 flex flex-col gap-6'>
           {aboutContent.interests.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
-              </div>
-              
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-            </AnimatedCard>
-          ))}
-        </div>
-      </div>
-
-      <div className='py-16' id='academic' ref={(el) => (sectionRefs.current.academic = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.academic.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.academic.description}
-        </p>
-
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.academic.items.map((item, index) => (
             <AnimatedCard
               key={index}
               index={index}

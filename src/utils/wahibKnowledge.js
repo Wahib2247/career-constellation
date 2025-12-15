@@ -199,7 +199,7 @@ export const keywordMap = {
   ],
   personality: [
     'personality', 'personalities', 'character', 'characters', 'trait', 'traits',
-    'good person', 'nice', 'kind', 'friendly', 'funny', 'humor', 'humorous',
+    'good person', 'nice', 'kind', 'friendly', 'funny', 'humor', '',
     'mad', 'angry', 'upset', 'calm', 'patient', 'impatient', 'what like',
     'how like', 'what kind', 'what type', 'person', 'people'
   ],

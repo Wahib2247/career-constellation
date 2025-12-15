@@ -148,7 +148,7 @@ export const projects = [
         iconUrl: threads,
         theme: 'btn-back-green',
         name: 'FundMyLife',
-        description: 'FundMyLife is a humorous meme-coin project designed to make personal and humanitarian funding accessible, transparent, and engaging.',
+        description: 'FundMyLife is a  meme-coin project designed to make personal and humanitarian funding accessible, transparent, and engaging.',
         link: '#',
     },
     {
@@ -185,12 +185,12 @@ export const pageTexts = {
 
 // About Page Sections
 export const aboutSections = [
+    { id: "academic", title: "Academic Journey" },
     { id: "work", title: "Work & Projects" },
     { id: "mission", title: "Mission & Vision" },
     { id: "ventures", title: "Blueprint Projects" },
     { id: "ideas", title: "Ideas & Research" },
     { id: "interests", title: "Interests" },
-    { id: "academic", title: "Academic Journey" },
 ];
 
 // About Page Content
@@ -223,6 +223,40 @@ export const aboutContent = {
                 ],
                 link: "https://magictask.io",
                 linkText: "Live Link",
+                treeSections: [
+                    {
+                        title: "UI / UX Architecture",
+                        points: [
+                            "Designed MCARS-inspired dashboard layout and navigation flows.",
+                            "Structured task views for focus, deep work, and habit reinforcement.",
+                        ],
+                    },
+                    {
+                        title: "Psychology & Behavior Design",
+                        points: [
+                            "Mapped tasks to motivational triggers and habit loops.",
+                            "Used reward systems, streaks, and visual cues to keep users engaged.",
+                        ],
+                    },
+                    {
+                        title: "Systems & Collaboration",
+                        points: [
+                            "Framed workspaces, lists, and tasks as nodes in a larger system.",
+                            "Explored how automation and reminders can support—not replace—human agency.",
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "Data Visualization & Analytics",
+                subtitle: null,
+                date: null,
+                type: "list",
+                content: [
+                    "Exploring how dashboards and visual systems can tell stories about complex data.",
+                    "Experimenting with charting libraries and UX patterns for clarity and insight.",
+                    "Currently in research / prototyping phase – no public projects to showcase yet.",
+                ],
             },
         ],
     },

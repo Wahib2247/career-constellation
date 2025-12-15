@@ -243,7 +243,7 @@ export const extractIntent = (query) => {
     about: /\b(about|who|tell me|describe|explain|information|info|background|biography|bio|story|stories|introduction|introduce|overview|summary|summarize|details|detail|what.*wahib|who.*wahib)\b/i,
     
     // Personality queries
-    personality: /\b(personality|personalities|character|characters|trait|traits|good person|nice|kind|friendly|funny|humor|humorous|mad|angry|upset|calm|patient|impatient|what like|how like|what kind|what type|person|people)\b/i,
+    personality: /\b(personality|personalities|character|characters|trait|traits|good person|nice|kind|friendly|funny|humor||mad|angry|upset|calm|patient|impatient|what like|how like|what kind|what type|person|people)\b/i,
     
     // Goal queries
     goal: /\b(goal|goals|future|futures|plan|plans|planned|planning|aspiration|aspirations|dream|dreams|dreamed|dreaming|want|wants|wanted|wanting|aim|aims|aimed|aiming|ambition|ambitions|ambitious|hope|hopes|hoped|hoping|wish|wishes|wished|wishing|intend|intends|intended|intending|intention|intentions)\b/i,
