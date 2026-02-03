@@ -1,17 +1,37 @@
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { projects } from "../constants";
+import { projectDetails } from "../constants/projectDetails";
 import { arrow } from "../assets/icons";
-import { Footer } from "../components";
+import { ProjectArtifactCard } from "../components";
+import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const ProjectDetail = () => {
   const { projectSlug } = useParams();
-  
-  // Find project by slug (convert name to slug format)
-  const project = projects.find(p => 
-    p.name.toLowerCase().replace(/\s+/g, '-') === projectSlug?.toLowerCase()
+  const [expandedSections, setExpandedSections] = useState({
+    system: false,
+    methodology: false,
+    reflection: false,
+    roadmap: false,
+  });
+
+  // Find project by slug
+  const project = projects.find(
+    (p) => p.name.toLowerCase().replace(/\s+/g, "-") === projectSlug?.toLowerCase()
   );
 
-  if (!project) {
+  // Get detailed project data - map slug to project key
+  const slugToKeyMap = {
+    "classfusion": "classfusion",
+    "flowfund": "flowfund",
+    "fundmylife": "fundmylife",
+    "sarmayachain": "sarmayachain",
+    "quarkcapital": "quarkcapital"
+  };
+  const projectKey = slugToKeyMap[projectSlug?.toLowerCase()];
+  const details = projectDetails[projectKey];
+
+  if (!project || !details) {
     return (
       <div className="max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)] flex items-center justify-center">
         <div className="text-center">
@@ -25,103 +45,304 @@ const ProjectDetail = () => {
     );
   }
 
-  return (
-    <>
-      <section className="max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)]">
-        {/* Back Button */}
-        <Link 
-          to="/projects" 
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors duration-300 mb-8 group"
-        >
-          <img 
-            src={arrow} 
-            alt="back" 
-            className="w-4 h-4 rotate-180 transform group-hover:-translate-x-1 transition-transform duration-300" 
-          />
-          <span className="text-sm font-medium">Back to Projects</span>
-        </Link>
+  const toggleSection = (section) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
-        {/* Project Header */}
-        <div className="flex items-start gap-6 mb-8">
-          <div className="block-container w-20 h-20 flex-shrink-0">
-            <div className={`btn-back rounded-xl ${project.theme}`} />
-            <div className="btn-front rounded-xl flex justify-center items-center">
-              <img
-                src={project.iconUrl}
-                alt={project.name}
-                className="w-1/2 h-1/2 object-contain"
-              />
-            </div>
+  const [headerRef, headerVisible] = useScrollAnimation();
+
+  return (
+    <section className="max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)]">
+      {/* Back Button */}
+      <Link
+        to="/projects"
+        className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors duration-300 mb-8 group"
+      >
+        <img
+          src={arrow}
+          alt="back"
+          className="w-4 h-4 rotate-180 transform group-hover:-translate-x-1 transition-transform duration-300"
+        />
+        <span className="text-sm font-medium">Back to Projects</span>
+      </Link>
+
+      {/* Project Header */}
+      <div
+        ref={headerRef}
+        className={`flex items-start gap-6 mb-8 transition-all duration-700 ${
+          headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
+        <div className="block-container w-20 h-20 flex-shrink-0">
+          <div className={`btn-back rounded-xl ${project.theme}`} />
+          <div className="btn-front rounded-xl flex justify-center items-center">
+            <img src={project.iconUrl} alt={project.name} className="w-1/2 h-1/2 object-contain" />
           </div>
+        </div>
+        <div className="flex-1">
+          <h1 className="text-4xl md:text-5xl font-bold font-poppins text-slate-800 mb-3">
+            {project.name}
+          </h1>
+          <div className={`status-badge ${details.statusColor}`}>
+            <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
+            <span>{details.status}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 1. Problem Statement */}
+      <div className="project-section">
+        <h2 className="text-2xl font-semibold font-poppins text-slate-800 mb-4">
+          Problem Statement
+        </h2>
+        <p className="text-slate-600 leading-relaxed whitespace-pre-line">{details.problemStatement}</p>
+      </div>
+
+      {/* 2. Project Overview */}
+      <div className="project-section">
+        <h2 className="text-2xl font-semibold font-poppins text-slate-800 mb-4">
+          Project Overview
+        </h2>
+        <p className="text-slate-600 leading-relaxed">{details.overview}</p>
+      </div>
+
+      {/* 3. Proposed System / Architecture */}
+      <div className="project-section">
+        <h2 className="text-2xl font-semibold font-poppins text-slate-800 mb-4">
+          Proposed System / Architecture
+        </h2>
+
+        <div className="space-y-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold font-poppins text-slate-800 mb-2">
-              {project.name}
-            </h1>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-              <span className="text-sm font-medium text-blue-700">Coming Soon</span>
-            </div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">Actors</h3>
+            <ul className="space-y-2 text-slate-600">
+              {details.proposedSystem.actors.map((actor, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-1.5">•</span>
+                  <span>{actor}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">Incentive Logic</h3>
+            <ul className="space-y-2 text-slate-600">
+              {details.proposedSystem.incentiveLogic.map((incentive, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-1.5">•</span>
+                  <span>{incentive}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">Feedback Loops</h3>
+            <ul className="space-y-2 text-slate-600">
+              {details.proposedSystem.feedbackLoops.map((loop, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-1.5">•</span>
+                  <span>{loop}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">
+              Governance / Ethics Layer
+            </h3>
+            <ul className="space-y-2 text-slate-600">
+              {details.proposedSystem.governance.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="text-blue-600 mt-1.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Coming Soon Content */}
-        <div className="bg-white/70 backdrop-blur-xl border border-slate-200 rounded-3xl p-8 md:p-12 shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-8">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-4 font-poppins">
-              Deep Dive into {project.name}
-            </h2>
-            
-            <div className="prose prose-slate max-w-none mb-6">
-              <p className="text-slate-600 leading-relaxed text-base mb-4">
-                {project.description}
-              </p>
-            </div>
+        {/* Placeholder for Architecture Diagram */}
+        <div className="mt-6 p-8 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl text-center">
+          <p className="text-slate-500 text-sm">
+            <strong>Architecture Diagram Placeholder</strong>
+            <br />
+            System architecture visualization will be added here (SVG or image)
+          </p>
+        </div>
+      </div>
 
-            <div className="border-t border-slate-200 pt-6 mt-6">
+      {/* 4. Artifacts & Evidence */}
+      <div className="project-section">
+        <h2 className="text-2xl font-semibold font-poppins text-slate-800 mb-6">
+          Artifacts & Evidence
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {details.artifacts.map((artifact, idx) => (
+            <ProjectArtifactCard key={idx} {...artifact} />
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Research & Methodology */}
+      <div className="project-section">
+        <div
+          className="expandable-section-header"
+          onClick={() => toggleSection("methodology")}
+        >
+          <h2 className="text-2xl font-semibold font-poppins text-slate-800">
+            Research & Methodology
+          </h2>
+          <svg
+            className={`w-6 h-6 text-slate-500 transform transition-transform duration-200 ${
+              expandedSections.methodology ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div
+          className={`expandable-section-content ${
+            expandedSections.methodology ? "expanded" : ""
+          }`}
+        >
+          <p className="text-slate-600 leading-relaxed">{details.researchMethodology}</p>
+        </div>
+      </div>
+
+      {/* 6. Reflection & Open Questions */}
+      <div className="project-section">
+        <div
+          className="expandable-section-header"
+          onClick={() => toggleSection("reflection")}
+        >
+          <h2 className="text-2xl font-semibold font-poppins text-slate-800">
+            Reflection & Open Questions
+          </h2>
+          <svg
+            className={`w-6 h-6 text-slate-500 transform transition-transform duration-200 ${
+              expandedSections.reflection ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div
+          className={`expandable-section-content ${
+            expandedSections.reflection ? "expanded" : ""
+          }`}
+        >
+          <div className="space-y-6">
+            <div>
               <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">
-                What's Coming
+                Assumptions That Might Be Wrong
               </h3>
               <ul className="space-y-2 text-slate-600">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>Detailed project documentation and case studies</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>Technical architecture and implementation details</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>Research methodology and findings</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>Live demos and interactive prototypes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-600 mt-1">•</span>
-                  <span>Source code and open-source contributions</span>
-                </li>
+                {details.reflection.assumptions.map((assumption, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-orange-600 mt-1.5">•</span>
+                    <span>{assumption}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            <div className="mt-8 p-4 bg-blue-50/50 border border-blue-200/50 rounded-xl">
-              <p className="text-sm text-slate-600">
-                <strong className="text-slate-800">Interested in learning more?</strong> This project is part of an ongoing exploration. 
-                For inquiries, collaborations, or to discuss the ideas behind {project.name}, feel free to reach out through the Contact page.
-              </p>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">
+                Tradeoffs That Emerged
+              </h3>
+              <ul className="space-y-2 text-slate-600">
+                {details.reflection.tradeoffs.map((tradeoff, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-orange-600 mt-1.5">•</span>
+                    <span>{tradeoff}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-3 font-poppins">
+                What Remains Unresolved
+              </h3>
+              <ul className="space-y-2 text-slate-600">
+                {details.reflection.unresolved.map((question, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-orange-600 mt-1.5">•</span>
+                    <span>{question}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Action Buttons */}
+      {/* 7. Roadmap / What's Next */}
+      <div className="project-section">
+        <div
+          className="expandable-section-header"
+          onClick={() => toggleSection("roadmap")}
+        >
+          <h2 className="text-2xl font-semibold font-poppins text-slate-800">Roadmap / What's Next</h2>
+          <svg
+            className={`w-6 h-6 text-slate-500 transform transition-transform duration-200 ${
+              expandedSections.roadmap ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+        <div
+          className={`expandable-section-content ${
+            expandedSections.roadmap ? "expanded" : ""
+          }`}
+        >
+          <ul className="space-y-3 text-slate-600">
+            {details.roadmap.map((phase, idx) => (
+              <li key={idx} className="flex items-start gap-3">
+                <span className="text-blue-600 mt-1 font-semibold">{idx + 1}.</span>
+                <span>{phase}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* 8. Collaboration / Inquiry Section */}
+      <div className="project-section bg-gradient-to-br from-blue-50/50 to-slate-50/50 border-blue-200/50">
+        <h2 className="text-2xl font-semibold font-poppins text-slate-800 mb-4">
+          Collaboration & Inquiry
+        </h2>
+        <p className="text-slate-600 leading-relaxed mb-6">{details.collaboration}</p>
         <div className="flex flex-wrap gap-4">
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105"
           >
             Get in Touch
-            &rarr;
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
           </Link>
           <Link
             to="/projects"
@@ -130,10 +351,19 @@ const ProjectDetail = () => {
             View All Projects
           </Link>
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mt-8 p-4 bg-amber-50/50 border border-amber-200/50 rounded-xl">
+        <p className="text-sm text-slate-700 leading-relaxed">
+          <strong className="text-slate-800">Note:</strong> This project is an evolving exploration
+          backed by real thinking and early execution—not a finished product. All claims, models, and
+          proposals are experimental and subject to revision based on research, critique, and
+          real-world testing.
+        </p>
+      </div>
+    </section>
   );
 };
 
 export default ProjectDetail;
-

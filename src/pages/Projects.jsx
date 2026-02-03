@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import { CTA } from "../components";
 import { projects, pageTexts } from "../constants";
@@ -8,6 +9,83 @@ const Projects = () => {
   const { title, titleHighlight, description } = pageTexts.projects;
   const [titleRef, titleVisible] = useScrollAnimation();
   const [descRef, descVisible] = useScrollAnimation({ threshold: 0.2 });
+  const [divingLink, setDivingLink] = useState(null);
+  const navigate = useNavigate();
+
+  const handleDiveDeep = (e, projectName) => {
+    e.preventDefault();
+    const link = e.currentTarget;
+    const targetUrl = `/projects/${projectName.toLowerCase().replace(/\s+/g, '-')}`;
+    
+    // Find the project card
+    const card = link.closest('.project-card');
+    if (!card) return;
+    
+    // Get card position for paint splash origin
+    const rect = card.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Add dive deep class to the clicked card
+    card.classList.add('dive-deep-active');
+    
+    // Create colorful paint splashes
+    const colors = [
+      'rgba(255, 20, 147, 0.6)',   // Deep pink
+      'rgba(0, 198, 255, 0.6)',     // Cyan
+      'rgba(255, 215, 0, 0.6)',     // Gold
+      'rgba(138, 43, 226, 0.6)',    // Blue violet
+      'rgba(255, 69, 0, 0.6)',      // Red orange
+      'rgba(0, 255, 127, 0.6)',     // Spring green
+    ];
+    
+    const angles = [0, 60, 120, 180, 240, 300];
+    const splashElements = [];
+    
+    colors.forEach((color, index) => {
+      const splash = document.createElement('div');
+      splash.className = 'dive-deep-paint-splash';
+      splash.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+      splash.style.left = `${centerX}px`;
+      splash.style.top = `${centerY}px`;
+      splash.style.transformOrigin = 'center';
+      
+      // Calculate splash direction
+      const angle = (angles[index] * Math.PI) / 180;
+      const distance = 150 + Math.random() * 100;
+      const splashX = Math.cos(angle) * distance;
+      const splashY = Math.sin(angle) * distance;
+      
+      splash.style.setProperty('--splash-x', `${splashX}px`);
+      splash.style.setProperty('--splash-y', `${splashY}px`);
+      
+      document.body.appendChild(splash);
+      splashElements.push(splash);
+    });
+    
+    // Add rainbow overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'dive-deep-overlay';
+    document.body.appendChild(overlay);
+    
+    // Navigate after animation
+    setTimeout(() => {
+      navigate(targetUrl);
+      // Clean up
+      setTimeout(() => {
+        splashElements.forEach(splash => {
+          if (splash.parentNode) {
+            splash.parentNode.removeChild(splash);
+          }
+        });
+        if (overlay.parentNode) {
+          overlay.parentNode.removeChild(overlay);
+        }
+        card.classList.remove('dive-deep-active');
+        setDivingLink(null);
+      }, 100);
+    }, 400);
+  };
 
   return (
     <section className="max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)]">
@@ -53,7 +131,7 @@ const Projects = () => {
             <div
               ref={projectRef}
               key={project.name}
-              className={`${colSpan} relative w-full group cursor-pointer transition-all duration-700 p-6 rounded-3xl bg-white/70 backdrop-blur-xl border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.04)] ${
+              className={`project-card ${colSpan} relative w-full group cursor-pointer transition-all duration-700 p-6 rounded-3xl bg-white/70 backdrop-blur-xl border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.04)] ${
                 projectVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{
@@ -101,6 +179,7 @@ const Projects = () => {
                 <div className="mt-auto flex items-center gap-2 font-poppins group/link">
                   <Link
                     to={`/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    onClick={(e) => handleDiveDeep(e, project.name)}
                     className="font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 transition-all duration-300 text-sm"
                   >
                     Dive Deep

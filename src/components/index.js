@@ -7,6 +7,7 @@ import HomeInfo from "./HomeInfo";
 import Chatbot from "./Chatbot";
 import AnimatedCard from "./AnimatedCard";
 import AnimatedTitle from "./AnimatedTitle";
+import ProjectArtifactCard from "./ProjectArtifactCard";
 
 export {
     CTA,
@@ -17,5 +18,6 @@ export {
     HomeInfo,
     Chatbot,
     AnimatedCard,
-    AnimatedTitle
+    AnimatedTitle,
+    ProjectArtifactCard
 }

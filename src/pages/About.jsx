@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { CTA, AnimatedCard, AnimatedTitle } from "../components";
 import { aboutSections, aboutContent, pageTexts, importantTechIcons } from "../constants";
@@ -7,6 +7,7 @@ import { aboutSections, aboutContent, pageTexts, importantTechIcons } from "../c
 const About = () => {
   const [activeSection, setActiveSection] = useState("");
   const sectionRefs = useRef({});
+  const navigate = useNavigate();
 
   const sections = aboutSections;
 
@@ -44,6 +45,85 @@ const About = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  const handleDiveDeep = (e, targetUrl) => {
+    e.preventDefault();
+    const link = e.currentTarget;
+    
+    // Find the card container - look for the AnimatedCard wrapper
+    let card = link.closest('.group');
+    if (!card) {
+      card = link.closest('[class*="rounded-xl"]');
+    }
+    
+    if (!card) return;
+    
+    // Get card position for paint splash origin
+    const rect = card.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Add dive deep class to the clicked card
+    card.classList.add('dive-deep-active');
+    
+    // Create colorful paint splashes
+    const colors = [
+      'rgba(255, 20, 147, 0.6)',   // Deep pink
+      'rgba(0, 198, 255, 0.6)',     // Cyan
+      'rgba(255, 215, 0, 0.6)',     // Gold
+      'rgba(138, 43, 226, 0.6)',    // Blue violet
+      'rgba(255, 69, 0, 0.6)',      // Red orange
+      'rgba(0, 255, 127, 0.6)',     // Spring green
+    ];
+    
+    const angles = [0, 60, 120, 180, 240, 300];
+    const splashElements = [];
+    
+    colors.forEach((color, index) => {
+      const splash = document.createElement('div');
+      splash.className = 'dive-deep-paint-splash';
+      splash.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+      splash.style.left = `${centerX}px`;
+      splash.style.top = `${centerY}px`;
+      splash.style.transformOrigin = 'center';
+      
+      // Calculate splash direction
+      const angle = (angles[index] * Math.PI) / 180;
+      const distance = 150 + Math.random() * 100;
+      const splashX = Math.cos(angle) * distance;
+      const splashY = Math.sin(angle) * distance;
+      
+      splash.style.setProperty('--splash-x', `${splashX}px`);
+      splash.style.setProperty('--splash-y', `${splashY}px`);
+      
+      document.body.appendChild(splash);
+      splashElements.push(splash);
+    });
+    
+    // Add rainbow overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'dive-deep-overlay';
+    document.body.appendChild(overlay);
+    
+    // Navigate after animation
+    setTimeout(() => {
+      navigate(targetUrl);
+      // Clean up
+      setTimeout(() => {
+        splashElements.forEach(splash => {
+          if (splash.parentNode) {
+            splash.parentNode.removeChild(splash);
+          }
+        });
+        if (overlay.parentNode) {
+          overlay.parentNode.removeChild(overlay);
+        }
+        if (card) {
+          card.classList.remove('dive-deep-active');
+        }
+      }, 100);
+    }, 400);
   };
 
   const renderContentItem = (item) => {
@@ -246,6 +326,7 @@ const About = () => {
 
                     <Link
                       to="/magictask"
+                      onClick={(e) => handleDiveDeep(e, "/magictask")}
                       className='group/btn relative inline-flex items-center text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden'
                     >
                       <div className='absolute inset-0 bg-white/30 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300'></div>

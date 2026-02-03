@@ -1,21 +1,55 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 import { logo } from "../assets/images";
+import useAlert from "../hooks/useAlert";
+import { Alert } from "./";
 
 const Navbar = () => {
+  const { alert, showAlert, hideAlert } = useAlert();
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const handleCVDownload = () => {
-    // Create a temporary anchor element to trigger download
-    const link = document.createElement("a");
-    link.href = "/Wahib_CV.pdf"; // Update this path to your actual CV file path
-    link.download = "Wahib_CV.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Show confirmation first
+    if (!isDownloading) {
+      setIsDownloading(true);
+      showAlert({
+        show: true,
+        text: "Downloading your CV... 📄",
+        type: "success",
+      });
+
+      // Create a temporary anchor element to trigger download
+      const link = document.createElement("a");
+      link.href = "/Wahib_CV.pdf"; // Update this path to your actual CV file path
+      link.download = "Wahib_CV.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Show thank you message after a short delay
+      setTimeout(() => {
+        hideAlert();
+        setTimeout(() => {
+          showAlert({
+            show: true,
+            text: "Thanks for downloading! Hope you like it! 😊",
+            type: "success",
+          });
+          setTimeout(() => {
+            hideAlert();
+            setIsDownloading(false);
+          }, 3000);
+        }, 500);
+      }, 1000);
+    }
   };
 
   return (
-    <header className='header'>
-      <NavLink to='/' className="group">
+    <>
+      {alert.show && <Alert {...alert} />}
+      <header className='header'>
+        <NavLink to='/' className="group">
         <div className="relative bg-white w-16 h-14 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden">
           {/* Blue gradient W letter */}
           <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent group-hover:opacity-0 group-hover:scale-0 transition-all duration-300 z-10">
@@ -91,6 +125,7 @@ const Navbar = () => {
         </button>
       </nav>
     </header>
+    </>
   );
 };
 
