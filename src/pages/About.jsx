@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-import { CTA, AnimatedCard, AnimatedTitle } from "../components";
-import { aboutSections, aboutContent, pageTexts, importantTechIcons } from "../constants";
+import { Link } from "react-router-dom";
+import { aboutContent, importantTechIcons, skills } from "../constants";
 
 const About = () => {
   const [activeSection, setActiveSection] = useState("");
   const sectionRefs = useRef({});
-  const navigate = useNavigate();
 
-  const sections = aboutSections;
+  const sections = [
+    { id: "profile", title: "Identity" },
+    { id: "arsenal", title: "Research Arsenal" },
+    { id: "mission", title: "Philosophy" },
+    { id: "fieldwork", title: "Proof of Work" },
+    { id: "ideas", title: "Directions" },
+    { id: "interests", title: "Logs" }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
-
       for (const section of sections) {
         const element = sectionRefs.current[section.id];
         if (element) {
@@ -26,492 +29,309 @@ const About = () => {
         }
       }
     };
-
     window.addEventListener("scroll", handleScroll);
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToSection = (id) => {
     const element = sectionRefs.current[id];
     if (element) {
-      const offset = 120;
-      const elementPosition = element.offsetTop;
-      const offsetPosition = elementPosition - offset;
-
       window.scrollTo({
-        top: offsetPosition,
+        top: element.offsetTop - 120,
         behavior: "smooth",
       });
     }
   };
 
-  const handleDiveDeep = (e, targetUrl) => {
-    e.preventDefault();
-    const link = e.currentTarget;
-    
-    // Find the card container - look for the AnimatedCard wrapper
-    let card = link.closest('.group');
-    if (!card) {
-      card = link.closest('[class*="rounded-xl"]');
-    }
-    
-    if (!card) return;
-    
-    // Get card position for paint splash origin
-    const rect = card.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    // Add dive deep class to the clicked card
-    card.classList.add('dive-deep-active');
-    
-    // Create colorful paint splashes
-    const colors = [
-      'rgba(255, 20, 147, 0.6)',   // Deep pink
-      'rgba(0, 198, 255, 0.6)',     // Cyan
-      'rgba(255, 215, 0, 0.6)',     // Gold
-      'rgba(138, 43, 226, 0.6)',    // Blue violet
-      'rgba(255, 69, 0, 0.6)',      // Red orange
-      'rgba(0, 255, 127, 0.6)',     // Spring green
-    ];
-    
-    const angles = [0, 60, 120, 180, 240, 300];
-    const splashElements = [];
-    
-    colors.forEach((color, index) => {
-      const splash = document.createElement('div');
-      splash.className = 'dive-deep-paint-splash';
-      splash.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-      splash.style.left = `${centerX}px`;
-      splash.style.top = `${centerY}px`;
-      splash.style.transformOrigin = 'center';
-      
-      // Calculate splash direction
-      const angle = (angles[index] * Math.PI) / 180;
-      const distance = 150 + Math.random() * 100;
-      const splashX = Math.cos(angle) * distance;
-      const splashY = Math.sin(angle) * distance;
-      
-      splash.style.setProperty('--splash-x', `${splashX}px`);
-      splash.style.setProperty('--splash-y', `${splashY}px`);
-      
-      document.body.appendChild(splash);
-      splashElements.push(splash);
-    });
-    
-    // Add rainbow overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'dive-deep-overlay';
-    document.body.appendChild(overlay);
-    
-    // Navigate after animation
-    setTimeout(() => {
-      navigate(targetUrl);
-      // Clean up
-      setTimeout(() => {
-        splashElements.forEach(splash => {
-          if (splash.parentNode) {
-            splash.parentNode.removeChild(splash);
-          }
-        });
-        if (overlay.parentNode) {
-          overlay.parentNode.removeChild(overlay);
-        }
-        if (card) {
-          card.classList.remove('dive-deep-active');
-        }
-      }, 100);
-    }, 400);
-  };
-
-  const renderContentItem = (item) => {
-    if (item.type === "list") {
-      return (
-        <ul className='list-disc ml-5 mt-2 text-slate-600 text-sm'>
-          {item.content.map((point, index) => (
-            <li key={index} dangerouslySetInnerHTML={{ __html: point }} />
-          ))}
-        </ul>
-      );
-    } else if (item.type === "paragraph") {
-      return (
-        <p className='mt-2 text-slate-600 text-sm leading-relaxed'>
-          {item.content}
-        </p>
-      );
-    }
-    return null;
-  };
-
   return (
-    <section className='max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)] relative'>
-      {/* Sidebar Navigation */}
-      <div className='hidden lg:block fixed right-4 xl:right-8 top-1/2 transform -translate-y-1/2 z-20'>
-        <nav className='bg-white/90 backdrop-blur-md rounded-lg shadow-lg p-3 border border-gray-200/50'>
-          <ul className='space-y-1.5'>
+    <section className="relative max-w-7xl mx-auto px-6 sm:px-12 pt-32 pb-24 min-h-screen bg-[#F8FAFC] overflow-hidden">
+
+      {/* ----------------- GLOBAL BACKGROUND ----------------- */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
+        {/* Restored ambient orbs but lighter */}
+        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-100 blur-[100px] opacity-40"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-50 blur-[100px] opacity-40"></div>
+      </div>
+
+      {/* ----------------- SIDE NAV ----------------- */}
+      <div className='hidden xl:block fixed right-12 top-1/2 transform -translate-y-1/2 z-20'>
+        <nav className='bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-4 border border-slate-200'>
+          <ul className='space-y-4'>
             {sections.map((section) => (
-              <li key={section.id}>
+              <li key={section.id} className="relative group">
                 <button
                   onClick={() => scrollToSection(section.id)}
-                  className={`text-xs font-medium transition-all duration-200 whitespace-nowrap ${activeSection === section.id
-                    ? "text-blue-600 font-semibold"
-                    : "text-slate-600 hover:text-blue-500"
+                  className={`text-xs font-bold uppercase tracking-widest transition-all duration-300 writing-vertical-lr py-2 ${activeSection === section.id
+                    ? "text-blue-600 scale-105"
+                    : "text-slate-400 group-hover:text-slate-600"
                     }`}
-                  style={{
-                    transform: activeSection === section.id ? "translateX(2px)" : "translateX(0)",
-                  }}
+                  style={{ writingMode: 'vertical-rl' }}
                 >
                   {section.title}
                 </button>
+                {activeSection === section.id && (
+                  <span className="absolute right-[-14px] top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-l-full"></span>
+                )}
               </li>
             ))}
           </ul>
         </nav>
       </div>
-      <h1 className='sm:text-5xl text-3xl font-semibold sm:leading-snug font-poppins'>
-        {pageTexts.about.greeting}{" "}
-        <span className='bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-clip-text text-transparent font-semibold drop-shadow'>
-          {" "}
-          {pageTexts.about.name}
-        </span>{" "}
-        {pageTexts.about.emoji}
-      </h1>
 
-      <div className='mt-5 flex flex-col gap-3 text-slate-500'>
-        <p>
-          {pageTexts.about.introduction}
-        </p>
+      {/* ----------------- 1. INVESTIGATOR PROFILE ----------------- */}
+      <div id="profile" ref={(el) => (sectionRefs.current.profile = el)} className="mb-32">
+        <span className="inline-block px-3 py-1 mb-6 text-xs font-bold tracking-widest text-blue-600 uppercase bg-blue-50 rounded-full border border-blue-100">
+          Independent Investigator
+        </span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div>
+            <h1 className="text-5xl sm:text-7xl font-bold font-poppins text-slate-900 leading-tight mb-8">
+              Wahib <br />
+              <span className="text-slate-400 font-serif italic text-4xl sm:text-5xl">Investigator & Systems Builder</span>
+            </h1>
+
+            <div className="prose prose-lg text-slate-600 font-light leading-relaxed mb-8">
+              <p className="text-xl text-slate-800 font-medium mb-4">
+                Exploring the intersection of automation, psychology, and humanitarian impact.
+              </p>
+              {/* Research Motivation */}
+              <p>
+                I frame my work not as a career but as a series of missions. My goal is to build systems that automate the mundane to liberate human agency, using insights from behavioral science to design platforms that genuinely improve well-being.
+              </p>
+              <p>
+                This portfolio acts as a laboratory notebook—a living record of ideas, experiments, and reflections rather than a showroom of finished products.
+              </p>
+            </div>
+
+            <div className="flex gap-4">
+              {importantTechIcons.slice(0, 5).map((tech, i) => (
+                <div key={i} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm p-2 hover:scale-110 transition-transform" title={tech.name}>
+                  <img src={tech.icon} alt={tech.name} className="w-full h-full object-contain opacity-70 hover:opacity-100 transition-opacity" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Avatar / Abstract Visual */}
+          <div className="relative h-[500px] w-full bg-slate-100 rounded-[3rem] overflow-hidden border border-slate-200 shadow-inner flex items-center justify-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-100 via-slate-100 to-slate-200 opacity-60"></div>
+            <div className="text-slate-300 font-bold text-9xl select-none opacity-20 transform -rotate-12">W</div>
+
+            {/* Floating "Status" Card */}
+            <div className="absolute bottom-8 left-8 right-8 bg-white/60 backdrop-blur-md p-6 rounded-2xl border border-white/50 shadow-lg">
+              <div className="flex justify-between items-end">
+                <div className="text-xs font-bold uppercase tracking-widest text-slate-400">Current Status</div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  <span className="text-sm font-bold text-slate-700">Open for Collaboration</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Academic Journey moved to top */}
-      <div className='py-10 flex flex-col' id='academic' ref={(el) => (sectionRefs.current.academic = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.academic.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.academic.description}
-        </p>
+      {/* ----------------- 2. RESEARCH ARSENAL (Skills) ----------------- */}
+      <div id="arsenal" ref={(el) => (sectionRefs.current.arsenal = el)} className="mb-32">
+        <div className="flex items-end justify-between mb-12 border-b border-slate-200 pb-4">
+          <h2 className="text-3xl font-bold font-poppins text-slate-900">Research Arsenal</h2>
+          <span className="text-slate-400 font-mono text-sm">v4.0.0</span>
+        </div>
 
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.academic.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {skills.map((skill, index) => (
+            <div key={index} className="group p-4 bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 flex flex-col items-center gap-3">
+              <div className="w-10 h-10 p-2 bg-slate-50 rounded-lg group-hover:scale-110 transition-transform">
+                <img src={skill.imageUrl} alt={skill.name} className="w-full h-full object-contain" />
               </div>
-
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-            </AnimatedCard>
+              <div className="text-center">
+                <p className="text-sm font-bold text-slate-700 group-hover:text-blue-600">{skill.name}</p>
+                <p className="text--[10px] text-slate-400 uppercase tracking-wide">{skill.type}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
+      {/* ----------------- 3. RESEARCH PHILOSOPHY ----------------- */}
+      <div id="mission" ref={(el) => (sectionRefs.current.mission = el)} className="mb-32">
+        <div className="bg-slate-900 rounded-[3rem] p-12 sm:p-20 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-blue-600 rounded-full blur-[150px] opacity-20"></div>
 
-      <div className='py-10 flex flex-col' id='work' ref={(el) => (sectionRefs.current.work = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.work.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.work.description}
-        </p>
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.work.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
+          <h2 className="relative z-10 text-3xl sm:text-5xl font-bold font-poppins text-white mb-8 leading-tight">
+            My Research Philosophy
+          </h2>
+
+          <div className="relative z-10 max-w-4xl mx-auto mt-6 text-slate-300 text-lg leading-relaxed font-light">
+            <p>"Iterative experimentation beats master planning. I build to understand."</p>
+            <div className="mt-8 border-t border-white/10 pt-8" dangerouslySetInnerHTML={{ __html: aboutContent.mission.items[0].content }} />
+          </div>
+
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left max-w-5xl mx-auto mt-16">
+            {aboutContent.mission.items[1].content.map((role, i) => (
+              <div key={i} className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
+                <div className="text-blue-400 mb-4 text-2xl">✦</div>
+                <p className="text-slate-300 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: role }} />
               </div>
-              
-              {/* Header area: MagicTask gets nested look, others stay as full cards */}
-              {item.title === "MagicTask (MCARS theme)" ? (
-                <div className='mb-2 ml-6'>
-                  <h4 className='text-sm font-semibold text-slate-700 flex items-center gap-2'>
-                    <span className='w-8 h-px bg-blue-200 inline-block' />
-                    <span>{item.title}</span>
-                    {item.date && <span className='text-[11px] text-slate-400'>• {item.date}</span>}
-                  </h4>
-                  {item.subtitle && <p className='text-xs text-slate-500 ml-8'>{item.subtitle}</p>}
-                </div>
-              ) : (
-                <div className='flex justify-between items-start mb-4'>
-                  <div className='flex-1'>
-                    <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>
-                      {item.title}
-                    </h4>
-                    {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-                    {item.date && <p className='text-sm text-slate-500'>{item.date}</p>}
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ----------------- 4. PROOF OF WORK ----------------- */}
+      <div id="fieldwork" ref={(el) => (sectionRefs.current.fieldwork = el)} className="mb-32">
+        <h2 className="text-3xl font-bold font-poppins text-slate-900 mb-12 border-l-4 border-slate-900 pl-6">Proof of Work (Artifacts)</h2>
+
+        <div className="space-y-12 relative max-w-4xl">
+          <div className="absolute left-8 top-4 bottom-4 w-[1px] bg-slate-200 hidden sm:block"></div>
+
+          {aboutContent.work.items.concat(aboutContent.academic.items).filter(item => item.date || item.title).map((item, index) => (
+            <div key={index} className="relative sm:pl-24 group">
+              {/* Timeline Dot */}
+              <div className="absolute left-[29px] top-6 w-3 h-3 bg-white border-2 border-slate-300 rounded-full z-10 hidden sm:block group-hover:border-blue-500 group-hover:scale-125 transition-all"></div>
+
+              <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden group-hover:border-blue-200">
+                {item.date && (
+                  <span className="absolute top-8 right-8 text-xs font-bold text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-100 uppercase tracking-wider">
+                    {item.date}
+                  </span>
+                )}
+
+                <h3 className="text-xl font-bold text-slate-800 mb-2 font-poppins">{item.title}</h3>
+                {item.subtitle && <p className="text-sm text-slate-500 mb-6 font-medium">{item.subtitle}</p>}
+
+                {item.type === 'list' && (
+                  <ul className="space-y-3 mb-6">
+                    {item.content.map((point, i) => (
+                      <li key={i} className="flex gap-3 text-sm text-slate-600 leading-relaxed group-hover:text-slate-700">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 mt-2 shrink-0 group-hover:bg-blue-400 transition-colors"></span>
+                        <span dangerouslySetInnerHTML={{ __html: point }} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Special Rendering for MagicTask Tree Sections */}
+                {item.treeSections && (
+                  <div className="mt-4 space-y-4">
+                    {item.treeSections.map((sec, idx) => (
+                      <div key={idx} className="bg-slate-50 p-4 rounded-xl">
+                        <h4 className="text-sm font-bold text-slate-700 mb-2">{sec.title}</h4>
+                        <ul className="list-disc ml-4 space-y-1">
+                          {sec.points.map((pt, pIdx) => (
+                            <li key={pIdx} className="text-xs text-slate-500">{pt}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
-                  {index === 0 && (
-                    <div className='flex gap-3 flex-wrap'>
-                      {importantTechIcons.slice(0, 7).map((tech) => (
-                        <div key={tech.name} className='block-container w-12 h-12 hover:scale-110 transition-transform duration-300'>
-                          <div className='btn-back rounded-xl' />
-                          <div className='btn-front rounded-xl flex justify-center items-center'>
-                            <img
-                              src={tech.icon}
-                              alt={tech.name}
-                              className='w-2/3 h-2/3 object-contain'
-                              title={tech.name}
-                            />
-                          </div>
-                        </div>
+                )}
+
+                {item.link && (
+                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors mt-2">
+                    View Artifact
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ----------------- 5. CURRENT RESEARCH DIRECTIONS ----------------- */}
+      <div id="ideas" ref={(el) => (sectionRefs.current.ideas = el)} className="mb-32">
+        <div className="flex items-end justify-between mb-12 border-b border-slate-200 pb-4">
+          <h2 className="text-3xl font-bold font-poppins text-slate-900">Current Research Directions</h2>
+          <span className="text-slate-400 font-mono text-xs uppercase tracking-widest">Running Threads</span>
+        </div>
+
+        <div className="columns-1 md:columns-2 gap-8 space-y-8">
+          {aboutContent.ideas.items.map((idea, index) => (
+            <div key={index} className="break-inside-avoid bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-bold text-slate-800 mb-2 font-poppins">{idea.title}</h3>
+              <p className="text-xs font-bold uppercase tracking-widest text-blue-500 mb-6">{idea.subtitle}</p>
+
+              {idea.type === 'list' ? (
+                <ul className="space-y-4">
+                  {idea.content.map((point, i) => (
+                    <li key={i} className="text-sm text-slate-600 leading-relaxed border-l-2 border-slate-100 pl-4 hover:border-blue-300 transition-colors">
+                      <span dangerouslySetInnerHTML={{ __html: point }} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-slate-600 leading-relaxed font-serif italic text-lg">
+                  "{idea.content}"
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ----------------- 6. PERSONAL LOGS ----------------- */}
+      <div id="interests" ref={(el) => (sectionRefs.current.interests = el)} className="mb-32">
+        <div className="p-1 pb-0 bg-gradient-to-br from-slate-200 to-slate-100 rounded-[3rem]">
+          <div className="bg-[#F8FAFC] rounded-[2.9rem] p-10 sm:p-20">
+            <h2 className="text-3xl font-bold font-poppins text-slate-900 mb-12 text-center">Personal Logs</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {aboutContent.interests.items.map((interest, index) => (
+                <div key={index} className="bg-white p-8 rounded-2xl border border-slate-200/60 shadow-sm hover:-translate-y-2 transition-transform duration-300">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{interest.title}</h3>
+                  <p className="text-xs text-slate-400 mb-6 uppercase tracking-wider">{interest.subtitle}</p>
+
+                  {interest.type === 'list' && (
+                    <ul className="space-y-2">
+                      {interest.content.map((item, i) => (
+                        <li key={i} className="text-xs text-slate-600 flex gap-2">
+                          <span className="text-slate-300">•</span>
+                          {item}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
+                  )}
+
+                  {interest.type === 'paragraph' && (
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {interest.content}
+                    </p>
                   )}
                 </div>
-              )}
-
-              {/* Custom rendering for MagicTask tree-style sub-card */}
-              {item.title === "MagicTask (MCARS theme)" ? (
-                <div className='mt-1 ml-6 space-y-4'>
-                  <div className='border-l-2 border-dashed border-blue-200 pl-4 space-y-3 text-sm text-slate-600'>
-                    <div>
-                      <p className='font-semibold text-slate-800'>MagicTask Platform</p>
-                      <p className='text-xs text-slate-500'>Gamified task management with MCARS theme</p>
-                    </div>
-
-                    {item.treeSections &&
-                      item.treeSections.map((section) => (
-                        <div key={section.title} className='pl-4 space-y-2'>
-                          <p className='font-semibold text-slate-700'>{section.title}</p>
-                          <ul className='list-disc ml-4 space-y-1'>
-                            {section.points.map((point) => (
-                              <li key={point}>{point}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                  </div>
-
-                  <div className='flex flex-wrap items-center gap-3'>
-                    {item.link && (
-                      <a
-                        href={item.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 group/link transition-all duration-300"
-                      >
-                        {item.linkText || "Live Link"}
-                        <svg className='w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                        </svg>
-                      </a>
-                    )}
-
-                    <Link
-                      to="/magictask"
-                      onClick={(e) => handleDiveDeep(e, "/magictask")}
-                      className='group/btn relative inline-flex items-center text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden'
-                    >
-                      <div className='absolute inset-0 bg-white/30 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300'></div>
-                      <span className='relative z-10'>Dive Deep</span>
-                      <svg className='w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {renderContentItem(item)}
-                  {item.link && (
-                    <a
-                      href={item.link}
-                      className="relative top-2 font-semibold text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1 group/link transition-all duration-300"
-                    >
-                      {item.linkText}
-                      <svg className='w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                      </svg>
-                    </a>
-                  )}
-                </>
-              )}
-            </AnimatedCard>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className='py-10 flex flex-col' id='mission' ref={(el) => (sectionRefs.current.mission = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.mission.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.mission.description}
-        </p>
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.mission.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
-              </div>
-              
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-            </AnimatedCard>
-          ))}
+      {/* ----------------- COLLABORATION FOOTER ----------------- */}
+      {/* ----------------- COLLABORATION FOOTER ----------------- */}
+      <div className="mt-32 pb-12">
+        <div className="relative bg-slate-900 rounded-3xl p-12 overflow-hidden text-center group">
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+          <div className="absolute -top-[100%] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-600 rounded-full blur-[150px] opacity-20 group-hover:opacity-40 transition-opacity duration-1000"></div>
+
+          <h2 className="relative z-10 text-4xl sm:text-5xl font-bold font-poppins text-white mb-6 leading-tight">
+            Signal Detected?
+          </h2>
+          <p className="relative z-10 text-slate-300 mb-10 max-w-xl mx-auto text-lg font-light leading-relaxed">
+            This lab operates on exchange. If you have a hypothesis to test, a system to build, or a critique to offer, open a channel.
+          </p>
+
+          <Link
+            to="/contact"
+            className="relative z-10 inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-blue-50 hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+          >
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Open Frequency
+          </Link>
         </div>
       </div>
 
-      <div className='py-10 flex flex-col' id='ventures' ref={(el) => (sectionRefs.current.ventures = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.ventures.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.ventures.description}
-        </p>
-        <div className='mt-8 flex flex-col'>
-          {aboutContent.ventures.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
-              </div>
-              
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-              {item.buttonText && item.buttonLink && (
-                <div className='relative mt-4 z-20'>
-                  <Link
-                    to={item.buttonLink}
-                    className='group/btn relative inline-flex items-center text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden'
-                  >
-                    {/* Fadeout overlay effect */}
-                    <div className='absolute inset-0 bg-white/30 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300'></div>
-                    <span className='relative z-10'>{item.buttonText.replace('&rarr;', '')}</span>
-                    <svg className='w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-300 relative z-10 ml-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
-                    </svg>
-                  </Link>
-                </div>
-              )}
-            </AnimatedCard>
-          ))}
-        </div>
-      </div>
-
-      <div className='py-10 flex flex-col' id='ideas' ref={(el) => (sectionRefs.current.ideas = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.ideas.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.ideas.description}
-        </p>
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.ideas.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
-              </div>
-              
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-            </AnimatedCard>
-          ))}
-        </div>
-      </div>
-
-      <div className='py-10 flex flex-col' id='interests' ref={(el) => (sectionRefs.current.interests = el)}>
-        <AnimatedTitle className='font-semibold sm:text-3xl text-xl font-poppins cursor-default'>
-          {aboutContent.interests.title}
-        </AnimatedTitle>
-        <p className='mt-3 text-slate-500'>
-          {aboutContent.interests.description}
-        </p>
-        <div className='mt-8 flex flex-col gap-6'>
-          {aboutContent.interests.items.map((item, index) => (
-            <AnimatedCard
-              key={index}
-              index={index}
-              className='group relative p-6 rounded-xl bg-white/70 backdrop-blur-sm border border-gray-100/50 shadow-md hover:shadow-xl transition-all duration-500 hover:border-blue-200/50 overflow-hidden claymorphism'
-              style={{
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.05)',
-              }}
-            >
-              {/* Aurora gradient animation */}
-              <div className='absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10'>
-                <div className='absolute inset-0 animate-aurora' style={{
-                  background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15), rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15))',
-                  backgroundSize: '400% 400%',
-                  animation: 'aurora 8s ease infinite',
-                }}></div>
-              </div>
-              
-              <h4 className='text-lg font-semibold text-black group-hover:text-blue-700 transition-colors duration-300'>{item.title}</h4>
-              {item.subtitle && <p className='text-sm text-slate-500'>{item.subtitle}</p>}
-              {renderContentItem(item)}
-            </AnimatedCard>
-          ))}
-        </div>
-      </div>
-
-      <hr className='border-slate-200' />
-
-      <CTA />
     </section>
   );
 };
