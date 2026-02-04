@@ -37,23 +37,23 @@ export const importantTechIcons = [
 ];
 
 export const skills = [
-  // Technical Foundations
-  { imageUrl: css, name: "CSS", type: "Frontend" },
-  { imageUrl: html, name: "HTML", type: "Frontend" },
-  { imageUrl: javascript, name: "JavaScript", type: "Frontend" },
-  { imageUrl: typescript, name: "TypeScript", type: "Frontend" },
-  { imageUrl: react, name: "React", type: "Frontend" },
-  { imageUrl: nextjs, name: "Next.js", type: "Frontend" },
-  { imageUrl: nodejs, name: "Node.js", type: "Backend" },
-  { imageUrl: express, name: "Express", type: "Backend" },
-  { imageUrl: mongodb, name: "MongoDB", type: "Database" },
-  { imageUrl: redux, name: "Redux", type: "State Management" },
-  { imageUrl: git, name: "Git", type: "Version Control" },
-  { imageUrl: github, name: "GitHub", type: "Version Control" },
-  { imageUrl: tailwindcss, name: "Tailwind CSS", type: "Frontend" },
-  { imageUrl: mui, name: "Material-UI", type: "Frontend" },
-  { imageUrl: sass, name: "Sass", type: "Frontend" },
-  { imageUrl: motion, name: "Motion", type: "Animation" },
+    // Technical Foundations
+    { imageUrl: css, name: "CSS", type: "Frontend" },
+    { imageUrl: html, name: "HTML", type: "Frontend" },
+    { imageUrl: javascript, name: "JavaScript", type: "Frontend" },
+    { imageUrl: typescript, name: "TypeScript", type: "Frontend" },
+    { imageUrl: react, name: "React", type: "Frontend" },
+    { imageUrl: nextjs, name: "Next.js", type: "Frontend" },
+    { imageUrl: nodejs, name: "Node.js", type: "Backend" },
+    { imageUrl: express, name: "Express", type: "Backend" },
+    { imageUrl: mongodb, name: "MongoDB", type: "Database" },
+    { imageUrl: redux, name: "Redux", type: "State Management" },
+    { imageUrl: git, name: "Git", type: "Version Control" },
+    { imageUrl: github, name: "GitHub", type: "Version Control" },
+    { imageUrl: tailwindcss, name: "Tailwind CSS", type: "Frontend" },
+    { imageUrl: mui, name: "Material-UI", type: "Frontend" },
+    { imageUrl: sass, name: "Sass", type: "Frontend" },
+    { imageUrl: motion, name: "Motion", type: "Animation" },
 ];
 
 export const experiences = [
@@ -71,8 +71,8 @@ export const experiences = [
         ],
     },
     {
-        title: "Independent Study & Projects",
-        company_name: "Self-Directed Learning",
+        title: "Independent Investigator",
+        company_name: "Self-Directed Lab",
         icon: javascript,
         iconBg: "#fbc3bc",
         date: "2022 - Present",
@@ -134,35 +134,50 @@ export const projects = [
         iconUrl: summiz,
         theme: 'btn-back-yellow',
         name: 'ClassFusion',
-        description: 'ClassFusion is an experimental learning platform that reimagines education as a game of compatibility and incentives. It explores how students and teachers can be matched through cognitive profiles, turning learning into a more personalized and fun experience. By weaving in gamified rewards and crypto‑inspired incentive systems, ClassFusion aims to create a dynamic ecosystem where participation, curiosity, and collaboration are valued like currency.',
+        description: 'ClassFusion is an experimental learning platform that reimagines education as a game of compatibility. It explores how students and teachers can be matched through cognitive profiles.',
+        researchQuestion: "Can cognitive compatibility matching improve student engagement?",
+        status: "Prototype",
+        domain: "EdTech / Behavioral Systems",
         link: '#',
     },
     {
         iconUrl: pricewise,
         theme: 'btn-back-red',
         name: 'FlowFund',
-        description: 'A blueprint‑stage financial ecosystem designed to reduce poverty by creating continuous money flow across peers. It envisions onboarding donors through incentives and hosting NGOs and individuals much like Shopify hosts stores — but instead of products, they promote causes.',
+        description: 'A blueprint‑stage financial ecosystem designed to reduce poverty by creating continuous money flow across peers, framing donors as investors in human potential.',
+        researchQuestion: "Can continuous micro-transactions create a better safety net than lump-sum aid?",
+        status: "Concept",
+        domain: "FinTech / Poverty Reduction",
         link: '#',
     },
     {
         iconUrl: threads,
         theme: 'btn-back-green',
         name: 'FundMyLife',
-        description: 'FundMyLife is a  meme-coin project designed to make personal and humanitarian funding accessible, transparent, and engaging.',
+        description: 'FundMyLife explores whether meme-coin dynamics can be ethically applied to personal and humanitarian funding, democratizing access to capital.',
+        researchQuestion: "Can tokenized social capital democratize funding without exploitation?",
+        status: "Simulation",
+        domain: "Crypto / Social Capital",
         link: '#',
     },
     {
         iconUrl: estate,
         theme: 'btn-back-black',
         name: 'SarmayaChain',
-        description: 'SarmayaChain is a humanitarian investment protocol designed to restore dignity to underprivileged individuals through performance-based sponsorship, verified need mapping, and emotionally loaded incentives.',
+        description: 'SarmayaChain is a humanitarian investment protocol designed to restore dignity through verified need mapping and performance-based sponsorship.',
+        researchQuestion: "Can blockchain verification restore dignity to charitable giving?",
+        status: "Research Draft",
+        domain: "Humanitarian / Blockchain",
         link: '#',
     },
     {
         iconUrl: car,
         theme: 'btn-back-blue',
         name: 'QuarkCapital',
-        description: 'is a blueprint‑stage ecosystem that treats both creativity and capital as living, tradable units. It reimagines projects, ideas, and contributions as micro‑assets — “quarks” of value — that can be tokenized, invested in, and grown collectively. By blending psychology, gamified incentives, and crypto‑style mechanics, the platform enables supporters to back creators early, share in their growth, and participate in a transparent chain of micro‑contributions. The result is a dynamic system where creativity and finance converge, turning individual effort into sustainable, inclusive impact.',
+        description: 'QuarkCapital treats creativity and capital as living, tradable units. It reimagines projects and contributions as micro‑assets — “quarks” of value.',
+        researchQuestion: "Can we tokenize micro-contributions to create fair creative equity?",
+        status: "Concept",
+        domain: "FinTech / Creative Economy",
         link: '#',
     }
 ];
@@ -187,16 +202,16 @@ export const pageTexts = {
 export const aboutSections = [
     { id: "academic", title: "Academic Journey" },
     { id: "work", title: "Work & Projects" },
-    { id: "mission", title: "Mission & Vision" },
+    { id: "mission", title: "Research Philosophy" },
     { id: "ventures", title: "Blueprint Projects" },
-    { id: "ideas", title: "Ideas & Research" },
+    { id: "ideas", title: "Current Research" },
     { id: "interests", title: "Interests" },
 ];
 
 // About Page Content
 export const aboutContent = {
     work: {
-        title: "Work & Projects",
+        title: "Field Work & Investigations",
         description: "Building practical solutions while exploring the intersection of technology and human behavior. Each project serves as both a technical implementation and a learning experiment.",
         items: [
             {
@@ -261,11 +276,11 @@ export const aboutContent = {
         ],
     },
     mission: {
-        title: "Mission & Vision",
+        title: "Research Philosophy (How I Work)",
         description: "My approach to work transcends traditional job descriptions. I frame roles as missions, each serving a larger purpose in building systems that matter.",
         items: [
             {
-                title: "Core Mission",
+                title: "Core Thesis",
                 subtitle: "Personal Philosophy",
                 type: "paragraph",
                 content: "Building platforms that fuse automation, psychology, and humanitarian impact. I believe technology should serve human flourishing, not just efficiency metrics. Every system I architect is designed with the question: \"How does this improve human agency and well-being?\"",
@@ -276,7 +291,7 @@ export const aboutContent = {
                 type: "list",
                 content: [
                     "<strong>Blueprint Architect:</strong> Designing system foundations that enable scalable impact.",
-                    "<strong>Community Onboarder:</strong> Creating pathways for meaningful engagement and participation.",
+                    "<strong>Impact Analyst:</strong> Critical evaluation of how systems affect vulnerable populations.",
                     "<strong>Narrative Strategist:</strong> Framing projects as stories that inspire action and connection.",
                     "<strong>Systems Thinker:</strong> Connecting dots between technology, behavior, and social outcomes.",
                 ],
@@ -298,7 +313,7 @@ export const aboutContent = {
         ],
     },
     ideas: {
-        title: "Ideas & Research",
+        title: "Current Research Directions",
         description: "Ongoing exploration of ideas that shape my thinking. These represent my current research interests and the frameworks I use to understand complex systems.",
         items: [
             {
