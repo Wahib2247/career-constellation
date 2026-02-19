@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,23 +7,49 @@
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;
+  --ink: #0F1117;
+  --paper: #FAFAFA;
+  --accent: #1A3A5C;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Inter", "Work Sans", sans-serif;
+  background-color: #FAFAFA;
+  color: #1D2235;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body:has(.card[data-color="blue"]:hover) {
-  background-color: rgb(var(--blue-rgb) / 25%);
+/* ─── Institutional Typography ─── */
+.font-serif,
+.heading-serif {
+  font-family: "Playfair Display", Georgia, serif;
 }
 
-body:has(.card[data-color="green"]:hover) {
-  background-color: rgb(var(--green-rgb) / 25%);
+.font-sans-body {
+  font-family: "Inter", "Work Sans", sans-serif;
 }
 
+/* ─── Layout Utilities ─── */
 @layer utilities {
   .max-container {
     @apply max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)];
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-6 sm:px-12 pt-28 pb-24 min-h-screen;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-6 sm:px-12;
   }
 
   .head-text {
@@ -34,20 +60,64 @@ body:has(.card[data-color="green"]:hover) {
     @apply font-semibold sm:text-3xl text-xl relative font-poppins;
   }
 
+  /* Institutional section label */
+  .section-label {
+    @apply inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase text-slate-500 border border-slate-200 rounded-full bg-white mb-6;
+  }
+
+  /* Document card */
+  .doc-card {
+    @apply bg-white rounded-2xl border border-slate-200 p-6 transition-all duration-300 hover:-translate-y-0.5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  .doc-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Metric card */
+  .metric-card {
+    @apply bg-white rounded-2xl border border-slate-100 p-8 text-center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Filter pill */
+  .filter-pill {
+    @apply px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer;
+  }
+
+  .filter-pill-active {
+    @apply bg-slate-900 text-white border-slate-900;
+  }
+
+  .filter-pill-inactive {
+    @apply bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:text-slate-900;
+  }
+
+  /* Blue gradient text (kept for compat) */
   .blue-gradient_text {
     @apply bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-clip-text text-transparent;
   }
 
   .input {
-    @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-card;
+    @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-sm;
   }
 
   .textarea {
-    @apply block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal shadow-card;
+    @apply block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal shadow-sm;
   }
 
   .btn {
     @apply text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+  }
+
+  /* Institutional CTA button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-medium text-sm hover:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 rounded-xl font-medium text-sm border border-slate-200 hover:border-slate-400 transition-all duration-200 shadow-sm;
   }
 
   .header {
@@ -79,6 +149,7 @@ body:has(.card[data-color="green"]:hover) {
   }
 }
 
+/* ─── Glassmorphism ─── */
 .glassmorphism {
   background: rgba(8, 116, 239, 0.07);
   backdrop-filter: blur(10px);
@@ -87,16 +158,16 @@ body:has(.card[data-color="green"]:hover) {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.gradient-mesh {
-  background: 
-    radial-gradient(at 0% 0%, rgba(255, 20, 147, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(255, 105, 180, 0.06) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(255, 182, 193, 0.05) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(255, 20, 147, 0.07) 0px, transparent 50%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 250, 252, 0.95) 100%);
-  background-blend-mode: normal, normal, normal, normal, normal;
+/* ─── Institutional Glassmorphism ─── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
 }
 
+/* ─── Logo ─── */
 .logo {
   border-radius: 8.889px;
   background: #fff;
@@ -104,6 +175,7 @@ body:has(.card[data-color="green"]:hover) {
     0px 1.5px 4px -1px rgba(67, 83, 255, 0.2);
 }
 
+/* ─── Block Container (kept for compat) ─── */
 .block-container {
   position: relative;
   transition: 250ms;
@@ -124,32 +196,8 @@ body:has(.card[data-color="green"]:hover) {
   box-shadow: 16px 0 40px #e4e4e4;
 }
 
-.block-container .btn-back-red {
-  background: linear-gradient(135deg, #ff4b1f -20%, #ff9068 120%);
-}
-
-.block-container .btn-back-green {
-  background: linear-gradient(135deg, #adfda2 -20%, #11d3f3 120%);
-}
-
-.block-container .btn-back-yellow {
-  background: linear-gradient(135deg, #f7971e -20%, #ffd200 120%);
-}
-
 .block-container .btn-back-blue {
   background: linear-gradient(135deg, #0061ff -20%, #60efff 120%);
-}
-
-.block-container .btn-back-orange {
-  background: linear-gradient(135deg, #ff0f7b -20%, #f89b29 120%);
-}
-
-.block-container .btn-back-pink {
-  background: linear-gradient(135deg, #e81cff -20%, #40c9ff 120%);
-}
-
-.block-container .btn-back-black {
-  background: linear-gradient(135deg, #0a1647 -20%, #e4e7e4 120%);
 }
 
 .block-container .btn-front {
@@ -167,15 +215,15 @@ body:has(.card[data-color="green"]:hover) {
   overflow: hidden;
 }
 
-.block-container:hover > .btn-back {
+.block-container:hover>.btn-back {
   transform: translateZ(20px) rotateZ(15deg) rotateX(-20deg) rotateY(-20deg);
 }
 
-.block-container:hover > .btn-front {
+.block-container:hover>.btn-front {
   transform: translateZ(80px) translateY(-5px) rotateX(15deg) rotateY(15deg);
 }
 
-/* Neo Brutalism */
+/* ─── Neo Brutalism ─── */
 .neo-brutalism-blue {
   background: #2b77e7;
   position: relative;
@@ -192,14 +240,16 @@ body:has(.card[data-color="green"]:hover) {
     0.65vmin 1vmin #d2e4ff, 1vmin 0.65vmin #d2e4ff;
 }
 
-/* Aurora Animation */
+/* ─── Animations ─── */
 @keyframes aurora {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -209,12 +259,12 @@ body:has(.card[data-color="green"]:hover) {
   animation: aurora 8s ease infinite;
 }
 
-/* Scroll Animation Utilities */
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -225,6 +275,7 @@ body:has(.card[data-color="green"]:hover) {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -244,43 +295,46 @@ body:has(.card[data-color="green"]:hover) {
   animation: fadeInUp 0.6s ease-out 0.2s forwards;
 }
 
-/* Neumorphism */
-.neumorphism {
-  background: #f0f0f3;
-  box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
-}
-
-.neumorphism-inset {
-  background: #f0f0f3;
-  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
-}
-
-/* Claymorphism */
-.claymorphism {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-
 @keyframes float-slow {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes float-medium {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes float-fast {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .animate-float-slow {
@@ -295,12 +349,13 @@ body:has(.card[data-color="green"]:hover) {
   animation: float-fast 3.5s ease-in-out infinite;
 }
 
-/* Contact Page Animations */
+/* ─── Contact Animations ─── */
 @keyframes slideInLeft {
   from {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -312,20 +367,10 @@ body:has(.card[data-color="green"]:hover) {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -344,107 +389,7 @@ body:has(.card[data-color="green"]:hover) {
   opacity: 0;
 }
 
-/* Flying plane animation for send button */
-button:hover .svg-wrapper {
-  animation: fly-1 0.6s ease-in-out infinite alternate;
-}
-
-@keyframes fly-1 {
-  from {
-    transform: translateY(0.1em);
-  }
-  to {
-    transform: translateY(-0.1em);
-  }
-}
-
-/* Dive Deep Animation - Paint Splash Effect */
-@keyframes diveDeep {
-  0% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.1) translateY(-10px);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(0.8) translateY(20px);
-    opacity: 0;
-  }
-}
-
-@keyframes paintSplash {
-  0% {
-    transform: scale(0) translate(0, 0) rotate(0deg);
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(3.5) translate(var(--splash-x), var(--splash-y)) rotate(180deg);
-    opacity: 0.6;
-  }
-}
-
-@keyframes rainbowExpand {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.1);
-    opacity: 0.9;
-  }
-}
-
-.dive-deep-active {
-  animation: diveDeep 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  pointer-events: none;
-  will-change: transform, opacity;
-  z-index: 9999;
-  position: relative;
-}
-
-.dive-deep-paint-splash {
-  position: fixed;
-  width: 180px;
-  height: 180px;
-  border-radius: 50% 40% 60% 30%;
-  pointer-events: none;
-  z-index: 9997;
-  will-change: transform, opacity;
-  animation: paintSplash 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  mix-blend-mode: screen;
-}
-
-.dive-deep-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9998;
-  pointer-events: none;
-  will-change: transform, opacity;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(255, 20, 147, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(0, 198, 255, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 40% 70%, rgba(255, 215, 0, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 10% 90%, rgba(255, 69, 0, 0.4) 0%, transparent 50%),
-    radial-gradient(circle at 60% 10%, rgba(0, 255, 127, 0.4) 0%, transparent 50%),
-    linear-gradient(135deg, rgba(255, 20, 147, 0.3) 0%, rgba(0, 198, 255, 0.3) 50%, rgba(255, 215, 0, 0.3) 100%);
-  opacity: 0;
-  transform: scale(0);
-  animation: rainbowExpand 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Project Detail Page Styles */
+/* ─── Project Detail Styles ─── */
 .glassmorphism-card {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
@@ -540,4 +485,47 @@ button:hover .svg-wrapper {
 .expandable-section-content.expanded {
   max-height: 2000px;
   padding-top: 1rem;
+}
+
+/* ─── Institutional Divider ─── */
+.section-divider {
+  width: 48px;
+  height: 2px;
+  background: #1D2235;
+  margin: 1.5rem 0;
+}
+
+/* ─── Prose overrides for research pages ─── */
+.prose-institutional {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.prose-institutional h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0F1117;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

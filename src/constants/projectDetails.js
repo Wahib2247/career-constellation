@@ -359,10 +359,13 @@ export const projectDetails = {
     statusColor: "blue",
     domain: "FinTech / Creative Economy",
 
+    // 2. Problem Statement
     problemStatement: `Creative collaboration is often unpaid or vaguely compensated. 'Exposure' is not currency, and small contributions (an idea, a logo tweak) are lost in the equity shuffle. The current intellectual property system is binary (ownership vs non-ownership), failing to capture the granular, collective nature of modern digital creation.`,
 
-    hypothesis: `If we atomize projects into 'Quarks'—micro-units of value—contributors can earn fractional equity for granular work. By logging contributions on a transparent ledger, we can distribute value dynamically based on effort, creating a fairer creative supply chain.`,
+    // 3. Core Hypothesis
+    hypothesis: `"If we atomize projects into 'Quarks'—micro-units of value—contributors can earn fractional equity for granular work. By logging contributions on a transparent ledger, we can distribute value dynamically based on effort, creating a fairer creative supply chain."`,
 
+    // 4. System Maps
     systemOverview: {
       actors: [
         "Project Initiators (Founders)",
@@ -378,16 +381,18 @@ export const projectDetails = {
       ]
     },
 
+    // Stack Architecture
     architecture: {
       description: "A governance layer on top of version control (Git).",
       components: [
-        "GitBot (Listens for PRs/Commits)",
+        "GitBot (Listen for PRs/Commits)",
         "Appraisal Interface (Peers vote on contribution value)",
         "Equity Dashboard (Real-time cap table)",
         "Smart Contract Registry"
       ]
     },
 
+    // 5. Evidence / Artifacts
     researchArtifacts: [
       {
         type: "Algorithm Concept",
@@ -403,11 +408,13 @@ export const projectDetails = {
       }
     ],
 
+    // 6. Simulation / Outcomes
     simulation: {
       scenario: "Simulated a 5-person hackathon project. 1 Winner-take-all vs. Quark model.",
       outcome: "Quark model distributed value 40/20/15/15/10. Participants reported higher 'sense of ownership' (theoretical)."
     },
 
+    // Metrics
     methodology: {
       approach: "Agent-based modelling of collaboration networks.",
       metrics: [
@@ -417,6 +424,7 @@ export const projectDetails = {
       ]
     },
 
+    // Risk Analysis
     ethicalRisks: [
       {
         risk: "Over-Financialization",
@@ -428,6 +436,7 @@ export const projectDetails = {
       }
     ],
 
+    // Future Roadmap
     nextSteps: [
       "Define the 'Quark' unit value.",
       "Build a simple web3 logger for GitHub commits.",

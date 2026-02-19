@@ -79,14 +79,14 @@ class LearningEngine {
     this.patterns[intent].queries.push(query.toLowerCase());
     this.patterns[intent].responses.push(response);
     this.patterns[intent].count++;
-    
+
     if (success) {
-      this.patterns[intent].successRate = 
-        (this.patterns[intent].successRate * (this.patterns[intent].count - 1) + 1) / 
+      this.patterns[intent].successRate =
+        (this.patterns[intent].successRate * (this.patterns[intent].count - 1) + 1) /
         this.patterns[intent].count;
     } else {
-      this.patterns[intent].successRate = 
-        (this.patterns[intent].successRate * (this.patterns[intent].count - 1)) / 
+      this.patterns[intent].successRate =
+        (this.patterns[intent].successRate * (this.patterns[intent].count - 1)) /
         this.patterns[intent].count;
     }
 
@@ -158,7 +158,7 @@ const learningEngine = new LearningEngine();
 const generateMLResponse = async (query, context, knowledgeBase) => {
   // Check if API key is configured
   const apiKey = import.meta.env.VITE_APP_OPENAI_API_KEY;
-  
+
   if (!apiKey) {
     // Fallback to rule-based with learning
     return null;
@@ -216,8 +216,8 @@ CONTEXT: ${JSON.stringify(context)}`;
 
 // Enhanced response generator with ML capabilities
 export const generateMLIntelligentResponse = async (
-  query, 
-  userName = '', 
+  query,
+  userName = '',
   conversationHistory = [],
   useML = true
 ) => {
@@ -254,7 +254,7 @@ export const generateMLIntelligentResponse = async (
   // Fallback to learning-enhanced rule-based system
   // Check for similar patterns (unsupervised learning)
   const similarPattern = learningEngine.findSimilarPatterns(correctedQuery, intent);
-  
+
   if (similarPattern && similarPattern.score > 0.5) {
     // Use learned pattern with adaptation
     const adaptedResponse = adaptResponse(similarPattern.response, userName, query);
@@ -271,36 +271,41 @@ export const generateMLIntelligentResponse = async (
 
   // Generate new response using rule-based system
   const response = generateRuleBasedResponse(correctedQuery, lowerQuery, intent, userName, conversationHistory);
-  
+
   // Learn from this response
   learningEngine.learnPattern(intent, correctedQuery, response.text, true);
-  
+
   return response;
 };
 
 // Adapt learned response to current context
 const adaptResponse = (learnedResponse, userName, currentQuery) => {
   let adapted = learnedResponse;
-  
+
   // Personalize with name if available
   if (userName && !adapted.includes(userName.split(' ')[0])) {
-    adapted = `Hi ${userName.split(' ')[0]}! ${adapted}`;
+    const greetings = [
+      `Hi ${userName.split(' ')[0]}! `,
+      `Hello ${userName.split(' ')[0]}, `,
+      `Thanks for the inquiry, ${userName.split(' ')[0]}. `,
+    ];
+    adapted = `${greetings[Math.floor(Math.random() * greetings.length)]}${adapted}`;
   }
-  
-  // Add context-aware variations
+
+  // Add context-aware variations (removed repetitive phrases)
   const variations = [
     adapted,
-    adapted.replace(/\./g, ', and this reflects his approach.'),
-    adapted + ' This is part of his ongoing exploration.'
+    adapted + ' This insight stems from Wahib\'s core research methodology.',
+    adapted + ' Feel free to ask more about this specific thread.'
   ];
-  
+
   return variations[Math.floor(Math.random() * variations.length)];
 };
 
 // Rule-based response generator (fallback)
 const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName, conversationHistory) => {
   const greeting = userName ? `Hi ${userName.split(' ')[0]}! ` : '';
-  
+
   // Decision/Commitment deferral - comprehensive pattern matching
   // Check intent first (most reliable)
   if (intent === 'decision') {
@@ -317,7 +322,7 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
       deferral: true
     };
   }
-  
+
   // Also check for decision patterns as fallback
   const decisionPatterns = [
     /\b(arrange|arranges|arranged|arranging|schedule|schedules|scheduled|scheduling)\b/i,
@@ -354,9 +359,9 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
   }
 
   // Academic/Scholarship - check for exact quick reply match first
-  if (lowerQuery === 'academic achievements' || 
-      intent === 'academic' || 
-      lowerQuery.match(/\b(academic|education|scholarship|achievement)\b/i)) {
+  if (lowerQuery === 'academic achievements' ||
+    intent === 'academic' ||
+    lowerQuery.match(/\b(academic|education|scholarship|achievement)\b/i)) {
     const academic = wahibKnowledge.academic;
     return {
       text: `${greeting}Wahib's academic journey includes completing O-Levels in 2024 with high grades and a High Achievement Certificate. He was awarded an Academic Excellence Scholarship in 2024 for outstanding performance and innovative project work. Throughout A-Levels, he's maintained high standards in Maths, Physics, and Computer Science while mentoring peers.`,
@@ -374,7 +379,7 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
       'Fund My Life',
       'MagicTask'
     ]);
-    
+
     if (matchedProject) {
       const project = projects.find(p => p.name.toLowerCase() === matchedProject.toLowerCase());
       if (project) {
@@ -386,7 +391,7 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
         };
       }
     }
-    
+
     return {
       text: `${greeting}Wahib has several research-driven projects exploring technology, behavioral science, and social impact.`,
       actionLink: "/projects",
@@ -396,9 +401,9 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
   }
 
   // Research interests - check for exact quick reply match first
-  if (lowerQuery === 'research interests' || 
-      intent === 'research' || 
-      lowerQuery.match(/\b(research|interest|study|focus|what.*study|what.*research)\b/i)) {
+  if (lowerQuery === 'research interests' ||
+    intent === 'research' ||
+    lowerQuery.match(/\b(research|interest|study|focus|what.*study|what.*research)\b/i)) {
     const research = wahibKnowledge.research;
     return {
       text: `${greeting}Wahib's research spans several interconnected areas: Psychology & Philosophy (human readability, Fogg Behavior Model B=MAT, behavioral economics from Kahneman/Ariely/Thaler, philosophical inquiry into ethics and human evolution), Tech & Systems Architecture (microservices logic, recommender systems, bot orchestration, system design thinking), and Society & Geopolitics (trend seeding, Cunningham's Law, fintech for humanitarian aid, geopolitical analysis). He's particularly interested in how technology can serve humanitarian goals rather than just profit.`,
@@ -415,9 +420,9 @@ const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName,
     `${greeting}That's a thoughtful question. I'm working with information from Wahib's portfolio covering: projects (research-driven applications and blueprint ideas), academic journey (O-Levels 2024, A-Levels, Academic Excellence Scholarship 2024), work (Research Assistant, full-stack development), research (Psychology, Tech, Society, Humanitarian focus), mission, ventures, interests, and goals. Could you be more specific about what you'd like to know?`,
     `${greeting}I can help with questions about Wahib's projects, academic journey (including scholarship details), work experience, research interests, mission & philosophy, ventures, interests, leadership programs, or how to contact him. What would you like to explore?`
   ];
-  
+
   const randomIndex = Math.floor(Math.random() * genericResponses.length);
-  
+
   return {
     text: genericResponses[randomIndex],
     actionLink: null,

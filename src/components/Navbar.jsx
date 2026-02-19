@@ -1,130 +1,107 @@
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import { logo } from "../assets/images";
-import useAlert from "../hooks/useAlert";
-import { Alert } from "./";
+const navLinks = [
+  { to: "/", label: "Home", exact: true },
+  { to: "/projects", label: "Projects" },
+  { to: "/governance", label: "Governance Lab" },
+  { to: "/investments", label: "Capital Allocation" },
+  { to: "/research", label: "Research" },
+  { to: "/pilots", label: "Pilots" },
+  { to: "/reflections", label: "Reflections" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
 
 const Navbar = () => {
-  const { alert, showAlert, hideAlert } = useAlert();
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleCVDownload = () => {
-    // Show confirmation first
-    if (!isDownloading) {
-      setIsDownloading(true);
-      showAlert({
-        show: true,
-        text: "Downloading your CV... 📄",
-        type: "success",
-      });
-
-      // Create a temporary anchor element to trigger download
-      const link = document.createElement("a");
-      link.href = "/Wahib_CV.pdf"; // Update this path to your actual CV file path
-      link.download = "Wahib_CV.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Show thank you message after a short delay
-      setTimeout(() => {
-        hideAlert();
-        setTimeout(() => {
-          showAlert({
-            show: true,
-            text: "Thanks for downloading! Hope you like it! 😊",
-            type: "success",
-          });
-          setTimeout(() => {
-            hideAlert();
-            setIsDownloading(false);
-          }, 3000);
-        }, 500);
-      }, 1000);
-    }
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      {alert.show && <Alert {...alert} />}
-      <header className='header'>
-        <NavLink to='/' className="group">
-        <div className="relative bg-white w-16 h-14 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex items-center justify-center overflow-hidden">
-          {/* Blue gradient W letter */}
-          <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent group-hover:opacity-0 group-hover:scale-0 transition-all duration-300 z-10">
-            W
-          </span>
-          {/* Full name on hover */}
-          <span className="absolute inset-0 flex items-center justify-center text-base font-semibold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 whitespace-nowrap px-2">
-            WAHIB
-          </span>
-          {/* Subtle gradient overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-50/0 group-hover:from-blue-50/40 group-hover:to-blue-100/30 transition-all duration-300 rounded-xl pointer-events-none"></div>
-        </div>
-      </NavLink>
-      <nav className='flex text-lg gap-6 font-medium items-center'>
-        <NavLink 
-          to='/about' 
-          className={({ isActive }) => 
-            `relative transition-all duration-200 px-2 py-1 ${
-              isActive 
-                ? "text-blue-600 font-semibold" 
-                : "text-slate-600 hover:text-blue-600"
-            }`
-          }
-        >
-          About
-          {({ isActive }) => isActive && (
-            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] rounded-full"></span>
-          )}
-        </NavLink>
-        <NavLink 
-          to='/projects' 
-          className={({ isActive }) => 
-            `relative transition-all duration-200 px-2 py-1 ${
-              isActive 
-                ? "text-blue-600 font-semibold" 
-                : "text-slate-600 hover:text-blue-600"
-            }`
-          }
-        >
-          Projects
-          {({ isActive }) => isActive && (
-            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] rounded-full"></span>
-          )}
-        </NavLink>
-        <NavLink 
-          to='/contact' 
-          className={({ isActive }) => 
-            `relative transition-all duration-200 px-2 py-1 ${
-              isActive 
-                ? "text-blue-600 font-semibold" 
-                : "text-slate-600 hover:text-blue-600"
-            }`
-          }
-        >
-          Contact
-          {({ isActive }) => isActive && (
-            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] rounded-full"></span>
-          )}
-        </NavLink>
-        <button
-          onClick={handleCVDownload}
-          className='text-slate-600 hover:text-blue-600 transition-all duration-200 flex items-center gap-1.5 group/cv px-2 py-1'
-        >
-          <span>CV</span>
-          <svg 
-            className='w-4 h-4 group-hover/cv:translate-y-0.5 transition-transform duration-200' 
-            fill='none' 
-            stroke='currentColor' 
-            viewBox='0 0 24 24'
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100"
+          : "bg-white/70 backdrop-blur-sm"
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm font-playfair">W</span>
+            </div>
+            <div className="hidden sm:block">
+              <span className="text-sm font-semibold text-slate-900 tracking-tight">Wahib</span>
+              <span className="text-xs text-slate-400 block leading-none tracking-widest uppercase">Governance & EdTech Lab</span>
+            </div>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.exact}
+                className={({ isActive }) =>
+                  `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+            aria-label="Toggle menu"
           >
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4' />
-          </svg>
-        </button>
-      </nav>
-    </header>
+            {mobileOpen ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div className="lg:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.exact}
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `block px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+        )}
+      </header>
     </>
   );
 };

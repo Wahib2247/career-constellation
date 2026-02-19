@@ -61,8 +61,8 @@ export const wahibKnowledge = {
     fundMyLife: {
       name: "Fund My Life",
       status: "Blueprint Stage",
-      description: typeof aboutContent.ventures.items[0].content === 'string' 
-        ? aboutContent.ventures.items[0].content 
+      description: typeof aboutContent.ventures.items[0].content === 'string'
+        ? aboutContent.ventures.items[0].content
         : aboutContent.ventures.items[0].content.join(" ")
     }
   },
@@ -148,7 +148,8 @@ export const keywordMap = {
     'research assistant', 'independent study', 'full-stack', 'fullstack',
     'developer', 'development', 'web development', 'react', 'node', 'javascript',
     'typescript', 'mongodb', 'express', 'tech', 'technology', 'technical',
-    'programming', 'coding', 'software engineering', 'engineering'
+    'programming', 'coding', 'software engineering', 'engineering',
+    'DataByte', 'FastTech', 'MagicTask', 'Solutions Ltd', 'Software House'
   ],
   research: [
     'research', 'researches', 'researching', 'study', 'studies', 'studying',

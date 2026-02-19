@@ -14,7 +14,7 @@ const ProjectDetail = () => {
   }, []);
 
   const project = projects.find(
-    (p) => p.name.toLowerCase().replace(/\s+/g, "-") === projectSlug?.toLowerCase()
+    (p) => p.slug.toLowerCase() === projectSlug?.toLowerCase()
   );
 
   const slugToKeyMap = useMemo(() => ({
