@@ -3,10 +3,10 @@
 
 // ─── METRICS ────────────────────────────────────────────────────────────────
 export const metrics = [
-    { value: 120, label: "Students Impacted", suffix: "+", description: "Across pilot programs (Pilot)" },
-    { value: 8, label: "Research Papers", suffix: "", description: "Published & in progress (Prototype)" },
-    { value: 5, label: "Institutional Frameworks", suffix: "", description: "Designed & documented (Prototype)" },
-    { value: 12, label: "Prototype Systems", suffix: "+", description: "Built & tested (Prototype)" },
+    { value: 120, label: "Students Impacted", suffix: "+", description: "Across pilot programs" },
+    { value: 4, label: "Research Papers", suffix: "", description: "Working papers and preprints" },
+    { value: 5, label: "Institutional Frameworks", suffix: "", description: "Designed and documented" },
+    { value: 4, label: "Prototype Systems", suffix: "", description: "Built and tested" },
 ];
 
 export const projects = [
@@ -108,7 +108,7 @@ export const researchPapers = [
         policyImplications: "EdTech platforms should adopt hybrid incentive models that transition from extrinsic to intrinsic rewards over time, with mandatory 'incentive holidays' to preserve autonomy.",
         tags: ["Education", "Economics", "Technology"],
         pages: 24,
-        citations: 47,
+        citations: "Academic sources reviewed",
     },
     {
         id: "institutional-governance-schools",
@@ -124,7 +124,7 @@ export const researchPapers = [
         policyImplications: "National education policies should mandate minimum governance standards for all institutions, including stakeholder rights charters and democratic decision-making mechanisms.",
         tags: ["Governance", "Education"],
         pages: 31,
-        citations: 62,
+        citations: "Academic sources reviewed",
     },
     {
         id: "micro-investment-education",
@@ -132,7 +132,7 @@ export const researchPapers = [
         subtitle: "Community Capital in Outcome-Based Funding",
         category: "Economics",
         year: "2023",
-        status: "Published",
+        status: "Working Paper",
         abstract: "Traditional educational funding models fail to create accountability between funders and outcomes. This paper proposes a micro-investment framework that enables community members to fund specific educational milestones with transparent outcome tracking.",
         researchQuestion: "Can outcome-linked micro-investment models increase both educational funding and accountability while maintaining institutional autonomy?",
         methodology: "Economic modeling of 5 funding scenarios, analysis of existing impact investment literature, and design of a pilot investment framework.",
@@ -140,7 +140,7 @@ export const researchPapers = [
         policyImplications: "Governments should create regulatory frameworks enabling educational micro-investments, with tax incentives for outcome-linked community funding.",
         tags: ["Economics", "Education"],
         pages: 19,
-        citations: 38,
+        citations: "Academic sources reviewed",
     },
     {
         id: "youth-governance-innovation",
@@ -156,7 +156,7 @@ export const researchPapers = [
         policyImplications: "Institutions should create formal youth governance tracks with mentorship, resources, and decision-making authority — not just advisory roles.",
         tags: ["Governance", "Education"],
         pages: 28,
-        citations: 41,
+        citations: "Academic sources reviewed",
     },
 ];
 

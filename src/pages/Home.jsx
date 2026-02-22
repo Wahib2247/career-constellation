@@ -98,8 +98,8 @@ const Home = () => {
               className="mt-6 text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Designing Systems That{" "}
-              <span className="italic text-slate-500">Democratize</span>{" "}
+              Researching Systems for{" "}
+              <span className="italic text-slate-500">Equitable</span>{" "}
               Education and Governance.
             </motion.h1>
 
@@ -109,7 +109,7 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-8 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl font-inter"
             >
-              Building equitable education infrastructure, micro-investment ecosystems, and institutional governance frameworks — from the ground up, with evidence.
+              Researching education systems, investment frameworks, and institutional governance — focusing on evidence-based documentation and prototypes.
             </motion.p>
 
             <motion.div
@@ -160,7 +160,8 @@ const Home = () => {
       </section>
 
       {/* ─── METRICS ─── */}
-      <section ref={metricsRef} className="py-20 bg-white border-y border-slate-100">
+      {/* temporarily removed to prevent incorrect data from being displayed */}
+      {/* <section ref={metricsRef} className="py-20 bg-white border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-12">
           <FadeIn className="text-center mb-12">
             <span className="section-label">Impact to Date</span>
@@ -176,15 +177,15 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ─── INSTITUTIONAL VISION ─── */}
       <section className="py-24 bg-paper-cool">
         <div className="max-w-7xl mx-auto px-6 sm:px-12">
           <FadeIn className="mb-16">
-            <span className="section-label">Institutional Vision</span>
+            <span className="section-label">Research Focus</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mt-4 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Three Pillars of Systemic Change
+              Frameworks for Systemic Analysis
             </h2>
           </FadeIn>
 
@@ -192,21 +193,18 @@ const Home = () => {
             {[
               {
                 icon: "🏛️",
-                title: "Education as Infrastructure",
-                body: "Education systems should be designed like public infrastructure — with formal governance, accountability mechanisms, and stakeholder rights. Not as service delivery, but as democratic institutions.",
-                link: "/projects",
+                title: "Education Systems Architecture",
+                body: "I analyze how schools can be structured with defined governance and accountability systems. I study how institutional design affects long-term educational outcomes.", link: "/projects",
               },
               {
                 icon: "⚖️",
-                title: "Governance as Technology",
-                body: "Governance frameworks are a form of social technology — they can be designed, tested, iterated, and improved. Modern institutional design should apply engineering rigor to governance.",
-                link: "/governance",
+                title: "Governance Analysis",
+                body: "I treat governance as a system that can be mapped and documented. Through small-scale frameworks, I study how decision structures influence institutional performance.", link: "/governance",
               },
               {
                 icon: "📊",
-                title: "Economics of Inclusion",
-                body: "Economic exclusion from education is a design choice that can be reversed with better economic models. Micro-investment and outcome-based funding can align incentives across all stakeholders.",
-                link: "/research",
+                title: "Economic Frameworks",
+                body: "I research alternative funding models, including investment and outcome-based approaches, to understand how financial structure shapes access to education.", link: "/research",
               },
             ].map((pillar, i) => (
               <FadeIn key={pillar.title} delay={i * 0.15}>
@@ -244,13 +242,13 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <FadeIn>
               <span className="inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase text-blue-400 border border-blue-400/30 rounded-full mb-6">
-                Flagship Platform
+                Primary Case Study
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
                 ClassFusion
               </h2>
               <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                An adaptive learning platform integrating behavioral incentive systems, teacher governance tools, and micro-investment mechanisms to democratize quality education.
+                An adaptive learning prototype exploring incentive systems, governance tools, and investment mechanisms in an educational context.
               </p>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {[
@@ -321,8 +319,8 @@ const Home = () => {
                   <div className="doc-card h-full flex flex-col">
                     <div className="flex items-center justify-between mb-4">
                       <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${project.statusColor === "blue" ? "bg-blue-50 text-blue-700 border border-blue-100" :
-                          project.statusColor === "green" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
-                            "bg-amber-50 text-amber-700 border border-amber-100"
+                        project.statusColor === "green" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
+                          "bg-amber-50 text-amber-700 border border-amber-100"
                         }`}>
                         {project.status}
                       </span>
@@ -377,8 +375,8 @@ const Home = () => {
                             {paper.category}
                           </span>
                           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${paper.status === "Published" ? "bg-emerald-50 text-emerald-700" :
-                              paper.status === "Draft" ? "bg-amber-50 text-amber-700" :
-                                "bg-blue-50 text-blue-700"
+                            paper.status === "Draft" ? "bg-amber-50 text-amber-700" :
+                              "bg-blue-50 text-blue-700"
                             }`}>
                             {paper.status}
                           </span>
@@ -392,7 +390,7 @@ const Home = () => {
                       </div>
                       <div className="hidden sm:flex flex-col items-end gap-2 shrink-0 text-right">
                         <span className="text-xs text-slate-400">{paper.pages} pages</span>
-                        <span className="text-xs text-slate-400">{paper.citations} citations</span>
+                        <span className="text-xs text-slate-400">{paper.citations}</span>
                       </div>
                     </div>
                   </div>

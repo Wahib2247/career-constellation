@@ -42,7 +42,7 @@ const InvestmentDetail = () => {
                         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
-                        Return to Lab
+                        Return to Journal
                     </Link>
                     <div className="flex gap-2">
                         <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">{item.sector}</span>
@@ -57,7 +57,7 @@ const InvestmentDetail = () => {
                             <img src={item.logo} alt={item.name} className="w-full h-full object-contain" />
                         </div>
                         <h1 className="text-5xl lg:text-6xl font-black text-slate-900 mb-8 leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
-                            Analysis: <br />
+                            Documentation: <br />
                             <span className="italic text-slate-400">{item.name}</span>
                         </h1>
                         <p className="text-xl text-slate-600 leading-relaxed font-medium">
@@ -69,7 +69,7 @@ const InvestmentDetail = () => {
                         <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full -mr-32 -mt-32 transition-transform duration-700 group-hover:scale-125" />
                             <div className="relative z-10">
-                                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-blue-400 mb-6">Investigator's Summary</h3>
+                                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-blue-400 mb-6">Personal Summary</h3>
                                 <p className="text-slate-300 mb-8 leading-relaxed italic border-l-2 border-blue-500 pl-6">
                                     "{item.learningOutcomes}"
                                 </p>
@@ -80,7 +80,7 @@ const InvestmentDetail = () => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Focus Mode</p>
-                                        <p className="font-bold text-sm text-white">Systems Micro-Analysis</p>
+                                        <p className="font-bold text-sm text-white">Reflective Notes</p>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@ const InvestmentDetail = () => {
 
                         {/* 1. Why I Invested (Thesis) */}
                         <FadeIn>
-                            <SectionHeader label="Thesis Exploration" title="Investment Rationale" />
+                            <SectionHeader label="Documentation" title="Investment Reflection" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {[
                                     { label: "Market Gap", content: item.whyIInvested.marketGap },
@@ -112,9 +112,9 @@ const InvestmentDetail = () => {
                             </div>
                         </FadeIn>
 
-                        {/* 2. Systemic Relevance */}
+                        {/* 2. Research Connection */}
                         <FadeIn>
-                            <SectionHeader label="Connection Graph" title="Systemic Relevance" />
+                            <SectionHeader label="Context" title="Research Connection" />
                             <div className="space-y-4">
                                 {[
                                     { title: "Education Impact", content: item.systemicRelevance.education },
@@ -138,7 +138,7 @@ const InvestmentDetail = () => {
                         {/* 3. Risk Reflection */}
                         <FadeIn delay={0.2}>
                             <div className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8">
-                                <SectionHeader label="Adversarial Analysis" title="Risk Reflection" />
+                                <SectionHeader label="Considerations" title="Personal Risks" />
                                 <div className="space-y-8">
                                     {[
                                         { label: "Scaling Barriers", content: item.riskReflection.scalingBarriers },
@@ -162,12 +162,12 @@ const InvestmentDetail = () => {
                         {/* 4. Contact / Follow up */}
                         <FadeIn delay={0.3}>
                             <div className="p-8 bg-blue-600 rounded-[2rem] text-white">
-                                <h3 className="font-bold text-xl mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Discuss this Thesis</h3>
+                                <h3 className="font-bold text-xl mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Discuss this Topic</h3>
                                 <p className="text-blue-100 text-sm mb-6 leading-relaxed">
-                                    Have insights on the governance or market dynamics of this sector? Let's conduct a peer review.
+                                    Have insights on the governance or market dynamics of this sector? I'm always open to learning more.
                                 </p>
                                 <Link to="/contact" className="w-full py-4 bg-white text-blue-600 rounded-xl font-bold text-sm block text-center hover:bg-blue-50 transition-colors">
-                                    Open Investigation
+                                    Contact
                                 </Link>
                             </div>
                         </FadeIn>

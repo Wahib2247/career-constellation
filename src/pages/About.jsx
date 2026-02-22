@@ -59,15 +59,15 @@ const About = () => {
                 className="text-5xl sm:text-6xl font-bold text-slate-900 mt-4 mb-6 leading-tight"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Institutional<br />
-                <span className="italic text-slate-400">Architect</span>
+                Systems<br />
+                <span className="italic text-slate-400">Researcher</span>
               </h1>
               <p className="text-blue-600 font-medium italic mb-6">"{signatureQuote}"</p>
               <p className="text-slate-600 text-lg leading-relaxed mb-6">
                 I work at the intersection of education systems, governance innovation, and economic inclusion — designing institutional frameworks, running behavioral pilots, and building technology that makes these systems tangible.
               </p>
               <p className="text-slate-600 leading-relaxed">
-                My goal is not to build products, but to build <em>infrastructure</em>: the governance frameworks, economic models, and institutional architectures that make equitable education possible at scale.
+                My goal is to develop <em>systems analysis</em>: governance frameworks, economic models, and institutional architectures that support equitable access to education.
               </p>
               <div className="mt-8 flex gap-4">
                 <Link to="/contact" className="btn-primary">
@@ -91,7 +91,7 @@ const About = () => {
                   {[
                     { label: "Focus", value: "Education Systems & Governance" },
                     { label: "Location", value: "Pakistan" },
-                    { label: "Status", value: "Student Founder" },
+                    { label: "Role", value: "Independent Researcher" },
                     { label: "Seeking", value: "Research Partners, Institutional Pilots" },
                   ].map(item => (
                     <div key={item.label} className="flex items-start gap-4">

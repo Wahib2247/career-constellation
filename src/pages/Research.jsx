@@ -42,7 +42,7 @@ const PaperCard = ({ paper }) => {
                         {paper.status}
                     </span>
                     <span className="text-xs text-slate-400">{paper.year}</span>
-                    <span className="text-xs text-slate-400 ml-auto">{paper.pages} pages · {paper.citations} citations</span>
+                    <span className="text-xs text-slate-400">{paper.pages} pages · {paper.citations}</span>
                 </div>
 
                 <h2

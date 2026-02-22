@@ -611,12 +611,12 @@ ${'='.repeat(50)}`;
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h3 className='text-slate-900 font-black text-base uppercase tracking-tight' style={{ fontFamily: "'Playfair Display', serif" }}>Neural Core v4</h3>
-                <span className="px-1.5 py-0.5 bg-blue-600 text-white text-[8px] font-black uppercase tracking-widest rounded shadow-sm">Verified</span>
+                <h3 className='text-slate-900 font-black text-xs uppercase tracking-tight' style={{ fontFamily: "'Playfair Display', serif" }}>Documentation Assistant</h3>
+                <span className="px-1.5 py-0.5 bg-slate-200 text-slate-600 text-[8px] font-black uppercase tracking-widest rounded shadow-sm">v1.0</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                <p className='text-slate-400 text-[9px] uppercase tracking-[0.2em] font-black leading-none'>System: Stable // Integrity 100%</p>
+                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
+                <p className='text-slate-400 text-[9px] uppercase tracking-[0.2em] font-black leading-none'>UI Theme: Documentation Layout</p>
               </div>
             </div>
           </div>
@@ -634,10 +634,10 @@ ${'='.repeat(50)}`;
         {showUserForm && (
           <div className='p-10 flex-1 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-4 duration-700'>
             <div className='text-center mb-8'>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-4 block">Access protocol</span>
-              <h2 className="text-3xl font-bold text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Identify Observer</h2>
+              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-black">Archive Status: Online</span>
+              <h2 className="text-3xl font-bold text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Guest Registration</h2>
               <p className="text-slate-500 text-sm leading-relaxed px-4 font-medium">
-                Authentication required to map query vectors within the laboratory data-space.
+                Please provide your contact details to begin the inquiry.
               </p>
             </div>
 
@@ -660,11 +660,11 @@ ${'='.repeat(50)}`;
               />
               <button
                 type='submit'
-                className='w-full px-4 py-5 bg-slate-900 text-white text-sm font-black uppercase tracking-widest rounded-[1.5rem] hover:bg-blue-600 active:scale-[0.98] transition-all duration-300 shadow-2xl shadow-slate-900/20 flex items-center justify-center gap-3 group mt-4'
+                className='w-full px-4 py-5 bg-slate-900 text-white text-sm font-black uppercase tracking-widest rounded-[1.5rem] hover:bg-slate-800 active:scale-[0.98] transition-all duration-300 shadow-2xl shadow-slate-900/20 flex items-center justify-center gap-3 group mt-4'
               >
-                Establish Link
+                Start Chat
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d='M13 7l5 5m0 0l-5 5m5-5H6' />
                 </svg>
               </button>
             </form>
@@ -689,7 +689,7 @@ ${'='.repeat(50)}`;
                       <div className={`relative max-w-[88%]`}>
                         {isBot && (
                           <div className="flex items-center gap-2 mb-2 px-1">
-                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">Core Engine</span>
+                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500">Documentation Assistant</span>
                             <span className="w-1 h-1 bg-slate-300 rounded-full" />
                           </div>
                         )}
@@ -817,7 +817,7 @@ ${'='.repeat(50)}`;
               <div className="w-20 h-20 bg-white border border-slate-200 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-institutional transform -rotate-3 group hover:rotate-0 transition-transform duration-500">
                 <span className="text-4xl text-blue-500">⚛</span>
               </div>
-              <p className="text-slate-500 text-xs font-black uppercase tracking-[0.3em] mb-6">Inquiry terminated</p>
+              <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest">Documentation Assistant v1.0 // Karachi, PK</p>
               <p className='text-slate-700 text-[15px] leading-relaxed px-4 font-medium mb-8'>
                 {sessionTimedOut
                   ? "Transmission pulse lost. Local cache remains accessible."

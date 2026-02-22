@@ -47,7 +47,7 @@ const Footer = () => {
             </Link>
 
             <p className="text-slate-400 text-base leading-relaxed mb-8 max-w-sm">
-              Designing democratic systems that decentralize institutional power and democratize education. Building the architecture for a more equitable future through systems thinking and behavioral economics.
+              Researching systems for equitable education and institutional governance. Developing frameworks for systemic access through systems thinking and behavioral economics.
             </p>
 
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl mb-8 relative group overflow-hidden">
@@ -121,8 +121,8 @@ const Footer = () => {
             <p className="text-slate-500 text-[11px] font-medium">
               © {year} Wahib2247 · Governance & EdTech Research Lab
             </p>
-            <p className="text-slate-700 text-[9px] tracking-[0.2em] font-black">
-              PROTOTYPING POSITIVE SUM REVOLUTIONS
+            <p className="text-slate-700 text-[9px] tracking-[0.2em] font-black uppercase">
+              Systems Research & Institutional Design
             </p>
           </div>
 

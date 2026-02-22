@@ -80,7 +80,7 @@ const Contact = () => {
               className="text-4xl sm:text-5xl font-bold text-slate-900 mt-4 mb-6 max-w-2xl"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Open a Channel
+              Contact
             </h1>
             <p className="text-slate-600 text-lg max-w-2xl leading-relaxed">
               Research partnerships, institutional pilots, governance consultations, and co-design opportunities. If you're working on education equity or governance innovation, let's connect.

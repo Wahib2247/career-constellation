@@ -21,12 +21,12 @@ const Investments = () => {
                 {/* Header */}
                 <section className="mb-16">
                     <FadeIn>
-                        <span className="section-label">Investment Research</span>
+                        <span className="section-label">Personal Capital Journal</span>
                         <h1 className="text-5xl font-bold text-slate-900 mt-4 mb-6 tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-                            Capital Allocation <span className="italic text-slate-400">Lab</span>
+                            Micro-Investment <span className="italic text-slate-400">Notes</span>
                         </h1>
                         <p className="text-slate-600 text-lg leading-relaxed max-w-3xl">
-                            Applying systems thinking to capital allocation. This lab reframes investment from speculative trading to academic research — exploring how capital flows can catalyze institutional innovation, educational equity, and systemic change.
+                            This page documents small personal investments I make in companies whose work aligns with my research interests — education access, governance tools, and financial inclusion. I do not trade actively. I allocate modest amounts of personal savings as a way to support ideas I believe contribute positively to society.
                         </p>
                     </FadeIn>
                 </section>
@@ -38,9 +38,9 @@ const Investments = () => {
                             🔬
                         </div>
                         <div>
-                            <h3 className="font-bold text-blue-900 mb-1">Research Protocol</h3>
+                            <h3 className="font-bold text-blue-900 mb-1">Documentation Approach</h3>
                             <p className="text-blue-800/80 text-sm leading-relaxed">
-                                Every allocation listed here is treated as a <strong>systemic case study</strong>. We analyze company governance, innovation models, and inclusion potential to understand how capital influences human flourishing.
+                                Each investment is logged with short notes explaining why I find the company's mission meaningful, what problem it attempts to solve, and how its model connects to my research. These are reflective notes — not financial advice.
                             </p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@ const Investments = () => {
                                         </p>
 
                                         <div className="pt-6 border-t border-slate-50 flex items-center justify-between mt-auto">
-                                            <span className="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors">View Case Study</span>
+                                            <span className="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors">View Reflection</span>
                                             <div className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all">
                                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -100,13 +100,13 @@ const Investments = () => {
 
                 {/* Ethical Footer */}
                 <FadeIn delay={0.4} className="mt-20 pt-10 border-t border-slate-100 text-center">
-                    <p className="text-slate-400 text-xs uppercase tracking-widest font-black mb-4">Institutional Safety Protocol</p>
+                    <p className="text-slate-400 text-xs uppercase tracking-widest font-black mb-4">Personal Guidelines</p>
                     <div className="flex flex-wrap justify-center gap-6">
                         {[
-                            "Research-based Allocations Only",
-                            "No Speculative Trading",
-                            "Systems Analysis Priority",
-                            "Transparent Governance Research"
+                            "No speculative trading",
+                            "Avoid short-term profit strategies",
+                            "Mission alignment over returns",
+                            "Invest only what I can afford to lose"
                         ].map(rule => (
                             <div key={rule} className="flex items-center gap-2 text-slate-500 text-xs font-medium">
                                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />

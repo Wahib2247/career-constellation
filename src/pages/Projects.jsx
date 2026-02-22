@@ -101,7 +101,7 @@ const Projects = () => {
       {/* ----------------- FOOTER CTA ----------------- */}
       <div className="mt-32 text-center pb-12">
         <div className="inline-flex items-center justify-center w-16 h-1 bg-slate-200 rounded-full mb-8"></div>
-        <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">Transmission Ends</p>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">Navigation</p>
         <p className="text-slate-500 font-light max-w-lg mx-auto leading-relaxed">
           The index is constantly updating. Do you have a research query? <br />
           <Link to="/contact" className="text-blue-600 font-medium hover:text-blue-800 border-b border-blue-200 hover:border-blue-600 transition-colors">Submit a new variable.</Link>

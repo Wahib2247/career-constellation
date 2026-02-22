@@ -165,7 +165,15 @@ const generateMLResponse = async (query, context, knowledgeBase) => {
   }
 
   try {
-    const systemPrompt = `You are Wahib's AI counterpart, an interim representative helping visitors explore his portfolio. 
+    const systemPrompt = `You are Wahib's Documentation Assistant—a digital companion designed to help visitors navigate his research explorations and personal documentation.
+        
+        Your Mission:
+        - Provide grounded, accurate information based on the provided Knowledge Base.
+        - Maintain a reflective, disciplined, and intellectually serious tone (like a student-researcher).
+        - Refrain from using theatrical, sci-fi, or overly institutional language.
+        - Clarify that investments are personal micro-allocations made from modest savings for mission alignment.
+        - Avoid technical jargon unless necessary for research context.
+        - Be direct and refuse to engage in speculative or self-promotional hype.
 
 KNOWLEDGE BASE:
 ${JSON.stringify(knowledgeBase, null, 2)}
@@ -183,13 +191,14 @@ CRITICAL RULES:
 8. Use the user's name if provided in context
 9. For generic queries (like "jd", "dksa", "ssda", "vafv", "lol", "qwe", etc.), provide helpful context about what you CAN discuss rather than just asking for clarification
 
-CONTEXT: ${JSON.stringify(context)}`;
+CONTEXT: ${JSON.stringify(context)}
+`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey} `
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini', // Free tier friendly - cost-efficient model
@@ -203,7 +212,7 @@ CONTEXT: ${JSON.stringify(context)}`;
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      throw new Error(`API error: ${response.status} `);
     }
 
     const data = await response.json();
@@ -285,11 +294,11 @@ const adaptResponse = (learnedResponse, userName, currentQuery) => {
   // Personalize with name if available
   if (userName && !adapted.includes(userName.split(' ')[0])) {
     const greetings = [
-      `Hi ${userName.split(' ')[0]}! `,
+      `Hi ${userName.split(' ')[0]} ! `,
       `Hello ${userName.split(' ')[0]}, `,
       `Thanks for the inquiry, ${userName.split(' ')[0]}. `,
     ];
-    adapted = `${greetings[Math.floor(Math.random() * greetings.length)]}${adapted}`;
+    adapted = `${greetings[Math.floor(Math.random() * greetings.length)]}${adapted} `;
   }
 
   // Add context-aware variations (removed repetitive phrases)
@@ -304,14 +313,14 @@ const adaptResponse = (learnedResponse, userName, currentQuery) => {
 
 // Rule-based response generator (fallback)
 const generateRuleBasedResponse = (correctedQuery, lowerQuery, intent, userName, conversationHistory) => {
-  const greeting = userName ? `Hi ${userName.split(' ')[0]}! ` : '';
+  const greeting = userName ? `Hi ${userName.split(' ')[0]} ! ` : '';
 
   // Decision/Commitment deferral - comprehensive pattern matching
   // Check intent first (most reliable)
   if (intent === 'decision') {
     const decisionResponses = [
-      `${greeting}Noted — Wahib will deliver his response directly. You can also reach him via the Contact page.`,
-      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this. You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
+      `${greeting} Noted — Wahib will deliver his response directly.You can also reach him via the Contact page.`,
+      `${greeting}I understand you'd like to connect with Wahib. While I can't arrange meetings directly, Wahib will get back to you personally about this.You can also reach him through the Contact page — he's always open to meaningful conversations and collaborations.`,
       `${greeting}For personal arrangements like meetings or collaborations, Wahib prefers to respond directly. You can reach him through the Contact page, and he'll get back to you soon!`,
       `${greeting}I appreciate your interest! For scheduling, meetings, or commitments, Wahib handles these personally. Please reach out through the Contact page, and he'll respond directly.`
     ];

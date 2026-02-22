@@ -8,10 +8,10 @@ export const investments = [
         logo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", // Mockup logo
         companyOverview: "A next-generation platform focused on providing high-quality educational resources to low-income regions through micro-transactions and offline-first mobile architecture.",
         whyIInvested: {
-            marketGap: "Existing EdTech solutions focus on high-bandwidth, high-income urban populations, leaving a massive secondary market in developing nations untapped.",
-            innovationModel: "Proprietary data compression and localized edge-caching allows complex interactive lessons to run on $50 smartphones with minimal data.",
-            governanceStructure: "Implements a community-led curriculum board where local educators have veto power over content relevance.",
-            inclusionPotential: "Directly addresses the digital divide by lowering the financial and technical entry barrier for quality learning."
+            marketGap: "I noticed that existing EdTech solutions often focus on high-bandwidth urban populations, leaving a secondary market in developing regions underserved.",
+            innovationModel: "The reliance on data compression and localized caching allows interactive lessons to run on basic smartphones with minimal data cost.",
+            governanceStructure: "The community-led curriculum board ensures local educators have a direct say in content relevance.",
+            inclusionPotential: "This approach lowers the financial and technical entry barrier for quality learning in underserved communities."
         },
         systemicRelevance: {
             education: "Links to Research Lab projects like ClassFusion in understanding cognitive compatibility in resource-constrained environments.",
@@ -35,10 +35,10 @@ export const investments = [
         logo: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
         companyOverview: "A decentralized liquidity protocol designed to smooth charitable flows, similar to the FlowFund concept in the Governance Lab.",
         whyIInvested: {
-            marketGap: "Traditional aid is episodic; beneficiaries face 'zero-balance periods' between aid cycles.",
-            innovationModel: "Continuous vesting smart contracts that stream USDC to verified recipient wallets second-by-second.",
-            governanceStructure: "DAO-based verification where local NGOs act as 'Oracles' to verify ground-level impact and need.",
-            inclusionPotential: "Removes the banking requirement for recipients, allowing them to participate in global liquidity pools directly."
+            marketGap: "Beneficiaries often face periods with no aid between cycles. I followed this company to see how they solve for these gaps.",
+            innovationModel: "The use of continuous vesting contracts to stream support to recipient wallets seemed like a practical exploration of liquidity.",
+            governanceStructure: "Involving local NGOs as verifiers for impact and need adds a layer of ground-level accountability.",
+            inclusionPotential: "It removes the banking requirement for recipients, allowing direct participation in support streams."
         },
         systemicRelevance: {
             education: "Allows for 'Educational UBI' where students receive a continuous stream of support while enrolled.",
@@ -62,10 +62,10 @@ export const investments = [
         logo: "https://cdn-icons-png.flaticon.com/512/1055/1055687.png",
         companyOverview: "A software suite for local municipal governance, allowing citizens to vote on budget allocations and track project implementation in real-time.",
         whyIInvested: {
-            marketGap: "Public trust in municipal spending is at an all-time low due to lack of transparency and participation.",
-            innovationModel: "Quadratic voting system for budget prioritization, coupled with automated milestone reporting from contractors.",
-            governanceStructure: "A revolutionary 'Liquid Democracy' model where citizens can delegate their votes to trusted experts on the platform.",
-            inclusionPotential: "Gives marginalized communities a direct digital channel to influence local policy without requiring political connections."
+            marketGap: "Public trust in municipal spending can be improved through better transparency and participation tools.",
+            innovationModel: "The quadratic voting system for budget prioritization is an interesting experiment in collective decision-making.",
+            governanceStructure: "The delegation model allows citizens to assign their votes to trusted experts for specific topics.",
+            inclusionPotential: "It provides a digital channel for communities to influence local policy directly."
         },
         systemicRelevance: {
             education: "Links to the 'Institutional Governance for Schools' research paper, applying town-hall dynamics to school boards.",
