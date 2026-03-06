@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
@@ -612,7 +612,7 @@ ${'='.repeat(50)}`;
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h3 className='text-slate-900 font-black text-xs uppercase tracking-tight' style={{ fontFamily: "'Playfair Display', serif" }}>Documentation Assistant</h3>
-                <span className="px-1.5 py-0.5 bg-slate-200 text-slate-600 text-[8px] font-black uppercase tracking-widest rounded shadow-sm">v1.0</span>
+                <span className="px-1.5 py-0.5 bg-slate-200 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded shadow-sm">v1.0</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-slate-400 rounded-full" />

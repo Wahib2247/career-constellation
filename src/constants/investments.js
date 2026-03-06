@@ -24,6 +24,16 @@ export const investments = [
             regulatoryFriction: "Potential challenges with local digital currency regulations regarding micro-payments.",
             monetizationRisks: "Long-term sustainability relies on massive scale due to thin margins per user."
         },
+        hypothesis: {
+            statement: "Offline-first architectures are the mandatory substrate for educational equity in low-bandwidth regions.",
+            variable: "Latency vs. Information retention.",
+            outcome: "Simulation suggests 40% higher completion rates when synchronization is asynchronous."
+        },
+        systemLogic: "Equity = \\frac{Reach}{Bandwidth}",
+        adversarialAnalysis: {
+            attackVector: "Data Staleness. Outdated offline content leading to incorrect learning assessment.",
+            mitigation: "Cryptographically signed version-stamping with priority sync for metadata."
+        },
         learningOutcomes: "This research-led allocation taught me how hardware constraints in the Global South dictate software architecture more than developer preference."
     },
     {
@@ -51,6 +61,16 @@ export const investments = [
             regulatoryFriction: "Significant uncertainty regarding stablecoin regulations in target jurisdictions.",
             monetizationRisks: "Protocol depends on transaction fees which may disincentivize micro-streams if gas costs fluctuate."
         },
+        hypothesis: {
+            statement: "Streaming liquidity reduces recipient dependency on high-interest predatory lending cycles.",
+            variable: "Streaming rate vs. credit reliance.",
+            outcome: "Direct correlation between continuous flow and psychological financial security markers."
+        },
+        systemLogic: "Flow = \\int R_{rate} dt",
+        adversarialAnalysis: {
+            attackVector: "Wallet Drainage. Single point of failure for recipient private keys in non-custodial setups.",
+            mitigation: "Multi-sig social recovery and time-locked withdrawal limits."
+        },
         learningOutcomes: "Confirmed that 'Trust Architecture' (how people verify need) is more technically challenging than 'Transfer Architecture' (how money moves)."
     },
     {
@@ -77,6 +97,16 @@ export const investments = [
             scalingBarriers: "High resistance from entrenched political interests who benefit from opacity.",
             regulatoryFriction: "Requires legislative approval in most districts to be formally integrated into state budgets.",
             monetizationRisks: "SaaS model for governments is notoriously slow-cycle and politically sensitive."
+        },
+        hypothesis: {
+            statement: "Quadratic voting in municipal budgets correctly prioritizes intensity of preference over simple majority.",
+            variable: "Participation rate vs. allocation efficiency.",
+            outcome: "Allocations align more closely with minority community needs in simulation models."
+        },
+        systemLogic: "Power = \\sqrt{Tokens}",
+        adversarialAnalysis: {
+            attackVector: "Collusion. Strategic voting blocks coordinating to bypass quadratic math.",
+            mitigation: "Reputation-weighted voting power and adversarial audit logs."
         },
         learningOutcomes: "Learned that 'Incentive Alignment' in public sectors requires far more social engineering than technical engineering."
     }

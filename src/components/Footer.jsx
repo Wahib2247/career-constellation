@@ -38,11 +38,11 @@ const Footer = () => {
           {/* Brand & Quote */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 bg-ink rounded-xl flex items-center justify-center text-paper font-black shadow-lg group-hover:scale-110 transition-transform">
                 W
               </div>
-              <span className="font-bold text-xl tracking-tight text-white group-hover:text-blue-400 transition-colors">
-                Wahib<span className="text-blue-500">.</span>Research
+              <span className="font-black text-xl tracking-tighter text-white group-hover:text-accent transition-colors uppercase">
+                Wahib<span className="text-accent">//</span>Archive
               </span>
             </Link>
 
@@ -51,11 +51,11 @@ const Footer = () => {
             </p>
 
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl mb-8 relative group overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-2xl rounded-full -mr-16 -mt-16 group-hover:bg-blue-500/10 transition-colors" />
-              <p className="text-slate-300 font-medium italic relative z-10">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-2xl rounded-full -mr-16 -mt-16 group-hover:bg-accent/10 transition-colors" />
+              <p className="text-slate-300 font-bold italic relative z-10 text-lg leading-relaxed">
                 "Life is short, sleep is eternal"
               </p>
-              <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-3 font-bold">Personal Directive</p>
+              <p className="text-slate-500 text-xs uppercase tracking-widest mt-4 font-black">Personal Directive</p>
             </div>
 
             <div className="flex gap-4">
@@ -126,13 +126,13 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-10">
             <div className="flex items-center gap-3">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
               </span>
-              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-black">Status: Verified Research</span>
+              <span className="text-xs uppercase font-black tracking-widest text-slate-500">Status: Verified Research Access</span>
             </div>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Footer, Navbar, Chatbot } from "./components";
 import { About, Contact, Home, ProjectDetail } from "./pages";
@@ -11,6 +12,7 @@ import Prototypes from "./pages/Prototypes";
 import Reflections from "./pages/Reflections";
 import Investments from "./pages/Investments";
 import InvestmentDetail from "./pages/InvestmentDetail";
+import MagicTask from "./pages/MagicTask";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -19,6 +21,19 @@ const ScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
   return null;
+};
+
+const PageTransition = ({ children }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 const AppContent = () => {
@@ -64,20 +79,23 @@ const AppContent = () => {
     <>
       <ScrollToTop />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<InstitutionalProjects />} />
-        <Route path="/projects/:projectSlug" element={<ProjectDetail />} />
-        <Route path="/governance" element={<GovernanceLab />} />
-        <Route path="/research" element={<Research />} />
-        <Route path="/pilots" element={<PilotReports />} />
-        <Route path="/prototypes" element={<Prototypes />} />
-        <Route path="/reflections" element={<Reflections />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/investments" element={<Investments />} />
-        <Route path="/investments/:investmentId" element={<InvestmentDetail />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+          <Route path="/projects" element={<PageTransition><InstitutionalProjects /></PageTransition>} />
+          <Route path="/projects/magictask" element={<PageTransition><MagicTask /></PageTransition>} />
+          <Route path="/projects/:projectSlug" element={<PageTransition><ProjectDetail /></PageTransition>} />
+          <Route path="/governance" element={<PageTransition><GovernanceLab /></PageTransition>} />
+          <Route path="/research" element={<PageTransition><Research /></PageTransition>} />
+          <Route path="/pilots" element={<PageTransition><PilotReports /></PageTransition>} />
+          <Route path="/prototypes" element={<PageTransition><Prototypes /></PageTransition>} />
+          <Route path="/reflections" element={<PageTransition><Reflections /></PageTransition>} />
+          <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+          <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+          <Route path="/investments" element={<PageTransition><Investments /></PageTransition>} />
+          <Route path="/investments/:investmentId" element={<PageTransition><InvestmentDetail /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
       <Footer />
       <Chatbot />
     </>
@@ -86,7 +104,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <main className="bg-paper-cool">
+    <main className="bg-paper min-h-screen bg-institutional-grid font-sans selection:bg-ink selection:text-paper">
       <Router>
         <AppContent />
       </Router>

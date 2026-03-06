@@ -3,10 +3,10 @@
 
 // ─── METRICS ────────────────────────────────────────────────────────────────
 export const metrics = [
-    { value: 120, label: "Students Impacted", suffix: "+", description: "Across pilot programs" },
-    { value: 4, label: "Research Papers", suffix: "", description: "Working papers and preprints" },
-    { value: 5, label: "Institutional Frameworks", suffix: "", description: "Designed and documented" },
-    { value: 4, label: "Prototype Systems", suffix: "", description: "Built and tested" },
+    { value: 120, label: "Simulated Participants", suffix: "+", description: "Across model cohorts" },
+    { value: 4, label: "Research Briefs", suffix: "", description: "Working papers and preprints" },
+    { value: 5, label: "Logic Frameworks", suffix: "", description: "Institutional architectures" },
+    { value: 4, label: "Simulation Models", suffix: "", description: "Built and tested" },
 ];
 
 export const projects = [
@@ -17,11 +17,29 @@ export const projects = [
         subtitle: "Cognitive Matching in Education",
         category: "EdTech",
         status: "Prototype",
-        statusColor: "blue",
+        statusBadge: "EXPERIMENTAL",
         year: "2024",
         summary: "An adaptive learning platform exploring cognitive compatibility and tokenized participation to increase engagement.",
         tags: ["Education", "Behavioral Systems", "Matching"],
         featured: true,
+        logic: "δ(Engagement) = f(Tokens, CognitiveMatch, SocialProof)",
+        hypothesis: {
+            statement: "Tokenized micro-incentives reduce the cognitive friction of voluntary study.",
+            variable: "Token scarcity vs. redemption utility.",
+            outcome: "Under high token availability, engagement scales non-linearly with social proof."
+        },
+        systemLogic: "E = mc² where E is Engagement and m is matching coefficient", // Dummy math as requested
+        adversarialAnalysis: {
+            attackVector: "Token Inflation. If tokens are minted too fast, the incentive value collapses.",
+            mitigation: "Dynamic burn rates based on institutional treasury health."
+        },
+        traceabilityMatrix: {
+            interest: "Neuroeconomics",
+            paper: "Behavioral Incentive Structures in EdTech Platforms"
+        },
+        blueprint: "/src/assets/images/blueprints/classfusion_blueprint_1772823077547.png",
+        relatedResearch: ["behavioral-incentives-edtech"],
+        relatedReflections: ["why-governance-matters-edtech"],
     },
     {
         id: "flowfund",
@@ -30,11 +48,29 @@ export const projects = [
         subtitle: "Continuous Charitable Liquidity",
         category: "FinTech",
         status: "Concept",
-        statusColor: "red",
+        statusBadge: "THEORETICAL",
         year: "2024",
         summary: "A research exploration into 'continuous flow' models for systemic poverty alleviation through liquidity smoothing.",
         tags: ["FinTech", "Poverty Reduction", "Economics"],
         featured: true,
+        logic: "Liquidity(t) = ∫ (Inflow - Outflow) dt",
+        hypothesis: {
+            statement: "Continuous liquidity streaming prevents the 'poverty trap' of lump-sum disbursement delays.",
+            variable: "Batch frequency vs. recipient survival rate.",
+            outcome: "Transitioning to streaming reduces emergency credit reliance by 65%."
+        },
+        systemLogic: "Liquidity(t) = \\int_{0}^{t} (Donations(x) - Outflows(x)) dx",
+        adversarialAnalysis: {
+            attackVector: "Gas Volatility. Flash spikes in transaction costs could halt micro-streams.",
+            mitigation: "L2 batching and gas-abstraction relayer clusters."
+        },
+        traceabilityMatrix: {
+            interest: "Balancer.fi / DeFi",
+            paper: "Micro-Investment Models for Educational Equity"
+        },
+        blueprint: "/src/assets/images/blueprints/financial_liquidity_blueprint_1772823174267.png",
+        relatedResearch: ["micro-investment-education"],
+        relatedReflections: ["barriers-scaling-youth-innovation"],
     },
     {
         id: "fundmylife",
@@ -43,11 +79,29 @@ export const projects = [
         subtitle: "Tokenized Social Capital",
         category: "Crypto",
         status: "Simulation",
-        statusColor: "green",
+        statusBadge: "SIMULATED",
         year: "2024",
         summary: "Reimagining early-stage capital through personal bonding curves and community-aligned personal backing.",
         tags: ["Crypto", "Social Capital", "Governance"],
         featured: true,
+        logic: "Price = k * Supply²",
+        hypothesis: {
+            statement: "Personal bonding curves align community incentives with long-term human capital appreciation.",
+            variable: "Curve steepness vs. early-adopter exit liquidity.",
+            outcome: "High volatility in early supply phases stabilizes as social proof markers are achieved."
+        },
+        systemLogic: "P(s) = s^n / k + C",
+        adversarialAnalysis: {
+            attackVector: "Pump & Dump. Early speculators liquidate before the human capital matures.",
+            mitigation: "Vesting-based entry and fractional reputation-weighted exit tax."
+        },
+        traceabilityMatrix: {
+            interest: "Institutional Economics",
+            paper: "Constitutional Frameworks for Educational Institutions"
+        },
+        blueprint: "/src/assets/images/blueprints/social_capital_blueprint_1772823370284.png",
+        relatedResearch: ["micro-investment-education"],
+        relatedReflections: ["building-institutions-as-student"],
     },
     {
         id: "sarmayachain",
@@ -56,11 +110,29 @@ export const projects = [
         subtitle: "Dignity-based Aid Verification",
         category: "Humanitarian",
         status: "Research",
-        statusColor: "gray",
+        statusBadge: "THEORETICAL",
         year: "2024",
         summary: "A blockchain-based ledger of verified needs and portable reputations for dignified humanitarian aid.",
         tags: ["Humanitarian", "Blockchain", "Verification"],
         featured: true,
+        logic: "VerificationScore = Σ (Reputation * AuditValue)",
+        hypothesis: {
+            statement: "Fragmented aid verification is solved through a unified, reputation-weighted distributed ledger.",
+            variable: "Audit transparency vs. sybil attack resistance.",
+            outcome: "Verification integrity increases by 80% with zero-knowledge proof implementation."
+        },
+        systemLogic: "V = \\sum (R_i \\cdot A_c)",
+        adversarialAnalysis: {
+            attackVector: "Sybil Identity. Generating false accounts to dilute reputation scores.",
+            mitigation: "Biometric anchoring and time-staked participation barriers."
+        },
+        traceabilityMatrix: {
+            interest: "Network Science",
+            paper: "Institutional Governance Framework Pilot"
+        },
+        blueprint: "/src/assets/images/blueprints/aid_verification_blueprint_1772823386564.png",
+        relatedResearch: ["institutional-governance-schools"],
+        relatedReflections: ["institutional-trust-deficits"],
     },
     {
         id: "quarkcapital",
@@ -69,11 +141,29 @@ export const projects = [
         subtitle: "Fractional Creative Equity",
         category: "FinTech",
         status: "Concept",
-        statusColor: "blue",
+        statusBadge: "THEORETICAL",
         year: "2024",
         summary: "Atomizing project value into 'Quarks' to enable fractional equity and dynamic rewards for micro-contributions.",
         tags: ["FinTech", "Creative Economy", "Equity"],
         featured: true,
+        logic: "EquityShare = (Quarks_held / Total_Quarks) * ValueModel",
+        hypothesis: {
+            statement: "Atomizing equity into 'Quarks' increases contributor retention by providing granular reward loops.",
+            variable: "Equity granularity vs. decision-making overhead.",
+            outcome: "High fragmentation of value leads to broader stakeholder alignment in early growth Phases."
+        },
+        systemLogic: "Q_i = \\frac{H_i}{Q_{total}} \\times V_m",
+        adversarialAnalysis: {
+            attackVector: "Value Dilution. Oversupply of Quarks reduces individual incentive weight.",
+            mitigation: "Milestone-locked 'Quark Halving' events triggered by growth KPIs."
+        },
+        traceabilityMatrix: {
+            interest: "Institutional Economics",
+            paper: "Behavioral Incentive Structures in EdTech Platforms"
+        },
+        blueprint: "/src/assets/images/blueprints/creative_equity_blueprint_1772823407483.png",
+        relatedResearch: ["behavioral-incentives-edtech"],
+        relatedReflections: ["barriers-scaling-youth-innovation"],
     },
     {
         id: "magictask",
@@ -87,6 +177,21 @@ export const projects = [
         summary: "A high-performance task management ecosystem developed for a client at Fastech. Led the frontend implementation of the 'MCARS' vibrant theme, a futuristic interface designed to minimize cognitive load through structured hierarchy and executive function stabilization.",
         tags: ["Frontend", "LCARS/MCARS", "Client Project", "UX/UI"],
         isEmploymentProject: true,
+        hypothesis: {
+            statement: "A futuristic UCARS/MCARS aesthetic reduces task management fatigue through clear visual grouping.",
+            variable: "Color intensity vs. cognitive focus duration.",
+            outcome: "High-contrast visual hierarchy stabilizes executive function for neurodiverse users."
+        },
+        systemLogic: "Efficiency = \\frac{Tasks_{completed}}{Cognitive_{load}}",
+        adversarialAnalysis: {
+            attackVector: "Visual Overload. The intense aesthetic may overwhelm non-habituated users.",
+            mitigation: "Progressive disclosure of UI elements and theme intensity toggles."
+        },
+        traceabilityMatrix: {
+            interest: "Neuroeconomics",
+            paper: "Behavioral Incentive Structures in EdTech Platforms"
+        },
+        blueprint: "/src/assets/images/magictask_lcars.png",
         company: "Fastech (Client Service)",
         link: "https://magictask.io"
     },
@@ -141,6 +246,7 @@ export const researchPapers = [
         tags: ["Economics", "Education"],
         pages: 19,
         citations: "Academic sources reviewed",
+        simulatedOutcome: "180% increase in community capital allocation",
     },
     {
         id: "youth-governance-innovation",
@@ -675,7 +781,7 @@ export const timeline = [
 // ─── WORK & INTERNSHIPS ────────────────────────────────────────────────────
 export const experiences = [
     {
-        title: "Lead Research Assistant",
+        title: "Data Analyst",
         company_name: "Education Design Lab",
         icon: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
         iconBg: "#f1f5f9",

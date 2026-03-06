@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { investments } from "../constants/investments";
 
@@ -14,107 +14,115 @@ const FadeIn = ({ children, delay = 0, className = "" }) => (
     </motion.div>
 );
 
+const MeshBackground = () => (
+    <div className="absolute inset-0 mesh-gradient opacity-40 pointer-events-none" />
+);
+
 const Investments = () => {
     return (
-        <main className="bg-paper-cool min-h-screen pt-28 pb-20">
-            <div className="max-w-7xl mx-auto px-6 sm:px-12">
+        <main className="bg-paper min-h-screen pt-32 pb-20 relative selection:bg-ink selection:text-paper overflow-hidden">
+            <MeshBackground />
+            
+            <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
                 {/* Header */}
-                <section className="mb-16">
-                    <FadeIn>
-                        <span className="section-label">Personal Capital Journal</span>
-                        <h1 className="text-5xl font-bold text-slate-900 mt-4 mb-6 tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-                            Micro-Investment <span className="italic text-slate-400">Notes</span>
-                        </h1>
-                        <p className="text-slate-600 text-lg leading-relaxed max-w-3xl">
-                            This page documents small personal investments I make in companies whose work aligns with my research interests — education access, governance tools, and financial inclusion. I do not trade actively. I allocate modest amounts of personal savings as a way to support ideas I believe contribute positively to society.
-                        </p>
-                    </FadeIn>
+                <section className="mb-20">
+                    <span className="section-label">Archive_Scope // Capital Allocation Lab</span>
+                    <h1 className="text-6xl sm:text-8xl font-black text-ink mt-8 mb-10 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        Systems <span className="italic text-ink/20">Investment</span> Journal
+                    </h1>
+                    <p className="text-ink/60 text-xl font-medium leading-relaxed max-w-3xl italic border-l border-ink/10 pl-8">
+                        This archive documents strategic capital allocations in entities whose operational logic aligns with our core research interests: education access, governance tools, and financial inclusion. We prioritize mission alignment and long-term systemic stability over speculative returns.
+                    </p>
                 </section>
 
-                {/* Methodology Alert */}
-                <FadeIn delay={0.1}>
-                    <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-12 flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-lg">
-                            🔬
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-blue-900 mb-1">Documentation Approach</h3>
-                            <p className="text-blue-800/80 text-sm leading-relaxed">
-                                Each investment is logged with short notes explaining why I find the company's mission meaningful, what problem it attempts to solve, and how its model connects to my research. These are reflective notes — not financial advice.
-                            </p>
-                        </div>
+                {/* Methodology Bento block */}
+                <div className="bento-item bg-white/40 backdrop-blur-xl p-10 mb-20 border-ink/[0.08] flex flex-col md:flex-row items-center gap-10">
+                    <div className="w-16 h-16 rounded-2xl bg-white border border-ink/[0.08] flex items-center justify-center text-2xl shadow-sm shrink-0">
+                        ⚖️
                     </div>
-                </FadeIn>
+                    <div>
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-ink/45 mb-4 px-1">Institutional_Methodology</h4>
+                        <p className="text-sm font-bold text-ink/80 leading-relaxed font-inter italic">
+                            Each entry is logged with technical reflections on how the entity's model interacts with systemic variables. These are internal research documents and represent personal convictions, not financial consultation.
+                        </p>
+                    </div>
+                </div>
 
-                {/* Investment Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {investments.map((item, index) => (
-                        <FadeIn key={item.id} delay={index * 0.1}>
-                            <Link to={`/investments/${item.id}`} className="group h-full">
-                                <div className="bg-white rounded-[2rem] border border-slate-200 p-8 h-full flex flex-col hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 relative overflow-hidden">
-                                    {/* Backdrop decoration */}
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 group-hover:bg-blue-50 rounded-full -mr-16 -mt-16 transition-colors duration-500" />
-
-                                    <div className="relative z-10 flex flex-col h-full">
-                                        <div className="flex justify-between items-start mb-6">
-                                            <div className="w-14 h-14 rounded-2xl bg-paper-cool border border-slate-100 flex items-center justify-center p-3 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                                                <img src={item.logo} alt={item.name} className="w-full h-full object-contain" />
-                                            </div>
-                                            <div className="flex flex-col items-end">
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-500 transition-colors">{item.sector}</span>
-                                                <div className="h-1 w-8 bg-slate-200 mt-1 rounded-full group-hover:w-12 group-hover:bg-blue-500 transition-all duration-500" />
-                                            </div>
+                {/* Investment Bento Grid */}
+                <div className="bento-grid">
+                    {investments.map((item, index) => {
+                        const isLarge = index === 0;
+                        return (
+                            <Link 
+                                to={`/investments/${item.id}`} 
+                                key={item.id} 
+                                className={`group ${isLarge ? 'bento-span-2' : 'bento-span-1'}`}
+                            >
+                                <div className="bento-item h-full bg-white hover:bg-white/80 transition-all duration-500 flex flex-col p-10 border-ink/[0.08] group-hover:border-ink/20 shadow-sm hover:shadow-xl">
+                                    <div className="flex justify-between items-start mb-12">
+                                        <div className="w-16 h-16 rounded-2xl bg-paper border border-ink/[0.08] flex items-center justify-center p-4 shadow-inner group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                                            <img src={item.logo} alt={item.name} className="w-full h-full object-contain opacity-60 group-hover:opacity-100" />
                                         </div>
-
-                                        <h2 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                            {item.name}
-                                        </h2>
-
-                                        <div className="flex flex-wrap gap-2 mb-6">
-                                            <span className="px-3 py-1 bg-slate-100 text-[10px] font-bold text-slate-500 rounded-full uppercase tracking-tighter group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
-                                                {item.investmentTheme}
+                                        <div className="text-right">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-ink/40 group-hover:text-ink/70 transition-colors">
+                                                RECORD_{item.id.toUpperCase()}
                                             </span>
-                                            <span className="px-3 py-1 border border-slate-100 text-[10px] font-bold text-slate-400 rounded-full uppercase tracking-tighter group-hover:border-blue-200 group-hover:text-blue-500 transition-colors">
-                                                {item.thesisTag}
-                                            </span>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-ink mt-2 opacity-40 group-hover:opacity-100 transition-opacity">
+                                                {item.sector}
+                                            </p>
                                         </div>
+                                    </div>
 
-                                        <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-1">
-                                            {item.companyOverview.substring(0, 120)}...
-                                        </p>
+                                    <h2 className="text-4xl font-black text-ink mb-4 tracking-tighter leading-tight group-hover:italic transition-all" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                        {item.name}
+                                    </h2>
 
-                                        <div className="pt-6 border-t border-slate-50 flex items-center justify-between mt-auto">
-                                            <span className="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors">View Reflection</span>
-                                            <div className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all">
-                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                                </svg>
-                                            </div>
+                                    <div className="flex flex-wrap gap-2 mb-10">
+                                        <span className="px-3 py-1 bg-ink/5 text-[9px] font-black text-ink/40 rounded-md uppercase tracking-widest group-hover:bg-ink group-hover:text-paper transition-colors">
+                                            {item.investmentTheme}
+                                        </span>
+                                        <span className="px-3 py-1 border border-ink/10 text-[9px] font-black text-ink/45 rounded-md uppercase tracking-widest group-hover:border-ink/30 group-hover:text-ink/70 transition-colors">
+                                            {item.thesisTag}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-ink/40 text-sm font-medium leading-relaxed mb-12 flex-1 italic group-hover:text-ink/70 transition-colors line-clamp-3">
+                                        {item.companyOverview}
+                                    </p>
+
+                                    <div className="pt-8 border-t border-ink/[0.08] flex items-center justify-between mt-auto">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ink/40 group-hover:text-ink/70 transition-colors italic">
+                                            VIEW_REFLECTION_001
+                                        </span>
+                                        <div className="w-10 h-10 rounded-full border border-ink/[0.08] flex items-center justify-center transition-all group-hover:bg-ink group-hover:text-paper group-hover:border-ink group-hover:scale-110">
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                            </svg>
                                         </div>
                                     </div>
                                 </div>
                             </Link>
-                        </FadeIn>
-                    ))}
+                        );
+                    })}
                 </div>
 
-                {/* Ethical Footer */}
-                <FadeIn delay={0.4} className="mt-20 pt-10 border-t border-slate-100 text-center">
-                    <p className="text-slate-400 text-xs uppercase tracking-widest font-black mb-4">Personal Guidelines</p>
-                    <div className="flex flex-wrap justify-center gap-6">
+                {/* Ethical Footnote */}
+                <section className="mt-32 pt-16 border-t border-ink/[0.08] text-center opacity-20 hover:opacity-100 transition-opacity duration-1000">
+                    <p className="text-ink text-[9px] uppercase tracking-[0.6em] font-black mb-10 italic">Integrity_Guard_Protocol</p>
+                    <div className="flex flex-wrap justify-center gap-12">
                         {[
-                            "No speculative trading",
-                            "Avoid short-term profit strategies",
-                            "Mission alignment over returns",
-                            "Invest only what I can afford to lose"
+                            "NO_SPECULATIVE_TRADING",
+                            "STABILITY_OVER_GAIN",
+                            "MISSION_ALIGNMENT_REQUIRED",
+                            "PERSONAL_conviction_ONLY"
                         ].map(rule => (
-                            <div key={rule} className="flex items-center gap-2 text-slate-500 text-xs font-medium">
-                                <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            <div key={rule} className="flex items-center gap-3 text-ink text-[10px] font-black uppercase tracking-widest">
+                                <div className="w-1.5 h-1.5 rounded-full bg-ink" />
                                 {rule}
                             </div>
                         ))}
                     </div>
-                </FadeIn>
+                </section>
             </div>
         </main>
     );

@@ -18,7 +18,7 @@ export default {
           500: "#2b77e7"
         },
         ink: {
-          DEFAULT: "#0F1117",
+          DEFAULT: "#141414",
           50: "#F8F9FA",
           100: "#F1F3F5",
           200: "#E9ECEF",
@@ -31,7 +31,7 @@ export default {
           900: "#212529",
         },
         paper: {
-          DEFAULT: "#FAFAFA",
+          DEFAULT: "#E4E3E0",
           warm: "#F8F6F1",
           cool: "#F5F7FA",
         },
@@ -39,6 +39,7 @@ export default {
           DEFAULT: "#1A3A5C",
           light: "#2563EB",
           muted: "#64748B",
+          gold: "#C5A059",
         }
       },
       fontFamily: {
@@ -47,6 +48,7 @@ export default {
         inter: ['Inter', "sans-serif"],
         playfair: ['Playfair Display', "serif"],
         serif: ['Playfair Display', "Georgia", "serif"],
+        mono: ['IBM Plex Mono', 'JetBrains Mono', 'monospace'],
         sans: ['Inter', 'Work Sans', "sans-serif"],
       },
       boxShadow: {

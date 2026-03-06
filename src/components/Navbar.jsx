@@ -1,16 +1,14 @@
-import { NavLink, Link } from "react-router-dom";
+﻿import { NavLink, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const navLinks = [
-  { to: "/", label: "Home", exact: true },
-  { to: "/projects", label: "Projects" },
-  { to: "/governance", label: "Governance Lab" },
-  { to: "/investments", label: "Capital Allocation" },
-  { to: "/research", label: "Research" },
-  { to: "/pilots", label: "Pilots" },
-  { to: "/reflections", label: "Reflections" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "OVERVIEW", exact: true },
+  { to: "/projects", label: "SIMULATIONS" },
+  { to: "/governance", label: "GOVERNANCE" },
+  { to: "/investments", label: "CAPITAL" },
+  { to: "/research", label: "RECORDS" },
+  { to: "/reflections", label: "JOURNAL" },
+  { to: "/about", label: "LABORATORY" },
 ];
 
 const Navbar = () => {
@@ -26,34 +24,34 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100"
-          : "bg-white/70 backdrop-blur-sm"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled
+          ? "bg-paper/95 backdrop-blur-md shadow-sm border-ink/10"
+          : "bg-paper/70 backdrop-blur-sm border-transparent"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm font-playfair">W</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-sm font-semibold text-slate-900 tracking-tight">Wahib</span>
-              <span className="text-xs text-slate-400 block leading-none tracking-widest uppercase">Governance & EdTech Lab</span>
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 h-12 flex items-center justify-between font-mono">
+          {/* Logo / System ID */}
+          <Link to="/" className="flex items-center gap-4 group">
+            <div className="flex flex-col leading-none">
+              <span className="text-xs font-black tracking-[0.2em] text-ink uppercase">Institutional Archive</span>
+              <span className="text-[11px] text-ink/40 mt-1 uppercase tracking-widest flex items-center gap-1.5 font-bold">
+                <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                System Online // v1.2.0
+              </span>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop Nav - High Density */}
+          <nav className="hidden xl:flex items-center gap-0 border-x border-ink/[0.08] h-full">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 end={link.exact}
                 className={({ isActive }) =>
-                  `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  `px-5 h-full flex items-center text-xs font-black tracking-widest transition-all duration-200 border-r border-ink/[0.08] last:border-r-0 ${isActive
+                    ? "bg-ink text-paper"
+                    : "text-ink/60 hover:text-ink hover:bg-ink/10"
                   }`
                 }
               >
@@ -62,18 +60,29 @@ const Navbar = () => {
             ))}
           </nav>
 
+          {/* Right Side Status */}
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="flex flex-col items-end leading-none">
+              <span className="text-[10px] text-ink/40 uppercase tracking-tighter font-black">Terminal ID</span>
+              <span className="text-xs text-ink font-black font-mono">WAHIB_ARCHIVE_01</span>
+            </div>
+            <Link to="/contact" className="px-6 py-2 bg-ink text-paper text-xs font-black tracking-[0.2em] uppercase hover:bg-ink/90 transition-all shadow-md">
+              Access enquiry
+            </Link>
+          </div>
+
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+            className="xl:hidden p-2 text-ink hover:bg-ink/5 transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
@@ -82,7 +91,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-1">
+          <div className="xl:hidden bg-paper border-t border-ink/10 font-mono">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -90,9 +99,9 @@ const Navbar = () => {
                 end={link.exact}
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                    ? "bg-slate-900 text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  `block px-6 py-4 text-[11px] font-bold tracking-widest border-b border-ink/[0.08] ${isActive
+                    ? "bg-ink text-paper"
+                    : "text-ink/60 hover:bg-ink/5 hover:text-ink"
                   }`
                 }
               >

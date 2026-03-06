@@ -7,9 +7,11 @@
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;
-  --ink: #0F1117;
-  --paper: #FAFAFA;
+  --ink: #141414;
+  --paper: #F8F7F4; /* Slightly brighter paper for modern look */
   --accent: #1A3A5C;
+  --grid-line: rgba(20, 20, 20, 0.03); /* Light grid lines */
+  --glass-border: rgba(20, 20, 20, 0.08);
 }
 
 * {
@@ -22,10 +24,55 @@ html {
 
 body {
   font-family: "Inter", "Work Sans", sans-serif;
-  background-color: #FAFAFA;
-  color: #1D2235;
+  background-color: var(--paper);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-institutional-grid {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+}
+
+.bg-vibrant-blueprint {
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-vibrant-blueprint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  pointer-events: none;
+}
+
+/* Mesh Gradient for Headers */
+.mesh-gradient {
+  background-color: var(--paper);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(26, 58, 92, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(0, 198, 255, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(26, 58, 92, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(0, 198, 255, 0.05) 0px, transparent 50%);
+}
+
+.simulation-glow-orb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(26, 58, 92, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 1;
 }
 
 /* ─── Institutional Typography ─── */
@@ -62,13 +109,13 @@ body {
 
   /* Institutional section label */
   .section-label {
-    @apply inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase text-slate-500 border border-slate-200 rounded-full bg-white mb-6;
+    @apply inline-block px-3 py-1 text-[12px] font-black tracking-[0.2em] uppercase text-ink/70 border border-ink/20 rounded-full bg-paper/50 backdrop-blur-sm mb-6;
   }
 
   /* Document card */
   .doc-card {
-    @apply bg-white rounded-2xl border border-slate-200 p-6 transition-all duration-300 hover:-translate-y-0.5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    @apply bg-white rounded-2xl border border-ink/10 p-8 transition-all duration-300 hover:border-ink/20;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.03);
   }
 
   .doc-card:hover {
@@ -77,8 +124,8 @@ body {
 
   /* Metric card */
   .metric-card {
-    @apply bg-white rounded-2xl border border-slate-100 p-8 text-center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+    @apply bg-white rounded-2xl border border-ink/10 p-8 text-center;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.03);
   }
 
   /* Filter pill */
@@ -113,11 +160,11 @@ body {
 
   /* Institutional CTA button */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-medium text-sm hover:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-md;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-ink text-paper rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-ink/90 transition-all duration-200 border border-ink;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 rounded-xl font-medium text-sm border border-slate-200 hover:border-slate-400 transition-all duration-200 shadow-sm;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-transparent text-ink rounded-xl font-bold text-xs uppercase tracking-widest border border-ink/20 hover:border-ink transition-all duration-200;
   }
 
   .header {
@@ -146,6 +193,75 @@ body {
 
   .cta-text {
     @apply text-black-500 font-extrabold flex-1 text-3xl max-md:text-center;
+  }
+
+  /* ─── VISUAL EXCELLENCE UTILITIES ─── */
+  .glass-panel {
+    @apply bg-paper/60 backdrop-blur-md border border-ink/10 shadow-xl rounded-2xl;
+  }
+
+  .glass-node {
+    @apply bg-white/40 backdrop-blur-sm border border-ink/5 p-4 rounded-xl hover:bg-white/60 transition-all;
+  }
+
+  /* Bento Grid System */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: minmax(200px, auto);
+    gap: 1.5rem;
+  }
+
+  .bento-item {
+    @apply bg-white border border-ink/[0.07] rounded-[2rem] p-8 flex flex-col transition-all duration-500 overflow-hidden relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  }
+
+  .bento-item:hover {
+    @apply border-ink/[0.12] -translate-y-1;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+  }
+
+  .bento-span-2 {
+    @apply md:col-span-2;
+  }
+
+  .bento-row-2 {
+    @apply md:row-span-2;
+  }
+
+  .glass-sublime {
+    @apply bg-white/40 backdrop-blur-xl border border-white/60 shadow-lg;
+  }
+
+  .simulation-terminal {
+    @apply bg-[#F4F4F4] text-ink/80 font-mono p-6 rounded-2xl overflow-hidden border border-ink/10 shadow-inner;
+  }
+
+  .terminal-header {
+    @apply border-b border-ink/5 pb-2 mb-4 flex items-center gap-2;
+  }
+
+  .blueprint-overlay {
+    background: linear-gradient(to bottom, rgba(248, 247, 244, 0) 0%, rgba(248, 247, 244, 0.8) 70%, rgba(248, 247, 244, 1) 100%);
+  }
+
+  /* ─── SUBLIME TECH UI TOKENS ─── */
+  
+  /* Simplified Content Blocks */
+  .clay-card {
+    @apply bg-white border border-ink/5 rounded-[2.5rem] shadow-sm transition-all duration-300;
+  }
+  
+  .brutalist-card {
+    @apply border border-ink/10 bg-white transition-all duration-300 rounded-[2rem];
+  }
+
+  .animated-border-gradient {
+    position: relative;
+    background: white;
+    border-radius: inherit;
+    border: 1px solid rgba(228, 227, 224, 0.8);
   }
 }
 

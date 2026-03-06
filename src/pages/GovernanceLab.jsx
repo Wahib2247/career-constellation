@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion } from "framer-motion";
 import { governanceDocs } from "../constants";
 
@@ -14,76 +14,30 @@ const FadeIn = ({ children, delay = 0, className = "" }) => (
     </motion.div>
 );
 
-const typeColors = {
-    Charter: "bg-purple-50 text-purple-700 border-purple-100",
-    Constitution: "bg-blue-50 text-blue-700 border-blue-100",
-    Framework: "bg-emerald-50 text-emerald-700 border-emerald-100",
-    Legislation: "bg-amber-50 text-amber-700 border-amber-100",
-};
+const MeshBackground = () => (
+    <div className="absolute inset-0 mesh-gradient opacity-40 pointer-events-none" />
+);
 
-// Governance Hierarchy Diagram
 const GovernanceHierarchy = () => (
-    <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-institutional">
-        <h3 className="text-lg font-bold text-slate-900 mb-6 text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Institutional Governance Hierarchy
-        </h3>
-        <div className="flex flex-col items-center gap-0">
-            {/* Level 1 */}
-            <div className="bg-slate-900 text-white rounded-xl px-8 py-3 text-sm font-semibold text-center w-64">
-                Institutional Constitution
-            </div>
-            <div className="w-px h-6 bg-slate-300" />
-
-            {/* Level 2 */}
-            <div className="flex gap-4 items-start">
-                <div className="flex flex-col items-center">
-                    <div className="bg-blue-600 text-white rounded-xl px-5 py-2.5 text-xs font-semibold text-center w-40">
-                        Student Rights Charter
-                    </div>
-                    <div className="w-px h-6 bg-slate-300" />
-                    <div className="bg-blue-100 text-blue-800 rounded-lg px-4 py-2 text-xs font-medium text-center w-40">
-                        Student Council
-                    </div>
-                </div>
-                <div className="flex flex-col items-center mt-8">
-                    <div className="w-px h-6 bg-slate-300" />
-                    <div className="bg-slate-200 text-slate-700 rounded-xl px-5 py-2.5 text-xs font-semibold text-center w-40">
-                        Accountability Model
-                    </div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="bg-purple-600 text-white rounded-xl px-5 py-2.5 text-xs font-semibold text-center w-40">
-                        Teacher Governance Charter
-                    </div>
-                    <div className="w-px h-6 bg-slate-300" />
-                    <div className="bg-purple-100 text-purple-800 rounded-lg px-4 py-2 text-xs font-medium text-center w-40">
-                        Faculty Senate
-                    </div>
-                </div>
-            </div>
-
-            <div className="w-px h-6 bg-slate-300" />
-
-            {/* Level 3 */}
-            <div className="flex gap-4">
-                <div className="bg-emerald-100 text-emerald-800 rounded-xl px-5 py-2.5 text-xs font-semibold text-center w-40">
-                    Voting System
-                </div>
-                <div className="bg-amber-100 text-amber-800 rounded-xl px-5 py-2.5 text-xs font-semibold text-center w-40">
-                    Appeals Process
-                </div>
-            </div>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-3 gap-4 text-center">
+    <div className="bento-item bg-white border-ink/[0.07] p-10 shadow-sm">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-ink/50 mb-8 italic">
+            Governance_Hierarchy
+        </h4>
+        <div className="space-y-3">
             {[
-                { label: "Documents", value: "5" },
-                { label: "Institutions Piloted", value: "3" },
-                { label: "Stakeholders Covered", value: "45+" },
-            ].map(stat => (
-                <div key={stat.label}>
-                    <div className="text-2xl font-bold text-slate-900">{stat.value}</div>
-                    <div className="text-xs text-slate-400 mt-1">{stat.label}</div>
+                { level: "L1", label: "Constitutional Layer", desc: "Founding axioms & rights" },
+                { level: "L2", label: "Governance Charter", desc: "Institutional structure" },
+                { level: "L3", label: "Policy Framework", desc: "Operational protocols" },
+                { level: "L4", label: "Enforcement Mechanism", desc: "Accountability loops" },
+            ].map((item) => (
+                <div key={item.level} className="flex items-center gap-4 p-3 rounded-xl hover:bg-paper/60 transition-all group/h">
+                    <span className="w-8 h-8 rounded-lg bg-ink text-paper flex items-center justify-center text-[9px] font-black shrink-0">
+                        {item.level}
+                    </span>
+                    <div>
+                        <div className="text-[10px] font-black text-ink uppercase tracking-wider">{item.label}</div>
+                        <div className="text-[9px] text-ink/50 font-medium italic">{item.desc}</div>
+                    </div>
                 </div>
             ))}
         </div>
@@ -97,82 +51,88 @@ const GovernanceLab = () => {
     const filtered = filter === "All" ? governanceDocs : governanceDocs.filter(d => d.type === filter);
 
     return (
-        <main className="bg-paper-cool min-h-screen">
+        <main className="bg-paper min-h-screen relative selection:bg-ink selection:text-paper overflow-hidden font-sans">
+            <MeshBackground />
+
             {/* Header */}
-            <section className="bg-white border-b border-slate-100 pt-28 pb-16">
+            <section className="pt-32 pb-20 relative z-10">
                 <div className="max-w-7xl mx-auto px-6 sm:px-12">
                     <FadeIn>
-                        <span className="section-label">Governance Lab</span>
+                        <span className="section-label">
+                            <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-3 animate-pulse" />
+                            Archive_Scope // Social Architecture
+                        </span>
                         <h1
-                            className="text-4xl sm:text-5xl font-bold text-slate-900 mt-4 mb-6 max-w-2xl"
+                            className="text-6xl sm:text-8xl lg:text-9xl font-black text-ink mt-8 mb-10 tracking-tighter leading-[0.9]"
                             style={{ fontFamily: "'Playfair Display', serif" }}
                         >
-                            Institutional Design Documents
+                            Governance <span className="italic text-ink/20">Lab</span>
                         </h1>
-                        <p className="text-slate-600 text-lg max-w-2xl leading-relaxed">
-                            Constitutions, charters, legislative frameworks, voting systems, and accountability models — the governance infrastructure for equitable educational institutions.
+                        <p className="text-ink/65 text-xl font-medium leading-relaxed max-w-3xl italic border-l border-ink/15 pl-8">
+                            The structural documentation of institutional constitutions, charters, and accountability models — defining the governance infrastructure for equitable systems.
                         </p>
                     </FadeIn>
                 </div>
             </section>
 
-            <section className="py-16">
+            <section className="py-20 relative z-10">
                 <div className="max-w-7xl mx-auto px-6 sm:px-12">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                         {/* Documents */}
                         <div className="lg:col-span-2">
                             {/* Filters */}
-                            <FadeIn className="flex flex-wrap gap-2 mb-8">
+                            <div className="flex flex-wrap gap-3 mb-12">
                                 {types.map(type => (
                                     <button
                                         key={type}
                                         onClick={() => setFilter(type)}
-                                        className={`filter-pill ${filter === type ? "filter-pill-active" : "filter-pill-inactive"}`}
+                                        className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] border transition-all duration-300 ${filter === type ? "bg-ink text-paper border-ink shadow-xl scale-105" : "bg-white/60 text-ink/60 border-ink/15 hover:border-ink/40 hover:text-ink hover:bg-white"}`}
                                     >
                                         {type}
                                     </button>
                                 ))}
-                            </FadeIn>
+                            </div>
 
-                            <div className="space-y-4">
-                                {filtered.map((doc, i) => (
-                                    <FadeIn key={doc.id} delay={i * 0.08}>
-                                        <div className="doc-card">
-                                            <div className="flex items-start justify-between gap-4 mb-4">
-                                                <div className="flex items-center gap-3">
-                                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${typeColors[doc.type] || "bg-slate-50 text-slate-600 border-slate-100"}`}>
+                            <div className="space-y-6">
+                                {filtered.map((doc) => (
+                                    <FadeIn key={doc.id}>
+                                        <div className="bento-item bg-white p-10 hover:bg-white/90 transition-all duration-500 group shadow-sm hover:shadow-xl">
+                                            <div className="flex items-start justify-between gap-6 mb-8">
+                                                <div className="flex flex-wrap items-center gap-3">
+                                                    <span className="px-3 py-1.5 bg-ink text-paper text-[9px] font-black uppercase tracking-widest rounded-lg">
                                                         {doc.type}
                                                     </span>
-                                                    <span className="text-xs text-slate-400">{doc.version}</span>
-                                                    <span className="text-xs text-slate-400">{doc.year}</span>
+                                                    <span className="text-[10px] font-mono text-ink/50 uppercase tracking-[0.2em]">{doc.version} // {doc.year}</span>
                                                 </div>
-                                                <span className="text-xs text-slate-400 shrink-0">{doc.pages} pages</span>
+                                                <span className="text-[9px] font-black text-ink/30 uppercase tracking-[0.4em] shrink-0">{doc.pages}_PG</span>
                                             </div>
 
                                             <h3
-                                                className="text-xl font-bold text-slate-900 mb-1"
+                                                className="text-3xl font-black text-ink mb-3 tracking-tighter leading-tight group-hover:italic transition-all"
                                                 style={{ fontFamily: "'Playfair Display', serif" }}
                                             >
                                                 {doc.title}
                                             </h3>
-                                            <p className="text-sm font-medium text-slate-500 mb-3">{doc.subtitle}</p>
-                                            <p className="text-sm text-slate-600 leading-relaxed">{doc.abstract}</p>
+                                            <p className="text-sm font-semibold text-ink/55 mb-6 italic border-l border-ink/10 pl-4">{doc.subtitle}</p>
+                                            <p className="text-sm text-ink/65 leading-relaxed italic mb-8 line-clamp-3">{doc.abstract}</p>
 
-                                            <div className="mt-4 flex flex-wrap gap-1.5 mb-4">
+                                            <div className="flex flex-wrap gap-2 mb-8">
                                                 {doc.tags.map(tag => (
-                                                    <span key={tag} className="text-xs px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full">{tag}</span>
+                                                    <span key={tag} className="text-[10px] font-black uppercase tracking-[0.2em] px-2 py-1 border border-ink/10 text-ink/40 rounded-md italic group-hover:text-ink/60 transition-colors">//{tag}</span>
                                                 ))}
                                             </div>
 
-                                            <div className="flex items-center gap-4 pt-4 border-t border-slate-100">
-                                                <button className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 hover:text-blue-600 transition-colors">
-                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                    Download PDF
+                                            <div className="flex items-center gap-6 pt-8 border-t border-ink/[0.08]">
+                                                <button className="group/btn inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-ink/50 hover:text-ink transition-all">
+                                                    <div className="w-8 h-8 rounded-full border border-ink/15 flex items-center justify-center group-hover/btn:bg-ink group-hover/btn:text-paper group-hover/btn:border-ink transition-all">
+                                                        <svg className="w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                    </div>
+                                                    DOWNLOAD_PDF
                                                 </button>
-                                                <button className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
-                                                    Read Online
+                                                <button className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/40 hover:text-ink transition-colors italic">
+                                                    READ_FULL_TRANSCRIPT
                                                 </button>
                                             </div>
                                         </div>
@@ -182,32 +142,29 @@ const GovernanceLab = () => {
                         </div>
 
                         {/* Sidebar */}
-                        <div className="space-y-8">
-                            <FadeIn delay={0.1}>
-                                <GovernanceHierarchy />
-                            </FadeIn>
+                        <div className="space-y-12">
+                            <GovernanceHierarchy />
 
-                            <FadeIn delay={0.2}>
-                                <div className="bg-slate-900 text-white rounded-2xl p-6">
-                                    <h4 className="font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                        Design Principles
-                                    </h4>
-                                    <ul className="space-y-3 text-sm text-slate-300">
-                                        {[
-                                            "Stakeholder rights before institutional efficiency",
-                                            "Transparency as a default, not an exception",
-                                            "Democratic legitimacy through participation",
-                                            "Accountability with clear enforcement mechanisms",
-                                            "Adaptability to diverse institutional contexts",
-                                        ].map((principle, i) => (
-                                            <li key={i} className="flex gap-2">
-                                                <span className="text-slate-500 mt-0.5">—</span>
-                                                {principle}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </FadeIn>
+                            <div className="bento-item bg-ink text-paper p-10 shadow-2xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[50px] pointer-events-none group-hover:bg-white/10 transition-colors duration-1000" />
+                                <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-paper/50 mb-8 italic">
+                                    Strategic_Principles
+                                </h4>
+                                <ul className="space-y-6">
+                                    {[
+                                        "Stakeholder rights before efficiency",
+                                        "Transparency as default logic",
+                                        "Democratic participation protocols",
+                                        "Accountability via enforced audit",
+                                        "Contextual institutional adaptability",
+                                    ].map((principle, i) => (
+                                        <li key={i} className="flex gap-4">
+                                            <span className="text-paper/60 mt-0.5 font-black text-sm shrink-0">0{i + 1}</span>
+                                            <span className="text-sm font-semibold tracking-tight leading-relaxed italic pr-4 text-paper/85">{principle}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

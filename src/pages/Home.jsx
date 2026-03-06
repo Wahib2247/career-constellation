@@ -1,504 +1,381 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { metrics, projects, researchPapers, reflections } from "../constants";
+import StatusBadge from "../components/StatusBadge";
 
-// Animated counter hook
-const useCounter = (target, duration = 2000, start = false) => {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    let startTime = null;
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * target));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [target, duration, start]);
-  return count;
-};
-
-// Single metric counter component
-const MetricCounter = ({ metric, inView }) => {
-  const count = useCounter(metric.value, 1800, inView);
-  return (
-    <div className="metric-card group hover:shadow-institutional-lg transition-all duration-300">
-      <div className="text-4xl sm:text-5xl font-bold text-slate-900 mb-2 font-playfair">
-        {count}{metric.suffix}
-      </div>
-      <div className="text-sm font-semibold text-slate-700 mb-1">{metric.label}</div>
-      <div className="text-xs text-slate-400">{metric.description}</div>
-    </div>
-  );
-};
-
-// Fade-in on scroll
+// Fade-in on scroll component
 const FadeIn = ({ children, delay = 0, className = "" }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.6, delay, ease: "easeOut" }}
-    className={className}
-  >
-    {children}
-  </motion.div>
+    <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+        className={className}
+    >
+        {children}
+    </motion.div>
+);
+
+const MeshBackground = () => (
+    <div className="absolute inset-0 mesh-gradient opacity-40 pointer-events-none" />
 );
 
 const Home = () => {
-  const metricsRef = useRef(null);
-  const [metricsInView, setMetricsInView] = useState(false);
+    const metricsRef = useRef(null);
+    const [metricsInView, setMetricsInView] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setMetricsInView(true); },
-      { threshold: 0.2 }
-    );
-    if (metricsRef.current) observer.observe(metricsRef.current);
-    return () => observer.disconnect();
-  }, []);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) setMetricsInView(true); },
+            { threshold: 0.2 }
+        );
+        if (metricsRef.current) observer.observe(metricsRef.current);
+        return () => observer.disconnect();
+    }, []);
 
-  const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
-  const featuredPapers = researchPapers.slice(0, 3);
-  const featuredReflection = reflections[0];
+    const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+    const featuredPapers = researchPapers.slice(0, 3);
+    const featuredReflection = reflections[0];
 
-  return (
-    <main className="bg-paper-cool min-h-screen">
-      {/* ─── HERO ─── */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background grid */}
-        <div className="absolute inset-0 bg-white">
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `linear-gradient(#1D2235 1px, transparent 1px), linear-gradient(90deg, #1D2235 1px, transparent 1px)`,
-              backgroundSize: "64px 64px",
-            }}
-          />
-        </div>
-        {/* Accent orb */}
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-blue-50 rounded-full blur-[120px] opacity-60 pointer-events-none" />
+    return (
+        <main className="bg-paper min-h-screen relative selection:bg-ink selection:text-paper overflow-hidden font-sans">
+            <MeshBackground />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-12 pt-32 pb-24 w-full">
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="section-label">Governance & EdTech Research Lab</span>
-            </motion.div>
+            {/* ─── HERO ─── */}
+            <section className="relative min-h-screen flex items-center pt-20">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 w-full relative z-10">
+                    <div className="max-w-5xl">
+                        <FadeIn>
+                            <span className="section-label group cursor-default">
+                                <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-3 animate-pulse" />
+                                Archive_Status: Online // Institutional_Records_v3.0
+                            </span>
+                        </FadeIn>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="mt-6 text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Researching Systems for{" "}
-              <span className="italic text-slate-500">Equitable</span>{" "}
-              Education and Governance.
-            </motion.h1>
+                        <h1
+                            className="mt-10 text-6xl sm:text-8xl lg:text-[9.5rem] font-black text-ink leading-[0.85] tracking-tighter"
+                            style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                            Social <span className="italic text-ink/20">Architect</span> <br />
+                            & Researcher.
+                        </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-8 text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl font-inter"
-            >
-              Researching education systems, investment frameworks, and institutional governance — focusing on evidence-based documentation and prototypes.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-10 flex flex-wrap gap-4"
-            >
-              <Link to="/projects" className="btn-primary">
-                Explore Projects
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <Link to="/research" className="btn-secondary">
-                Read Research
-              </Link>
-            </motion.div>
-
-            {/* Domain tags */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="mt-12 flex flex-wrap gap-2"
-            >
-              {["Education Systems", "Governance Innovation", "Economic Inclusion", "Behavioral Research", "Institutional Design"].map(tag => (
-                <span key={tag} className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-full border border-slate-200">
-                  {tag}
-                </span>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── METRICS ─── */}
-      {/* temporarily removed to prevent incorrect data from being displayed */}
-      {/* <section ref={metricsRef} className="py-20 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <FadeIn className="text-center mb-12">
-            <span className="section-label">Impact to Date</span>
-            <h2 className="text-3xl font-bold text-slate-900 mt-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Evidence-Driven Work
-            </h2>
-          </FadeIn>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {metrics.map((metric, i) => (
-              <FadeIn key={metric.label} delay={i * 0.1}>
-                <MetricCounter metric={metric} inView={metricsInView} />
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* ─── INSTITUTIONAL VISION ─── */}
-      <section className="py-24 bg-paper-cool">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <FadeIn className="mb-16">
-            <span className="section-label">Research Focus</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mt-4 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Frameworks for Systemic Analysis
-            </h2>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: "🏛️",
-                title: "Education Systems Architecture",
-                body: "I analyze how schools can be structured with defined governance and accountability systems. I study how institutional design affects long-term educational outcomes.", link: "/projects",
-              },
-              {
-                icon: "⚖️",
-                title: "Governance Analysis",
-                body: "I treat governance as a system that can be mapped and documented. Through small-scale frameworks, I study how decision structures influence institutional performance.", link: "/governance",
-              },
-              {
-                icon: "📊",
-                title: "Economic Frameworks",
-                body: "I research alternative funding models, including investment and outcome-based approaches, to understand how financial structure shapes access to education.", link: "/research",
-              },
-            ].map((pillar, i) => (
-              <FadeIn key={pillar.title} delay={i * 0.15}>
-                <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-institutional hover:shadow-institutional-lg transition-all duration-300 group h-full flex flex-col">
-                  <div className="text-3xl mb-4">{pillar.icon}</div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {pillar.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm leading-relaxed flex-1">{pillar.body}</p>
-                  <Link
-                    to={pillar.link}
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group-hover:gap-3 transition-all"
-                  >
-                    Explore
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </Link>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── FLAGSHIP PLATFORM ─── */}
-      <section className="py-24 bg-slate-900 text-white overflow-hidden relative">
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)`,
-          backgroundSize: "48px 48px",
-        }} />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600 rounded-full blur-[150px] opacity-10 pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <FadeIn>
-              <span className="inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase text-blue-400 border border-blue-400/30 rounded-full mb-6">
-                Primary Case Study
-              </span>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                ClassFusion
-              </h2>
-              <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                An adaptive learning prototype exploring incentive systems, governance tools, and investment mechanisms in an educational context.
-              </p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {[
-                  { label: "Students Piloted", value: "120+" },
-                  { label: "Engagement Increase", value: "41%" },
-                  { label: "Teacher Satisfaction", value: "67%" },
-                  { label: "Pilot Duration", value: "6 weeks" },
-                ].map(stat => (
-                  <div key={stat.label} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                    <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-xs text-slate-400 uppercase tracking-wide">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-              <Link to="/projects/classfusion" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-900 rounded-xl font-semibold text-sm hover:bg-slate-100 transition-colors">
-                View Full Case Study
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <div className="bg-white/5 rounded-3xl border border-white/10 p-8 space-y-4">
-                <div className="text-xs uppercase tracking-widest text-slate-400 mb-6">Platform Architecture</div>
-                {[
-                  { layer: "Behavioral Layer", desc: "Token incentives, variable rewards, social proof", color: "bg-blue-500" },
-                  { layer: "Governance Layer", desc: "Teacher tools, student rights, admin oversight", color: "bg-purple-500" },
-                  { layer: "Economic Layer", desc: "Micro-investment, outcome funding, community capital", color: "bg-emerald-500" },
-                  { layer: "Analytics Layer", desc: "Institutional dashboards, policy insights, impact metrics", color: "bg-amber-500" },
-                ].map((item, i) => (
-                  <div key={item.layer} className="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                    <div className={`w-2 h-2 rounded-full mt-1.5 ${item.color} shrink-0`} />
-                    <div>
-                      <div className="text-sm font-semibold text-white mb-0.5">{item.layer}</div>
-                      <div className="text-xs text-slate-400">{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── PROJECTS GRID ─── */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <FadeIn className="flex items-end justify-between mb-12">
-            <div>
-              <span className="section-label">Institutional Projects</span>
-              <h2 className="text-3xl font-bold text-slate-900 mt-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Systems Under Construction
-              </h2>
-            </div>
-            <Link to="/projects" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-              View All
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredProjects.map((project, i) => (
-              <FadeIn key={project.id} delay={i * 0.1}>
-                <Link to={`/projects/${project.slug}`} className="block group">
-                  <div className="doc-card h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${project.statusColor === "blue" ? "bg-blue-50 text-blue-700 border border-blue-100" :
-                        project.statusColor === "green" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" :
-                          "bg-amber-50 text-amber-700 border border-amber-100"
-                        }`}>
-                        {project.status}
-                      </span>
-                      <span className="text-xs text-slate-400">{project.year}</span>
-                    </div>
-                    <div className="text-xs uppercase tracking-widest text-slate-400 mb-2">{project.category}</div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors" style={{ fontFamily: "'Playfair Display', serif" }}>
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-slate-500 mb-1 font-medium">{project.subtitle}</p>
-                    <p className="text-sm text-slate-600 leading-relaxed flex-1 mt-3">{project.summary}</p>
-                    <div className="mt-6 flex flex-wrap gap-1.5">
-                      {project.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="text-xs px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── RESEARCH CONTRIBUTIONS ─── */}
-      <section className="py-24 bg-paper-cool">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <FadeIn className="flex items-end justify-between mb-12">
-            <div>
-              <span className="section-label">Research</span>
-              <h2 className="text-3xl font-bold text-slate-900 mt-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Research Contributions
-              </h2>
-            </div>
-            <Link to="/research" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-              All Papers
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </FadeIn>
-
-          <div className="space-y-4">
-            {featuredPapers.map((paper, i) => (
-              <FadeIn key={paper.id} delay={i * 0.1}>
-                <Link to="/research" className="block group">
-                  <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-institutional hover:shadow-institutional-lg transition-all duration-300 hover:-translate-y-0.5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-                            {paper.category}
-                          </span>
-                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${paper.status === "Published" ? "bg-emerald-50 text-emerald-700" :
-                            paper.status === "Draft" ? "bg-amber-50 text-amber-700" :
-                              "bg-blue-50 text-blue-700"
-                            }`}>
-                            {paper.status}
-                          </span>
-                          <span className="text-xs text-slate-400">{paper.year}</span>
+                        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
+                            <p className="text-2xl sm:text-3xl font-medium text-ink/60 leading-tight italic border-l border-ink/10 pl-8 font-serif tracking-tight">
+                                Analyzing educational infrastructure, investment frameworks, and governance protocols to build equitable systems.
+                            </p>
+                            
+                            <div className="flex flex-wrap gap-4">
+                                <Link to="/projects" className="px-10 py-5 bg-ink text-paper rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-105 active:scale-95 transition-all shadow-2xl">
+                                    EXAMINE_PORTFOLIO
+                                </Link>
+                                <Link to="/research" className="px-10 py-5 bg-white/40 backdrop-blur-xl border border-ink/[0.08] text-ink rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:bg-white/60 transition-all">
+                                    READ_RESEARCH
+                                </Link>
+                            </div>
                         </div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                          {paper.title}
-                        </h3>
-                        <p className="text-sm text-slate-500 mb-3">{paper.subtitle}</p>
-                        <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">{paper.abstract}</p>
-                      </div>
-                      <div className="hidden sm:flex flex-col items-end gap-2 shrink-0 text-right">
-                        <span className="text-xs text-slate-400">{paper.pages} pages</span>
-                        <span className="text-xs text-slate-400">{paper.citations}</span>
-                      </div>
+
+                        {/* Domain Tags as Bento Block */}
+                        <div className="mt-20 flex flex-wrap gap-3 opacity-60">
+                            {[
+                                "Education_Systems", "Governance_Decryption", "Incentive_Synthesis", "Institutional_Design", "Economic_Inclusion"
+                            ].map(tag => (
+                                <span key={tag} className="text-[9px] font-black uppercase tracking-[0.3em] px-4 py-2 border border-ink/10 rounded-lg bg-paper/20">
+                                    //{tag}
+                                </span>
+                            ))}
+                        </div>
                     </div>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── FOUNDER QUOTE ─── */}
-      <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-6 sm:px-12 text-center">
-          <FadeIn>
-            <div className="text-6xl text-slate-200 mb-6 font-serif">"</div>
-            <blockquote
-              className="text-2xl sm:text-3xl font-medium text-slate-800 leading-relaxed mb-8"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Iterative experimentation beats master planning. I build to understand — and I document everything so others can build further.
-            </blockquote>
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">W</span>
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-semibold text-slate-900">Wahib</div>
-                <div className="text-xs text-slate-400">Founder, Governance & EdTech Lab</div>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ─── FEATURED REFLECTION ─── */}
-      <section className="py-24 bg-paper-cool">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <FadeIn className="flex items-end justify-between mb-12">
-            <div>
-              <span className="section-label">Reflections</span>
-              <h2 className="text-3xl font-bold text-slate-900 mt-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-                From the Lab Journal
-              </h2>
-            </div>
-            <Link to="/reflections" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors">
-              All Entries
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </FadeIn>
-
-          {featuredReflection && (
-            <FadeIn>
-              <Link to="/reflections" className="block group">
-                <div className="bg-white rounded-3xl border border-slate-100 p-10 shadow-institutional hover:shadow-institutional-lg transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="section-label">{featuredReflection.category}</span>
-                    <span className="text-xs text-slate-400">{featuredReflection.date}</span>
-                    <span className="text-xs text-slate-400">· {featuredReflection.readTime} read</span>
-                  </div>
-                  <h3
-                    className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {featuredReflection.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed text-lg max-w-3xl">{featuredReflection.excerpt}</p>
-                  <div className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 group-hover:gap-3 transition-all">
-                    Read Full Entry
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </div>
                 </div>
-              </Link>
-            </FadeIn>
-          )}
-        </div>
-      </section>
 
-      {/* ─── CTA ─── */}
-      <section className="py-24 bg-slate-900 text-white">
-        <div className="max-w-4xl mx-auto px-6 sm:px-12 text-center">
-          <FadeIn>
-            <h2
-              className="text-4xl sm:text-5xl font-bold mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Open for Collaboration
-            </h2>
-            <p className="text-slate-300 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-              Research partnerships, institutional pilots, governance consultations, and co-design opportunities. If you're working on education equity or governance innovation, let's connect.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-xl font-semibold hover:bg-slate-100 transition-colors">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                Start a Conversation
-              </Link>
-              <Link to="/about" className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-colors border border-white/20">
-                About the Lab
-              </Link>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-    </main>
-  );
+                {/* Subtle Scroll Indicator */}
+                <div className="absolute bottom-12 left-6 sm:left-12 flex items-center gap-6 opacity-20">
+                    <div className="w-12 h-px bg-ink" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.5em]">Scroll_to_Indices</span>
+                </div>
+            </section>
+
+            {/* ─── METRICS ─── */}
+            <section ref={metricsRef} className="py-32 relative z-10">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                        {metrics.map((metric, i) => (
+                             <div key={metric.label} className="bento-item bg-white/50 backdrop-blur-sm border-ink/[0.08] p-12 group hover:bg-white transition-all duration-700">
+                                <div className="text-5xl font-black text-ink mb-4 tracking-tighter leading-none group-hover:italic transition-all">
+                                    {metricsInView ? metric.value : 0}{metric.suffix}
+                                </div>
+                                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/30 mb-2">{metric.label}</div>
+                                <div className="text-[9px] font-medium text-ink/55 uppercase tracking-widest">{metric.description}</div>
+                             </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── CORE PILLARS ─── */}
+            <section className="py-40 bg-ink text-paper relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
+                
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
+                    <div className="max-w-3xl mb-24">
+                        <span className="text-[11px] font-black uppercase tracking-[0.5em] text-paper/60 italic">Research_Pillars // v4.0</span>
+                        <h2 className="text-5xl sm:text-7xl font-black mt-8 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            Mapping the <br /><span className="text-paper/60 italic">Institutional</span> Landscape.
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-paper/10 border border-paper/10 rounded-[3rem] overflow-hidden">
+                        {[
+                            {
+                                id: "01",
+                                title: "Education Systems Architecture",
+                                desc: "Structural analysis of institutional governance and accountability loops. Counterfactual modeling of school autonomy.",
+                                link: "/projects"
+                            },
+                            {
+                                id: "02",
+                                title: "Governance Decryption",
+                                desc: "Mapping non-state governance as algorithmic social technology. Formalizing informal decision-making protocols.",
+                                link: "/governance"
+                            },
+                            {
+                                id: "03",
+                                title: "Incentive Synthesis",
+                                desc: "Researching outcome-based funding models and continuous liquidity streams for social capital allocation.",
+                                link: "/research"
+                            }
+                        ].map(pillar => (
+                            <div key={pillar.id} className="p-16 hover:bg-white/5 transition-all duration-700 group cursor-help">
+                                <div className="text-4xl font-black text-paper/45 mb-12 group-hover:text-paper/40 transition-colors font-mono tracking-tighter">{pillar.id}</div>
+                                <h3 className="text-2xl font-black mb-6 leading-tight group-hover:italic transition-all" style={{ fontFamily: "'Playfair Display', serif" }}>{pillar.title}</h3>
+                                <p className="text-paper/50 text-sm leading-relaxed mb-10 font-medium font-inter">{pillar.desc}</p>
+                                <Link to={pillar.link} className="inline-flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.4em] text-paper/60 group-hover:text-paper transition-all group-hover:gap-6">
+                                    ACCESS_FILE <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FEATURED FLAGSHIP (CLASSFUSION) ─── */}
+            <section className="py-40 relative z-10">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12">
+                    <div className="bento-item bg-white border-ink/[0.08] p-0 overflow-hidden group shadow-2xl rounded-[4rem]">
+                        <div className="grid grid-cols-1 lg:grid-cols-2">
+                            <div className="p-20 flex flex-col justify-center">
+                                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-ink/55 mb-8 italic">Primary_Simulation_Entry</span>
+                                <h2 className="text-6xl sm:text-7xl font-black text-ink mb-10 tracking-tighter leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                    ClassFusion <br /><span className="text-ink/10 italic">Case_Study</span>
+                                </h2>
+                                <p className="text-xl text-ink/60 leading-relaxed mb-12 italic border-l-2 border-ink/[0.08] pl-8 font-medium">
+                                    An adaptive learning prototype exploring incentive systems, democratic governance tools, and micro-investment mechanisms.
+                                </p>
+                                
+                                <div className="grid grid-cols-2 gap-8 mb-16 px-8">
+                                    {[
+                                        { l: "Simulated_Capacity", v: "120+" },
+                                        { l: "Engagement_Index", v: "+41%" },
+                                        { l: "Accountability_Rate", v: "67%" },
+                                        { l: "Pilot_Cycle", v: "6WK" },
+                                    ].map(s => (
+                                        <div key={s.l}>
+                                            <div className="text-4xl font-black text-ink tracking-tighter">{s.v}</div>
+                                            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/55 mt-2">{s.l}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <Link to="/projects/classfusion" className="w-fit px-12 py-5 bg-ink text-paper rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                    READ_FULL_BluePrint
+                                </Link>
+                            </div>
+
+                            <div className="bg-ink relative min-h-[500px] overflow-hidden">
+                                <img 
+                                    src="/src/assets/images/blueprints/classfusion_blueprint_1772823077547.png" 
+                                    alt="ClassFusion" 
+                                    className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen scale-110 group-hover:scale-125 transition-transform duration-[3s]" 
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-ink via-transparent to-transparent" />
+                                <div className="absolute bottom-12 left-12 right-12 p-8 bg-paper/5 backdrop-blur-2xl border border-paper/10 rounded-2xl">
+                                    <div className="text-[9px] font-black uppercase tracking-[0.4em] text-paper/55 mb-4 inline-block">Architecture_Overview</div>
+                                    <div className="flex gap-4 items-center">
+                                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
+                                        <p className="text-paper text-[10px] font-bold tracking-widest uppercase italic border-l border-paper/10 pl-4">Simulating_Behavioral_Governance_Loops_v2.1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── ARCHIVE INDICES (PROJECTS & RESEARCH) ─── */}
+            <section className="py-40 bg-paper relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
+                    <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-24">
+                        <div className="max-w-2xl">
+                            <span className="section-label cursor-default">Archive_Selection // Technical_Indices</span>
+                            <h2 className="text-5xl sm:text-7xl font-black mt-8 tracking-tighter leading-[0.9]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                Featured <br /><span className="text-ink/10 italic">Inquiries</span>.
+                            </h2>
+                        </div>
+                        <Link to="/projects" className="px-10 py-4 bg-white/40 backdrop-blur-xl border border-ink/[0.08] text-ink rounded-xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/60 transition-all flex items-center gap-4">
+                            VIEW_ALL_RECORDS <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {featuredProjects.map(p => (
+                            <Link key={p.id} to={`/projects/${p.slug}`} className="bento-item bg-white border-ink/[0.08] p-10 group hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 flex flex-col">
+                                <div className="flex justify-between items-start mb-10">
+                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] px-3 py-1 bg-ink/5 text-ink/30 border border-ink/[0.08] rounded-md italic group-hover:bg-ink group-hover:text-paper transition-all">
+                                        {p.category}
+                                    </span>
+                                    <span className="text-[10px] font-mono font-bold text-ink/40">{p.year}</span>
+                                </div>
+                                <h3 className="text-3xl font-black text-ink mb-4 tracking-tighter group-hover:italic transition-all" style={{ fontFamily: "'Playfair Display', serif" }}>{p.title}</h3>
+                                <p className="text-sm text-ink/40 mb-10 italic border-l border-ink/[0.08] pl-4 font-medium flex-1 line-clamp-3">{p.summary}</p>
+                                <div className="mt-auto pt-8 border-t border-ink/[0.08] text-[10px] font-mono font-bold text-ink/40 uppercase tracking-widest italic overflow-hidden whitespace-nowrap text-ellipsis">
+                                    //{p.logic}
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── RESEARCH PREPRINTS LIST ─── */}
+            <section className="py-40 relative z-10">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-16">
+                         <div>
+                            <span className="section-label">Research_Preprints_Inventory</span>
+                            <h2 className="text-5xl font-black mt-8 tracking-tighter leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                Latest <br /><span className="text-ink/10 italic">Working_Papers</span>.
+                            </h2>
+                         </div>
+                         <p className="text-lg text-ink/50 italic font-medium leading-relaxed border-l-2 border-ink/[0.08] pl-8">
+                            Iterative preprints exploring systemic design across educational and economic boundaries. All entries undergo empirical validation.
+                         </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        {featuredPapers.map(paper => (
+                           <Link key={paper.id} to="/research" className="bento-item bg-white/40 backdrop-blur-sm border-ink/[0.08] p-8 flex flex-col md:flex-row items-center gap-10 group hover:bg-white transition-all duration-500 shadow-sm hover:shadow-xl">
+                                <div className="w-16 h-16 bg-ink text-paper rounded-2xl flex items-center justify-center shrink-0 font-black text-xl group-hover:scale-110 active:scale-95 transition-all shadow-xl font-serif italic">
+                                    {paper.title.charAt(0)}
+                                </div>
+                                <div className="flex-1 text-center md:text-left">
+                                    <div className="flex items-center gap-4 justify-center md:justify-start mb-3">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/30 italic">//{paper.category}</span>
+                                        <span className="w-1 h-1 bg-ink/10 rounded-full" />
+                                        <span className="text-[10px] font-mono font-bold text-ink/55 uppercase">REV_{paper.year}</span>
+                                    </div>
+                                    <h3 className="text-2xl font-black text-ink mb-1 tracking-tighter group-hover:italic transition-all leading-tight">{paper.title}</h3>
+                                    <p className="text-sm text-ink/40 italic font-medium">{paper.subtitle}</p>
+                                </div>
+                                <button className="hidden md:flex px-8 py-3 border border-ink/10 rounded-xl text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 group-hover:border-ink group-hover:text-ink transition-all">
+                                    ACCESS_FILE
+                                </button>
+                           </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ─── FOUNDER MANIFESTO (REPLACED QUOTE) ─── */}
+            <section className="py-60 relative overflow-hidden bg-white">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-ink/[0.01] rounded-full blur-[100px] pointer-events-none" />
+                <div className="max-w-5xl mx-auto px-6 sm:px-12 text-center relative z-10">
+                    <FadeIn>
+                        <span className="text-[10px] font-black uppercase tracking-[1em] text-ink/35 mb-20 inline-block italic">Institutional_Philosophy</span>
+                        <blockquote
+                            className="text-4xl sm:text-7xl font-black text-ink leading-[0.95] tracking-tighter mb-20 italic font-serif"
+                        >
+                            "Iterative <span className="text-ink/30">experimentation</span> beats master planning. We build to <span className="text-ink/25">understand</span> — and we document everything so others can build further."
+                        </blockquote>
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="w-16 h-16 bg-ink text-paper rounded-[1.5rem] flex items-center justify-center font-black text-2xl shadow-2xl">W</div>
+                            <div className="text-center">
+                                <div className="text-[11px] font-black uppercase tracking-[0.5em] text-ink">Wahib</div>
+                                <div className="text-[9px] font-black uppercase tracking-[0.3em] text-ink/55 mt-2 italic">Founding_Researcher // Constellation_Labs</div>
+                            </div>
+                        </div>
+                    </FadeIn>
+                </div>
+            </section>
+
+            {/* ─── REFLECTION FEATURE ─── */}
+            <section className="py-40 bg-paper/50 backdrop-blur-xl relative z-10">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 text-center">
+                    <FadeIn>
+                        <span className="section-label cursor-default">Journal_Dispatches // Reflections</span>
+                        <h2 className="text-5xl sm:text-7xl font-black mt-10 tracking-tighter mb-24" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            From the <span className="text-ink/20 italic">Lab Journal</span>.
+                        </h2>
+
+                        {featuredReflection && (
+                            <Link to="/reflections" className="bento-item bg-white border-ink/[0.08] p-20 group hover:shadow-2xl transition-all duration-1000 block max-w-5xl mx-auto text-left relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-ink/[0.01] blur-[80px] pointer-events-none" />
+                                <div className="flex flex-wrap items-center gap-6 mb-12">
+                                    <span className="px-4 py-1.5 bg-ink text-paper text-[10px] font-black uppercase tracking-widest rounded-lg">
+                                        {featuredReflection.category}
+                                    </span>
+                                    <span className="text-[10px] font-mono font-bold text-ink/55 uppercase tracking-[0.3em]">{featuredReflection.date} // {featuredReflection.readTime} read</span>
+                                </div>
+                                <h3 className="text-5xl sm:text-6xl font-black text-ink mb-10 tracking-tighter group-hover:italic transition-all leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                    {featuredReflection.title}
+                                </h3>
+                                <p className="text-2xl text-ink/40 leading-relaxed italic max-w-4xl font-serif tracking-tight pr-12 group-hover:text-ink/70 transition-colors">
+                                    {featuredReflection.excerpt}
+                                </p>
+                                <div className="mt-20 inline-flex items-center gap-6 text-[11px] font-black uppercase tracking-[0.5em] text-ink/55 group-hover:text-ink transition-all group-hover:gap-10">
+                                    OPEN_FULL_INQUIRY <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                </div>
+                            </Link>
+                        )}
+                    </FadeIn>
+                </div>
+            </section>
+
+            {/* ─── FINAL CTA ─── */}
+            <section className="py-60 bg-ink text-paper relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-white/5 blur-[150px] rounded-full pointer-events-none" />
+                <div className="max-w-5xl mx-auto px-6 sm:px-12 text-center relative z-10">
+                    <FadeIn>
+                        <h2 className="text-6xl sm:text-9xl font-black mb-12 tracking-tighter leading-none" style={{ fontFamily: "'Playfair Display', serif" }}>
+                            Open for <br /><span className="text-paper/60 italic">Collaboration</span>.
+                        </h2>
+                        <p className="text-2xl text-paper/40 leading-relaxed mb-20 max-w-2xl mx-auto font-medium italic">
+                            Research partnerships, institutional pilots, governance consultations, and co-design opportunities.
+                        </p>
+                        <div className="flex flex-wrap gap-6 justify-center">
+                            <Link to="/contact" className="px-12 py-6 bg-paper text-ink rounded-2xl text-[11px] font-black uppercase tracking-[0.5em] hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-4">
+                                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                                START_CONVERSATION
+                            </Link>
+                            <Link to="/about" className="px-12 py-6 bg-white/5 border border-paper/10 text-paper rounded-2xl text-[11px] font-black uppercase tracking-[0.5em] hover:bg-white/10 transition-all">
+                                ABOUT_THE_LAB
+                            </Link>
+                        </div>
+                    </FadeIn>
+                </div>
+            </section>
+
+            {/* Footer Footnote */}
+            <section className="py-12 relative z-10">
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 text-center opacity-10 hover:opacity-40 transition-opacity font-mono text-ink">
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em] italic leading-relaxed">
+                        © 2024 CONSTELLATION LABS // GOVERNANCE_RECORDS // ALL_DATA_SIMULATED <br />
+                        CLEARANCE_LEVEL_ALPHA // ARCHIVE_STATUS_VERIFIED
+                    </p>
+                </div>
+            </section>
+        </main>
+    );
 };
 
 export default Home;

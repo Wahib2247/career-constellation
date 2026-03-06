@@ -1,278 +1,383 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { projects } from "../constants";
 import { projectDetails } from "../constants/projectDetails";
-import { arrow } from "../assets/icons";
+import StatusBadge from "../components/StatusBadge";
+import MathFormula from "../components/MathFormula";
 
-const ProjectDetail = () => {
-  const { projectSlug } = useParams();
-  const [isLoaded, setIsLoaded] = useState(false);
+const MeshBackground = () => (
+    <div className="absolute inset-0 mesh-gradient opacity-60 pointer-events-none">
+        <div className="simulation-glow-orb top-[-10%] left-[-10%] opacity-10" />
+        <div className="simulation-glow-orb bottom-[-10%] right-[-10%] opacity-5" />
+    </div>
+);
 
-  useEffect(() => {
-    setIsLoaded(true);
-    window.scrollTo(0, 0);
-  }, []);
-
-  const project = projects.find(
-    (p) => p.slug.toLowerCase() === projectSlug?.toLowerCase()
-  );
-
-  const slugToKeyMap = useMemo(() => ({
-    "classfusion": "classfusion",
-    "flowfund": "flowfund",
-    "fundmylife": "fundmylife",
-    "sarmayachain": "sarmayachain",
-    "quarkcapital": "quarkcapital"
-  }), []);
-
-  const projectKey = slugToKeyMap[projectSlug?.toLowerCase()];
-  const details = projectDetails[projectKey];
-
-  // Theme Logic: Dynamic Colors based on Project Status/Theme
-  const getThemeStyles = (key) => {
-    const themes = {
-      classfusion: { bg: "from-amber-200 via-yellow-100 to-amber-50", accent: "text-amber-700", border: "border-amber-200", shadow: "shadow-amber-900/10", blob: "bg-amber-400" },
-      flowfund: { bg: "from-rose-200 via-pink-100 to-rose-50", accent: "text-rose-800", border: "border-rose-200", shadow: "shadow-rose-900/10", blob: "bg-rose-500" },
-      fundmylife: { bg: "from-emerald-200 via-green-100 to-emerald-50", accent: "text-emerald-800", border: "border-emerald-200", shadow: "shadow-emerald-900/10", blob: "bg-emerald-500" },
-      sarmayachain: { bg: "from-slate-300 via-gray-200 to-slate-100", accent: "text-slate-800", border: "border-slate-300", shadow: "shadow-slate-900/10", blob: "bg-slate-500" },
-      quarkcapital: { bg: "from-blue-200 via-indigo-100 to-blue-50", accent: "text-blue-800", border: "border-blue-200", shadow: "shadow-blue-900/10", blob: "bg-blue-600" }
-    };
-    return themes[key] || themes.classfusion;
-  };
-
-  const theme = getThemeStyles(projectKey);
-
-  if (!project || !details) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-slate-300">Signal Lost</h1>
-          <Link to="/projects" className="text-blue-600 underline mt-4 block">Return to Index</Link>
+const TechnicalWatermark = () => (
+    <div className="absolute inset-x-0 top-[20%] pointer-events-none opacity-[0.03] select-none z-0 overflow-hidden whitespace-nowrap">
+        <div className="text-[20vw] font-black uppercase tracking-tighter">
+            VERIFIED_RESEARCH // CONSTELLATION_LABS // {new Date().getFullYear()}
         </div>
-      </div>
-    );
-  }
+    </div>
+);
 
-  const fadeInUp = "transition-all duration-1000 ease-out";
-  const getDelay = (idx) => isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12";
+const HypothesisCard = ({ hypothesis }) => (
+    <div className="bento-item bg-ink text-paper p-10 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[50px] pointer-events-none" />
+        <div className="text-[9px] font-black uppercase tracking-[0.4em] text-paper/60 mb-8 font-mono">
+            // Speculative_Hypothesis
+        </div>
+        <div className="space-y-8">
+            <div>
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-paper/40 mb-2 font-sans">Statement</h4>
+                <p className="text-2xl font-black italic tracking-tight leading-[1.1] font-serif">{hypothesis.statement}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+                <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-paper/40 mb-2 font-sans">Variable</h4>
+                    <p className="text-xs font-bold text-paper/60 italic font-mono">{hypothesis.variable}</p>
+                </div>
+                <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-paper/40 mb-2 font-sans">Simulated Outcome</h4>
+                    <p className="text-xs font-bold text-paper/60 italic font-mono">{hypothesis.outcome}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+const AdversarialAnalysis = ({ analysis }) => (
+    <div className="bento-item bg-white border-red-500/10 p-10 hover:shadow-2xl transition-all duration-700 relative group">
+        <div className="absolute top-4 right-4 text-[10px] font-black text-red-500/20 uppercase tracking-[0.5em] font-mono">Red_Team_Audit</div>
+        <div className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 mb-8 flex items-center gap-3 font-mono">
+            <span className="w-2 h-2 bg-red-500/20 rounded-full animate-pulse" />
+            Adversarial_Analysis
+        </div>
+        <div className="space-y-8">
+            <div>
+                <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/40 mb-2 font-sans">Attack Vector</h5>
+                <p className="text-lg text-ink/80 font-black italic leading-tight font-serif">{analysis.attackVector}</p>
+            </div>
+            <div className="pt-6 border-t border-ink/[0.08]">
+                <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500/40 mb-2 font-sans">Mitigation</h5>
+                <p className="text-sm font-bold text-ink/60 italic font-inter">{analysis.mitigation}</p>
+            </div>
+        </div>
+    </div>
+);
+
+const SystemLogic = ({ logic }) => (
+    <div className="bento-item border-ink/[0.08] p-12 bg-white flex flex-col justify-center items-center text-center group">
+        <div className="text-[9px] font-black uppercase tracking-[0.5em] text-ink/45 mb-10 font-mono">System_Logic_Model</div>
+        <div className="text-4xl sm:text-5xl font-black text-ink tracking-tight font-serif mb-6 bg-paper/50 px-8 py-4 rounded-3xl border border-ink/[0.07] overflow-x-auto">
+            <MathFormula formula={logic} />
+        </div>
+        <div className="flex gap-2 opacity-10">
+            {[1, 2, 3].map(i => <div key={i} className="w-1 h-1 rounded-full bg-ink" />)}
+        </div>
+    </div>
+);
+
+const TraceabilityStack = ({ matrix }) => (
+    <div className="mt-12 space-y-4">
+        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-ink/55 mb-6 font-mono">Traceability_Matrix</h4>
+        <div className="p-6 bg-ink/[0.02] border border-ink/[0.08] rounded-2xl">
+            <div className="text-[10px] font-black text-ink/55 uppercase tracking-widest mb-1 font-mono">First Principle</div>
+            <div className="text-sm font-black text-ink italic font-serif group-hover:text-ink/60 transition-colors uppercase">{matrix.interest}</div>
+        </div>
+        <div className="p-6 bg-white border border-ink/[0.08] rounded-2xl shadow-sm">
+            <div className="text-[10px] font-black text-ink/55 uppercase tracking-widest mb-1 font-mono">Research Core</div>
+            <div className="text-sm font-black text-ink italic font-serif leading-tight">{matrix.paper}</div>
+        </div>
+    </div>
+);
+
+const SimulationTerminal = ({ outcome }) => {
+  const [logs, setLogs] = useState([]);
+  
+  useEffect(() => {
+    const initialLogs = [
+      `[SYSTEM] Initializing simulation...`,
+      `[AUTH] Systems Architect Verified.`,
+      `[DATA] Loading systemic variables...`,
+      `[PARAM] Outcome target: ${outcome}`,
+    ];
+    
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < initialLogs.length) {
+        setLogs(prev => [...prev, initialLogs[i]]);
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 600);
+    return () => clearInterval(interval);
+  }, [outcome]);
 
   return (
-    <section className="relative w-full min-h-screen bg-[#F8FAFC] font-sans selection:bg-blue-200 selection:text-blue-900">
-
-      {/* ---------------- 0. IMMERSIVE HERO WRAPPER ---------------- */}
-      <div className={`relative w-full h-[85vh] overflow-hidden flex flex-col justify-end pb-24 px-6 sm:px-12`}>
-
-        {/* Dynamic Moving Gradient Background */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${theme.bg} opacity-80 z-0`}></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 mix-blend-overlay z-0"></div>
-
-        {/* Ambient Orbs */}
-        <div className={`absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full blur-[120px] opacity-40 mix-blend-multiply animate-pulse ${theme.blob}`}></div>
-        <div className={`absolute bottom-[-100px] left-[-100px] w-[500px] h-[500px] rounded-full blur-[100px] opacity-30 mix-blend-multiply ${theme.blob}`}></div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full">
-
-          {/* Back Link */}
-          <Link to="/projects" className="absolute -top-[20vh] left-0 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500/80 hover:text-slate-900 transition-colors backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 bg-white/10">
-            <img src={arrow} className="w-3 h-3 rotate-180 opacity-50" /> Index
-          </Link>
-
-          {/* Pills */}
-          <div className={`flex flex-wrap gap-4 mb-8 ${fadeInUp} ${getDelay(0)}`}>
-            <div className="px-4 py-1.5 bg-white/40 backdrop-blur-md border border-white/50 rounded-full text-xs font-bold uppercase tracking-widest text-slate-800 shadow-sm">
-              {details.status}
-            </div>
-            <div className="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-xs font-bold uppercase tracking-widest text-slate-700">
-              {details.domain}
-            </div>
-          </div>
-
-          {/* Massive Title */}
-          <h1 className={`text-6xl sm:text-8xl md:text-9xl font-serif font-black text-slate-900 leading-[0.9] tracking-tight mb-8 drop-shadow-sm ${fadeInUp} ${getDelay(1)}`} style={{ transitionDelay: '100ms' }}>
-            {details.name}
-          </h1>
-
-          {/* Descriptor */}
-          <p className={`text-xl sm:text-2xl md:text-3xl text-slate-700 font-light leading-relaxed max-w-3xl ${fadeInUp} ${getDelay(2)}`} style={{ transitionDelay: '200ms' }}>
-            {details.descriptor}
-          </p>
+    <div className="simulation-terminal mt-8">
+      <div className="terminal-header">
+        <div className="flex gap-1.5 opacity-30">
+          <div className="w-2 h-2 rounded-full bg-ink" />
+          <div className="w-2 h-2 rounded-full bg-ink" />
+          <div className="w-2 h-2 rounded-full bg-ink" />
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
-          <img src={arrow} className="w-6 h-6 rotate-90" />
-        </div>
+        <span className="text-[9px] uppercase font-black tracking-widest opacity-20 ml-3 font-mono">Active Simulation Feed</span>
       </div>
-
-
-      {/* ---------------- 1. MAIN RESEARCH CONTENT (BENTO GRID) ---------------- */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-12 -mt-20 pb-32">
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          {/* --- BLOCK: PROBLEM (Left Large) --- */}
-          <div className={`lg:col-span-8 bg-white/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/50 shadow-xl ${theme.shadow} ${fadeInUp} ${getDelay(3)}`}>
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 block">01 / The Failing</span>
-            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-6">Problem Statement</h3>
-            <p className="text-lg text-slate-600 leading-relaxed font-light">
-              {details.problemStatement}
-            </p>
+      <div className="space-y-1 h-32 overflow-hidden text-[10px] font-mono text-ink/40">
+        {logs.map((log, idx) => (
+          <div key={idx} className="animate-fadeIn">{log}</div>
+        ))}
+        {logs.length === 4 && (
+          <div className="text-ink/60 mt-2 font-black uppercase italic">
+            {`> Simulation Stabilized: Result Logged.`}
           </div>
-
-          {/* --- BLOCK: META (Right Vertical) --- */}
-          <div className={`lg:col-span-4 bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl flex flex-col justify-between relative overflow-hidden group ${fadeInUp} ${getDelay(4)}`}>
-            <div className={`absolute top-0 right-0 w-32 h-32 ${theme.blob} blur-[80px] opacity-40 group-hover:opacity-60 transition-opacity`}></div>
-
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6 block">02 / The Variable</span>
-              <h3 className="text-2xl font-serif font-bold text-white mb-4">Core Hypothesis</h3>
-            </div>
-
-            <p className="text-lg text-slate-300 italic font-serif leading-relaxed relative z-10">
-              "{details.hypothesis}"
-            </p>
-          </div>
-
-          {/* --- BLOCK: SYSTEM OVERVIEW (Full Width) --- */}
-          <div className={`lg:col-span-12 bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-sm mt-8 ${fadeInUp} ${getDelay(5)}`}>
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-slate-100 pb-6">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">03 / System Maps</span>
-                <h3 className="text-4xl font-serif font-bold text-slate-900">Architecture & Flows</h3>
-              </div>
-              <div className="text-right hidden md:block">
-                <p className="text-sm text-slate-400">System Actors: {details.systemOverview.actors.length}</p>
-                <p className="text-sm text-slate-400">Mechanisms: {details.systemOverview.mechanisms.length}</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100">
-                <h4 className={`text-lg font-bold ${theme.accent} mb-6 uppercase tracking-wider`}>Actors</h4>
-                <ul className="space-y-4">
-                  {details.systemOverview.actors.map((actor, i) => (
-                    <li key={i} className="flex gap-4 items-center text-slate-700">
-                      <span className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center font-mono text-xs text-slate-400 shadow-sm">{i + 1}</span>
-                      {actor}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100">
-                <h4 className={`text-lg font-bold ${theme.accent} mb-6 uppercase tracking-wider`}>Incentive Mechanisms</h4>
-                <ul className="space-y-4">
-                  {details.systemOverview.mechanisms.map((mech, i) => (
-                    <li key={i} className="flex gap-4 items-center text-slate-700">
-                      <div className={`w-2 h-2 rounded-full ${theme.blob}`}></div>
-                      {mech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-12 pt-8 border-t border-slate-100">
-              <p className="font-mono text-sm text-slate-500 mb-4 uppercase tracking-widest">Stack Architecture</p>
-              <p className="text-lg text-slate-800 font-light">{details.architecture.description}</p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {details.architecture.components.map((comp, i) => (
-                  <span key={i} className="px-3 py-1 bg-slate-100 rounded text-xs text-slate-600 border border-slate-200">{comp}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* --- BLOCK: ARTIFACTS (Gallery) --- */}
-          <div className={`lg:col-span-6 bg-[#0f172a] text-slate-300 p-10 rounded-[2.5rem] shadow-2xl overflow-hidden relative ${fadeInUp} ${getDelay(6)}`}>
-            <div className="absolute top-0 right-[-20%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px]"></div>
-
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-6 block relative z-10">04 / Evidence</span>
-            <h3 className="text-3xl font-serif font-bold text-white mb-8 relative z-10">Artifacts</h3>
-
-            <div className="space-y-4 relative z-10">
-              {details.researchArtifacts.map((artifact, i) => (
-                <div key={i} className="group p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all cursor-pointer">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 bg-white/10 px-2 py-0.5 rounded">{artifact.type}</span>
-                    <img src={arrow} className="w-3 h-3 invert -rotate-45 opacity-50 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                  <h4 className="text-lg font-bold text-white mb-1">{artifact.label}</h4>
-                  <p className="text-xs text-slate-400">{artifact.caption}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* --- BLOCK: SIMULATION (Data) --- */}
-          <div className={`lg:col-span-6 bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-sm ${fadeInUp} ${getDelay(7)}`}>
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6 block">05 / Simulation</span>
-            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-8">Outcomes</h3>
-
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 font-mono text-sm leading-relaxed mb-6">
-              <p className="text-slate-500 uppercase text-[10px] mb-2 font-bold tracking-widest">Input Scenario</p>
-              <p className="text-slate-700 mb-6">{details.simulation.scenario}</p>
-
-              <div className="h-[1px] w-full bg-slate-200 mb-6"></div>
-
-              <p className="text-emerald-600 uppercase text-[10px] mb-2 font-bold tracking-widest">Observed Result</p>
-              <p className="text-slate-900 font-bold">{details.simulation.outcome}</p>
-            </div>
-
-            <div className="flex gap-4">
-              {details.methodology.metrics.slice(0, 2).map((metric, i) => (
-                <div key={i} className="flex-1 bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
-                  <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Metric</p>
-                  <p className="text-xs font-bold text-slate-700">{metric}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* --- BLOCK: ETHICS & NEXT STEPS (Footer Grid) --- */}
-          <div className={`lg:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 ${fadeInUp} ${getDelay(8)}`}>
-            {/* Ethics */}
-            <div className="bg-amber-50 rounded-[2rem] p-8 border border-amber-100">
-              <h3 className="text-amber-900 font-serif font-bold text-xl mb-4 flex items-center gap-2">
-                <span className="text-2xl">⚠</span> Risk Analysis
-              </h3>
-              <ul className="space-y-4">
-                {details.ethicalRisks.map((risk, i) => (
-                  <li key={i} className="text-amber-800 text-sm leading-relaxed">
-                    <span className="font-bold block text-amber-900/80 mb-1">{risk.risk}</span>
-                    {risk.mitigation}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Next Steps */}
-            <div className="bg-white rounded-[2rem] p-8 border border-slate-200">
-              <h3 className="text-slate-900 font-serif font-bold text-xl mb-6">Future Roadmap</h3>
-              <ul className="border-l-2 border-slate-100 ml-2 space-y-6">
-                {details.nextSteps.map((step, i) => (
-                  <li key={i} className="relative pl-6">
-                    <span className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-white border-2 border-slate-300"></span>
-                    <p className="text-slate-600 text-sm">{step}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ---------------- DISCLAIMER FOOTER ---------------- */}
-        <div className={`mt-32 text-center opacity-60 hover:opacity-100 transition-opacity ${fadeInUp} ${getDelay(9)}`}>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-4">Academic Disclaimer</p>
-          <p className="text-xs text-slate-500 max-w-lg mx-auto italic">
-            {details.disclaimer}
-          </p>
-        </div>
-
+        )}
       </div>
-    </section>
+    </div>
   );
+};
+
+const ProjectDetail = () => {
+    const { projectSlug } = useParams();
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        setIsLoaded(true);
+        window.scrollTo(0, 0);
+    }, []);
+
+    const project = projects.find(
+        (p) => p.slug.toLowerCase() === projectSlug?.toLowerCase()
+    );
+
+    const projectKey = project?.id;
+    const details = projectDetails[projectKey];
+
+    if (!project || !details) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-paper font-sans">
+                <div className="text-center">
+                    <h1 className="text-2xl font-black text-ink/40 uppercase tracking-[0.4em]">Signal Lost</h1>
+                    <Link to="/projects" className="text-ink underline mt-8 block text-[10px] font-bold uppercase tracking-widest font-mono">Return to Index</Link>
+                </div>
+            </div>
+        );
+    }
+
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
+    return (
+        <main className="bg-paper min-h-screen flex flex-col lg:flex-row relative selection:bg-ink selection:text-paper font-sans overflow-hidden">
+            <MeshBackground />
+            <TechnicalWatermark />
+
+            {/* ─── LEFT PANE: THE INDEX (Sticky) ─── */}
+            <aside className="lg:w-96 w-full lg:h-screen lg:sticky lg:top-0 border-r border-ink/[0.08] bg-white/40 backdrop-blur-3xl z-30 p-12 flex flex-col overflow-y-auto">
+                <Link 
+                    to="/projects" 
+                    className="group inline-flex items-center gap-4 text-ink/40 hover:text-ink transition-all mb-20"
+                >
+                    <svg className="w-5 h-5 group-hover:-translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] font-mono">Index_Archive</span>
+                </Link>
+
+                <div className="flex-1">
+                    <div className="space-y-1 mb-12">
+                        <div className="text-[11px] font-mono font-black text-ink/55 uppercase tracking-[0.4em] italic mb-4">// Metadata_Node</div>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs font-mono font-bold text-ink/40 uppercase tracking-widest">ID: {project.id.toUpperCase()}</span>
+                            <span className="text-xs font-mono font-bold text-ink/40 uppercase tracking-widest">YEAR: {project.year}</span>
+                            <span className="text-xs font-mono font-bold text-ink/40 uppercase tracking-widest">VER: 3.1.2</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-12">
+                        <div className="text-[11px] font-mono font-black text-ink/55 uppercase tracking-[0.4em] italic mb-6">// Institutional_Status</div>
+                        <div className="bg-white/80 border border-ink/[0.08] p-8 rounded-3xl shadow-sm relative overflow-hidden group">
+                            <div className={`absolute top-0 right-0 w-2 h-2 rounded-full m-4 ${project.status === 'Live' ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`} />
+                            <h4 className="text-2xl font-black text-ink tracking-tighter uppercase leading-none font-sans mb-2">{project.status}</h4>
+                            <p className="text-[10px] font-mono font-bold text-ink/40 uppercase tracking-[0.2em]">{project.statusBadge || 'PROCESS_NOMINAL'}</p>
+                        </div>
+                    </div>
+
+                    <TraceabilityStack matrix={project.traceabilityMatrix || { interest: 'Systems Thinker', paper: 'Institutional Methodology' }} />
+                </div>
+
+                <div className="pt-12 border-t border-ink/[0.08]">
+                    <p className="text-[10px] font-mono font-bold text-ink/55 uppercase tracking-[0.3em] leading-relaxed italic">
+                        Constellation_Labs // Project_Dossier <br />
+                        Archive_Status: Online
+                    </p>
+                </div>
+            </aside>
+
+            {/* ─── RIGHT PANE: THE DOCUMENT ─── */}
+            <article className="flex-1 min-w-0 relative z-10 lg:pl-0">
+                <section className="pt-32 lg:pt-48 pb-12 px-8 lg:px-24">
+                    <motion.div variants={container} initial="hidden" animate="show" className="max-w-5xl">
+                        <motion.div variants={item} className="mb-20">
+                            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-ink/55 mb-8 block font-mono">
+                                // System_Directives // {project.category}
+                            </span>
+                            <h1 className="text-6xl sm:text-8xl lg:text-[10rem] font-black text-ink leading-[0.8] tracking-tighter mb-12 font-sans uppercase">
+                                {project.title}<span className="text-ink/5 italic">.</span>
+                            </h1>
+                            <p className="text-3xl sm:text-4xl text-ink/60 font-black italic leading-[1.1] font-serif border-l-4 border-ink/[0.08] pl-12 max-w-4xl tracking-tight">
+                                {details.descriptor}
+                            </p>
+                        </motion.div>
+
+                        <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                            {/* Speculative Hypothesis */}
+                            <HypothesisCard hypothesis={project.hypothesis || { statement: details.hypothesis, variable: "TBD", outcome: "TBD" }} />
+                            
+                            {/* Red Team Analysis */}
+                            <AdversarialAnalysis analysis={project.adversarialAnalysis || { attackVector: "Incentive Drift", mitigation: "Governance Loop" }} />
+                        </motion.div>
+
+                        <motion.div variants={item} className="bento-grid mb-8">
+                            {/* Blueprint (Large) */}
+                            <div className="bento-item bento-span-2 bento-row-2 bg-white/20 p-0 border-ink/[0.08] group/blueprint overflow-hidden min-h-[600px] relative">
+                                {project.blueprint ? (
+                                    <div className="relative w-full h-full flex items-center justify-center p-16">
+                                        <img 
+                                            src={project.blueprint} 
+                                            alt={`${project.title} Technical Blueprint`} 
+                                            className="w-full h-full object-contain opacity-70 group-hover/blueprint:opacity-100 transition-all duration-1000 grayscale hover:grayscale-0 scale-[1.1] group-hover/blueprint:scale-100"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-paper/80 via-transparent to-transparent pointer-events-none" />
+                                        <div className="absolute bottom-12 left-12 p-8 bg-white/95 backdrop-blur-md border border-ink/[0.08] rounded-3xl shadow-2xl">
+                                             <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/30 mb-2 font-mono">Technical_Blueprint_Identifier</h4>
+                                             <p className="text-xs font-mono font-bold text-ink/60">{project.id.toUpperCase()}_SYS_ARCH_SPEC_2024</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="w-full h-full flex flex-col items-center justify-center text-ink/5 gap-4">
+                                        <div className="w-24 h-24 border border-ink/[0.08] rounded-full flex items-center justify-center animate-spin-slow">
+                                            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A2 2 0 013 15.485V4.382a2 2 0 011.106-1.789L9 2m0 18l6-3m-6 3V2m6 15l4.447 2.224A2 2 0 0021 17.515V6.382a2 2 0 00-1.106-1.789L15 2m0 15V2m0 15L9 2" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-[10px] font-black uppercase tracking-[0.5em] font-mono">Mapping_System_Failure</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Logic Model */}
+                            <div className="bento-span-1">
+                                <SystemLogic logic={project.systemLogic || project.logic} />
+                            </div>
+
+                            {/* Problem Statement */}
+                            <div className="bento-item bento-span-1 bg-white hover:bg-paper transition-all duration-700 p-12 flex flex-col justify-center">
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 mb-8 block font-mono">// Critical_Path // The_Problem</span>
+                                <h3 className="text-4xl font-black text-ink mb-8 tracking-tighter leading-none font-sans uppercase">Institutional_Deficit</h3>
+                                <p className="text-lg text-ink/60 leading-relaxed font-black italic font-serif border-l border-ink/[0.08] pl-8">
+                                    {details.problemStatement}
+                                </p>
+                            </div>
+                        </motion.div>
+
+                        <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                            {/* Architecture Detail */}
+                            <div className="md:col-span-2 bento-item bg-ink text-paper p-16 shadow-2xl relative overflow-hidden group">
+                                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-paper/5 to-transparent pointer-events-none" />
+                                <div className="flex justify-between items-start mb-16 pb-8 border-b border-paper/10">
+                                    <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-paper/60 font-mono">Architecture_Resolution</h4>
+                                    <span className="text-[9px] font-mono text-paper/60">SPEC_NODE_v{project.year}.1</span>
+                                </div>
+                                <p className="text-3xl font-black italic text-paper mb-16 leading-[1.1] pr-12 font-serif">{details.architecture.description}</p>
+                                <div className="flex flex-wrap gap-4">
+                                    {details.architecture.components.map((comp, i) => (
+                                        <span key={i} className="px-6 py-3 bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.3em] text-paper/40 rounded-2xl hover:bg-white/10 hover:text-white transition-all duration-500 font-mono">
+                                            [{comp}]
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Stakeholder Simulation */}
+                            <div className="bento-item bg-white p-12 border-ink/[0.08]">
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 mb-10 block font-mono">// Simulation_Outcome</span>
+                                <h4 className="text-5xl font-black text-ink tracking-tighter uppercase leading-[0.8] mb-10 font-sans">
+                                    {details.simulation.outcome}
+                                </h4>
+                                <SimulationTerminal outcome={details.simulation.outcome} />
+                            </div>
+                        </motion.div>
+
+                        <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-32">
+                           {/* Actors */}
+                           <div className="bento-item border-ink/[0.08] bg-paper/20 p-10 ring-1 ring-ink/[0.02]">
+                                <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 mb-10 border-b border-ink/[0.08] pb-4 font-mono">Institutional_Actors</h4>
+                                <div className="space-y-4">
+                                    {details.systemOverview.actors.map((actor, i) => (
+                                        <div key={i} className="flex items-center justify-between p-5 bg-white border border-ink/[0.08] rounded-2xl shadow-sm hover:translate-x-2 transition-transform duration-500">
+                                            <span className="text-xs font-black text-ink uppercase tracking-widest font-sans">{actor}</span>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-ink/10" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Linked Records */}
+                            <div className="bento-item border-ink/[0.08] p-10 bg-white shadow-xl">
+                                <h4 className="text-[9px] font-black uppercase tracking-[0.4em] text-ink/55 mb-10 border-b border-ink/[0.08] pb-4 font-mono">Research_Threads</h4>
+                                <div className="space-y-4">
+                                    {details.relatedResearch?.length > 0 ? (
+                                        <>
+                                            <Link to="/research" className="block p-6 bg-paper/[0.3] border border-ink/[0.08] hover:border-ink/20 rounded-3xl transition-all group/link">
+                                                <div className="text-[10px] uppercase font-black tracking-[0.3em] text-ink/30 mb-2 font-mono">Deep_Variable_Analysis</div>
+                                                <div className="text-sm font-black text-ink italic leading-tight font-serif group-hover/link:text-ink/60 transition-colors">Behavioral_Incentive_V4.pdf</div>
+                                            </Link>
+                                            <Link to="/reflections" className="block p-6 bg-ink text-paper border border-ink/[0.08] hover:bg-ink/90 rounded-3xl transition-all">
+                                                <div className="text-[10px] uppercase font-black tracking-[0.3em] text-paper/55 mb-2 font-mono">Internal_Lab_Notes</div>
+                                                <div className="text-sm font-black text-paper italic leading-tight font-serif">Trust_Deficits_Analysis.log</div>
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <div className="p-8 text-center text-[10px] font-black uppercase text-ink/35 italic">Records_Pending...</div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Integrity Footnote */}
+                            <div className="bento-item bg-ink text-paper border-none p-10 flex flex-col justify-center text-center relative overflow-hidden group">
+                                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[size:20px_20px]" />
+                                <div className="relative z-10">
+                                    <p className="text-[9px] font-mono font-black uppercase tracking-[0.5em] text-paper/60 mb-8 italic">Audit_Compliance</p>
+                                    <p className="text-xs font-serif font-black italic leading-relaxed text-paper/70 px-4">
+                                        "{details.disclaimer}"
+                                    </p>
+                                    <div className="mt-12 pt-12 border-t border-paper/10 flex flex-col gap-2">
+                                        <span className="text-[7px] font-mono uppercase tracking-[0.2em] text-paper/60 italic">Validated_By: Wahib_Systems_Architect</span>
+                                        <span className="text-[7px] font-mono uppercase tracking-[0.2em] text-paper/60 italic">Hash_ID: {Math.random().toString(36).substring(7).toUpperCase()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                </section>
+            </article>
+        </main>
+    );
 };
 
 export default ProjectDetail;
