@@ -1,5 +1,12 @@
-// ─── Institutional Content Data Layer ───────────────────────────────────────
+﻿// ─── Institutional Content Data Layer ───────────────────────────────────────
 // This file contains all content for the institutional think tank website.
+
+import classfusionBp from "../assets/images/blueprints/classfusion_blueprint_1772823077547.png";
+import flowfundBp from "../assets/images/blueprints/financial_liquidity_blueprint_1772823174267.png";
+import civictwinBp from "../assets/images/blueprints/social_capital_blueprint_1772823370284.png";
+import veritasBp from "../assets/images/blueprints/aid_verification_blueprint_1772823386564.png";
+import craftguildBp from "../assets/images/blueprints/creative_equity_blueprint_1772823407483.png";
+import magictaskBp from "../assets/images/magictask_lcars.png";
 
 // ─── METRICS ────────────────────────────────────────────────────────────────
 export const metrics = [
@@ -37,7 +44,7 @@ export const projects = [
             interest: "Neuroeconomics",
             paper: "Behavioral Incentive Structures in EdTech Platforms"
         },
-        blueprint: "/src/assets/images/blueprints/classfusion_blueprint_1772823077547.png",
+        blueprint: classfusionBp,
         relatedResearch: ["behavioral-incentives-edtech"],
         relatedReflections: ["why-governance-matters-edtech"],
     },
@@ -68,7 +75,7 @@ export const projects = [
             interest: "Balancer.fi / DeFi",
             paper: "Micro-Investment Models for Educational Equity"
         },
-        blueprint: "/src/assets/images/blueprints/financial_liquidity_blueprint_1772823174267.png",
+        blueprint: flowfundBp,
         relatedResearch: ["micro-investment-education"],
         relatedReflections: ["barriers-scaling-youth-innovation"],
     },
@@ -99,7 +106,7 @@ export const projects = [
             interest: "Institutional Economics",
             paper: "Constitutional Frameworks for Educational Institutions"
         },
-        blueprint: "/src/assets/images/blueprints/social_capital_blueprint_1772823370284.png",
+        blueprint: civictwinBp,
         relatedResearch: ["micro-investment-education"],
         relatedReflections: ["building-institutions-as-student"],
     },
@@ -130,7 +137,7 @@ export const projects = [
             interest: "Network Science",
             paper: "Institutional Governance Framework Pilot"
         },
-        blueprint: "/src/assets/images/blueprints/aid_verification_blueprint_1772823386564.png",
+        blueprint: veritasBp,
         relatedResearch: ["institutional-governance-schools"],
         relatedReflections: ["institutional-trust-deficits"],
     },
@@ -161,7 +168,7 @@ export const projects = [
             interest: "Institutional Economics",
             paper: "Behavioral Incentive Structures in EdTech Platforms"
         },
-        blueprint: "/src/assets/images/blueprints/creative_equity_blueprint_1772823407483.png",
+        blueprint: craftguildBp,
         relatedResearch: ["behavioral-incentives-edtech"],
         relatedReflections: ["barriers-scaling-youth-innovation"],
     },
@@ -191,7 +198,7 @@ export const projects = [
             interest: "Neuroeconomics",
             paper: "Behavioral Incentive Structures in EdTech Platforms"
         },
-        blueprint: "/src/assets/images/magictask_lcars.png",
+        blueprint: magictaskBp,
         company: "Fastech (Client Service)",
         link: "https://magictask.io"
     },

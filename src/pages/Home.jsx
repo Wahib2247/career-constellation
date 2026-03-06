@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { metrics, projects, researchPapers, reflections } from "../constants";
 import StatusBadge from "../components/StatusBadge";
+import classfusionBp from "../assets/images/blueprints/classfusion_blueprint_1772823077547.png";
 
 // Fade-in on scroll component
 const FadeIn = ({ children, delay = 0, className = "" }) => (
@@ -194,7 +195,7 @@ const Home = () => {
 
                             <div className="bg-ink relative min-h-[500px] overflow-hidden">
                                 <img 
-                                    src="/src/assets/images/blueprints/classfusion_blueprint_1772823077547.png" 
+                                    src={classfusionBp} 
                                     alt="ClassFusion" 
                                     className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen scale-110 group-hover:scale-125 transition-transform duration-[3s]" 
                                 />
